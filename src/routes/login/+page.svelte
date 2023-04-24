@@ -3,6 +3,12 @@
 	import {Lock, User, MapPin, BrandInstagram, BrandTwitter, BrandFacebook, BrandTiktok, PhoneCall} from "@steeze-ui/tabler-icons"
 	import {Icon} from "@steeze-ui/svelte-icon"
 	import Pascal from "$lib/images/pascalConFondo.png"
+    import type {ActionData} from "./$types";
+
+    export let form: ActionData;
+    $: if (form?.message){
+        alert(form.message)
+    }
   import { enhance } from '$app/forms';
 
 	let y: number;

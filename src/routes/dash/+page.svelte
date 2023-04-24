@@ -3,4 +3,4 @@
     
     export let data: PageData;
 </script>
-<h1>holi</h1>
+<h1 class="text-5xl">holi</h1>  
