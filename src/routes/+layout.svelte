@@ -1,6 +1,15 @@
 <script lang="ts">
-    import type { LayoutData } from './$types';
-    import 'virtual:windi.css'
-    export let data: LayoutData;
+  import "virtual:windi.css";
 </script>
-<slot/>
+
+<slot />
+
+<style>
+  :global(
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button
+    ) {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+</style>

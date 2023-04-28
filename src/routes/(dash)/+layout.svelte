@@ -4,7 +4,7 @@
   </script>
   <Nav/>
   
-  <main class="flex justify-start items-center">
+  <main class="flex justify-start items-start">
   <Sidebar/>
       <slot/>
   </main>

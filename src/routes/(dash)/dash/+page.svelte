@@ -7,7 +7,7 @@
 
   export let data: PageData
 </script>
-    <section class="flex justify-around w-full">
+    <section class="flex justify-around w-full self-center">
         <div class="flex justify-center items-center w-1/5">
             <Icon src={User} class="h-15 w-2/5 stroke-[#db0081]"/>
             <div class="info">

@@ -13,7 +13,7 @@
     IUT Pascal</a></h1>
     <button on:click="{toggleSidebar}" class="md:invisible"><Icon src={Menu2} class="h-10 w-10"/></button>
   <nav class="w-auto hidden md:grid grid-cols-2 grid-cols-[repeat(2,300px)] h-full justify-around">
-    <a href="/" class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081]">Estudiantes</a>
+    <a href="/estudiantes" class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081]">Estudiantes</a>
     <a href="/logout" class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081]">Cerrar sesion</a>
   </nav>
 </header>
