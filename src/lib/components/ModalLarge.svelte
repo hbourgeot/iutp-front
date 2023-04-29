@@ -4,23 +4,7 @@
   export let headerText = "";
   export let open: boolean;
   export let big: boolean = false
-  // import { XCircleIcon } from "@vue-hero-icons/outline";
 
-  // export default {
-  //   components: {
-  //     XCircleIcon,
-  //   },
-  //   methods: {
-  //     close() {
-  //       this.$emit("close");
-  //     },
-
-  //     btnFunction() {
-  //       this.$emit("btnFunction");
-  //     },
-  //   },
-  //   props: ["headerText"],
-  // };
 </script>
 
 {#if open}

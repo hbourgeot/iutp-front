@@ -7,7 +7,7 @@
     window.document.body.classList.toggle("showing")
   }
 </script>
-<header class="flex justify-between w-full h-20 items-center p-3 text-light-50 bg-[#0868b2]">
+<header class="flex justify-between w-full h-20 items-center p-3 text-light-50 bg-[#0868b2] sticky top-0">
   <h1 class="text-2xl"><a href="/" class="flex items-center font-bold gap-1">
     <img src={pascalLogo} alt="Logo del Instituto Pascal" class="mr-3 w-1/12 rounded-full">
     IUT Pascal</a></h1>

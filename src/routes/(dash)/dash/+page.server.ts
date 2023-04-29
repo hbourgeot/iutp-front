@@ -12,7 +12,6 @@ export const load = (async ({locals:{client}}) => {
     const date = new Date()
     const month = date.getMonth() + 1
     const day = date.getDate()
-    console.log(date, month, day);
     const {total: estudiantes} = await client.GET(`api/students/count`)
     const {total: pagosDelDia} = await client.GET(`api/admin/count/month/${month > 9 ? month : '0'+month}`)
     const {total: pagosDelMes} = await client.GET(`api/admin/count/day/${day > 9 ? day : '0'+day}`)

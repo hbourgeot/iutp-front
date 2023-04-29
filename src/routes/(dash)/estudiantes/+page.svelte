@@ -6,7 +6,7 @@
   import type { ActionData, PageData } from "./$types";
   import ModalLarge from "$lib/components/ModalLarge.svelte";
   import { enhance } from "$app/forms";
-  import { goto, invalidateAll } from "$app/navigation";
+  import { invalidate } from "$app/navigation";
 
   export let data: PageData;
   export let form: ActionData;
@@ -26,6 +26,7 @@
   $: cedula = `${documento}-${cedulaInput}`
   $: telefono = `${prefijo}-${telefonoInput}`
   let estudiantes: Estudiante[] = data.estudiantes;
+  $: estudiantes = data.estudiantes
   let estudiantesTerms = estudiantes.map((estudiante) => ({
     ...estudiante,
     searchTerms: `${estudiante.cedula} ${estudiante.correo} ${
@@ -45,18 +46,21 @@
     unsubscribe();
   });
 
+  const destroy = () => onDestroy(() => estudiantes = data.estudiantes)
+
   const handleSubmit: SubmitFunction = ({data}) => {
     data.append("cedula", cedula)
     data.append("telefono", telefono)
+    invalidate("/api/students")
     return async({update})=>{
-        await invalidateAll()
-        await update()
-        addStudent = false;
+      await update()
+      addStudent = false;
+      window.location.reload()
     }
   }
 </script>
 
-<section class="flex flex-col p-7 w-full gap-y-5">
+<section class="flex flex-col p-7 gap-y-5 w-full overflow-x-auto">
   <div class="flex self-end justify-around items-center w-full md:w-[600px]">
     <button
       type="button"
@@ -71,28 +75,44 @@
     />
   </div>
   {#if estudiantes.length && $estudianteSearch.filtered.length}
-    <table class="w-full">
-      <thead>
-        <th class="text-left text-2xl text-[#db0081]">Cédula</th>
-        <th class="text-left text-2xl text-[#db0081]">Correo</th>
-        <th class="text-left text-2xl text-[#db0081]">Nombre</th>
-        <th class="text-left text-2xl text-[#db0081]">Semestre</th>
-        <th class="text-left text-2xl text-[#db0081]">Teléfono</th>
-        <th class="text-left text-2xl text-[#db0081]">Estado</th>
-      </thead>
-      <tbody>
+    <article class="flex justify-between gap-x-4 min-w-full">
+      <div class="flex flex-col justify-between">
+        <h3 class="text-left font-bold text-2xl text-[#db0081]">Cédula</h3>
         {#each $estudianteSearch.filtered as estudiante}
-          <tr>
-            <td class="text-xl">{estudiante.cedula}</td>
-            <td class="text-xl">{estudiante.correo}</td>
-            <td class="text-xl">{estudiante.nombre}</td>
-            <td class="text-xl">{estudiante.semestre}</td>
-            <td class="text-xl">{estudiante.telefono}</td>
-            <td class="text-xl">{estudiante.estado}</td>
-          </tr>
+        <p class="text-xl w-full">{estudiante.cedula}</p>
         {/each}
-      </tbody>
-    </table>
+      </div>
+      <div class="flex flex-col justify-between">
+        <h3 class="text-left font-bold text-2xl text-[#db0081]">Nombre</h3>
+        {#each $estudianteSearch.filtered as estudiante}
+        <p class="text-xl w-full">{estudiante.nombre}</p>
+        {/each}
+      </div>
+      <div class="flex flex-col justify-between">
+        <h3 class="text-left font-bold text-2xl text-[#db0081]">Correo</h3>
+        {#each $estudianteSearch.filtered as estudiante}
+        <p class="text-xl w-full">{estudiante.correo}</p>
+        {/each}
+      </div>
+      <div class="flex flex-col justify-between">
+        <h3 class="text-left font-bold text-2xl text-[#db0081]">Teléfono</h3>
+        {#each $estudianteSearch.filtered as estudiante}
+        <p class="text-xl w-full">{estudiante.telefono}</p>
+        {/each}
+      </div>
+      <div class="flex flex-col justify-between">
+        <h3 class="text-left font-bold text-2xl text-[#db0081]">Semestre</h3>
+        {#each $estudianteSearch.filtered as estudiante}
+        <p class="text-xl w-full">{estudiante.semestre}</p>
+        {/each}
+      </div>
+      <div class="flex flex-col justify-between">
+        <h3 class="text-left font-bold text-2xl text-[#db0081]">Estado</h3>
+        {#each $estudianteSearch.filtered as estudiante}
+        <p class="text-xl w-full">{estudiante.estado}</p>
+        {/each}
+      </div>
+    </article>
   {:else}
     <h3 class="text-5xl font-extrabold text-[#db0081]">
       No hay estudiantes registrados.
@@ -165,7 +185,7 @@
             required
             type="number"
             min="0"
-            minlength="5"
+            maxlength="7"
             name="cedula"
             id="cedula"
             bind:value="{telefonoInput}"
@@ -177,6 +197,7 @@
       <input
         class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
         required
+        value="1"
         type="number"
         min="1"
         max="10"

@@ -1,7 +1,8 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({locals:{client}}) => {
+export const load: PageServerLoad = async ({locals:{client}, depends}) => {
+    depends("/api/student")
     const {ok, data} = await client.GET("/api/students")
     if (!ok) {
         return {estudiantes: []}
@@ -22,7 +23,6 @@ export const actions: Actions = {
             semestre: parseInt(obj.semestre)
         }
         const { ok, data } = await client.POST("/api/students/add", payload)
-        console.log(ok, data, payload);
         if (!ok) {
             return fail(400, {"message": data})
         }
