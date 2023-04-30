@@ -2,7 +2,7 @@
     <a href="/estudiantes" class="text-xl font-normal p-5 flex justify-start md:hidden items-center hover:bg-[#db0081] transition-background duration-100">Estudiantes</a>
     <a href="/logout" class="text-xl font-normal p-5 flex justify-start md:hidden items-center hover:bg-[#db0081] transition-background duration-100">Cerrar sesion</a>
     <a href="/" class="text-2xl font-bold flex justify-start items-center p-5 hover:bg-[#db0081] transition-background duration-100">Generar Reporte</a>
-    <a href="/" class="text-2xl font-bold flex justify-start items-center p-5 hover:bg-[#db0081] transition-background duration-100">Registrar pagos</a>
+    <a href="/pagos" class="text-2xl font-bold flex justify-start items-center p-5 hover:bg-[#db0081] transition-background duration-100">Registrar pagos</a>
     <a href="/" class="text-2xl font-bold flex justify-start items-center p-5 hover:bg-[#db0081] transition-background duration-100">Emisión de Recibos de Pago</a>
 </aside>
 

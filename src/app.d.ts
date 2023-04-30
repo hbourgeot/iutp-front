@@ -22,9 +22,9 @@ interface Estudiante{
 	estado: string
 }
 
-interface Pagos{
+interface Pago{
 	id: number,
-	preInscripcion: string;
+	pre_inscripcion: string;
 	inscripcion: string;
 	cuota1: string;
 	cuota2: string;
@@ -34,9 +34,26 @@ interface Pagos{
 	cedula_estudiante: string;
 }
 
-interface PagosEstudiante {
-	estudiante: Estudiante;
-	pago: Pagos;
+interface Monto {
+	id: number,
+	pre_inscripcion: number;
+	inscripcion: number;
+	cuota1: number;
+	cuota2: number;
+	cuota3: number;
+	cuota4: number;
+	cuota5: number;
+	id_pago: number
 }
 
-export {Estudiante, Pagos, PagosEstudiante};
+interface PagosEstudiante {
+	estudiante: Estudiante;
+	pago: Pago;
+}
+
+interface MontoPagos {
+	monto: Monto;
+	pago: Pago;
+}
+
+export {Estudiante, Pago, PagosEstudiante, Monto, MontoPagos};

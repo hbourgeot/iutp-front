@@ -6,7 +6,6 @@
   import type { ActionData, PageData } from "./$types";
   import ModalLarge from "$lib/components/ModalLarge.svelte";
   import { enhance } from "$app/forms";
-  import { invalidate } from "$app/navigation";
 
   export let data: PageData;
   export let form: ActionData;
@@ -29,12 +28,14 @@
   $: estudiantes = data.estudiantes
   let estudiantesTerms = estudiantes.map((estudiante) => ({
     ...estudiante,
-    searchTerms: `${estudiante.cedula} ${estudiante.correo} ${
+    searchTerms: `${estudiante.cedula} ${estudiante.cedula.replace("V-" || "E-", "")} ${estudiante.correo} ${
       estudiante.estado
     } ${estudiante.semestre} ${
       estudiante.telefono
     } ${estudiante.nombre.toLowerCase()}`,
   }));
+
+  console.log(estudiantesTerms);
 
   const estudianteSearch = createSearchStore(estudiantesTerms);
 
@@ -51,7 +52,6 @@
   const handleSubmit: SubmitFunction = ({data}) => {
     data.append("cedula", cedula)
     data.append("telefono", telefono)
-    invalidate("/api/students")
     return async({update})=>{
       await update()
       addStudent = false;
