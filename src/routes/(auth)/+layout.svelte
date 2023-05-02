@@ -1,10 +1,5 @@
 <script lang="ts">
 	import 'virtual:windi.css'
-	import {Lock, User, MapPin, BrandInstagram, BrandTwitter, BrandFacebook, BrandTiktok, PhoneCall} from "@steeze-ui/tabler-icons"
-	import {Icon} from "@steeze-ui/svelte-icon"
-	import Pascal from "$lib/images/pascalConFondo.png"
-  import { enhance } from '$app/forms';
-
 </script>
 
 <svelte:head>

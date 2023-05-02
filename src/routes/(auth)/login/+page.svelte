@@ -20,7 +20,7 @@
 </svelte:head>
 <svelte:window bind:innerHeight="{y}"/>
 	<section class="w-full xl:w-1/2 flex flex-col justify-center items-center mb-15 xl:mb-0">
-		<form use:enhance method="post" class="flex flex-col justify-center items-center gap-5 login xl:h-2/3 h-full xl:mt-0 w-3/4">
+		<form use:enhance method="post" class="flex flex-col justify-center items-center gap-5 login xl:h-[fit-content] xl:mt-0 w-3/4">
             <img src={Pascal} alt="Instituto Pascal" class="w-1/5">
 			<h1 class="text-6xl mb-15 font-bold flex justify-center items-center gap">Bienvenido</h1>
 			<label for="username" class="text-xl flex justify-end items-center border-dark-200 border-2 rounded-xl">
