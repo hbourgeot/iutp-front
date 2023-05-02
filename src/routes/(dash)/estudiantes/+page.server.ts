@@ -25,7 +25,5 @@ export const actions: Actions = {
         if (!ok) {
             return fail(400, {"message": data})
         }
-        
-        throw redirect(303, `/pagos?regPago=${obj.cedula}`)
     }
 };

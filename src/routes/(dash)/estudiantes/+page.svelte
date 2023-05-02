@@ -55,6 +55,7 @@
     return async ({ update }) => {
       await update();
       addStudent = false;
+      window.location.reload()
     };
   };
 </script>

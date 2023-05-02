@@ -33,13 +33,13 @@
   let cuota4: string = pagos.cuota4 ?? "";
   let cuota5: string = pagos.cuota5 ?? "";
 
-  let montopreInscripcion: number = monto.pre_inscripcion;
-  let montoinscripcion: number = monto.inscripcion;
-  let montocuota1: number = monto.cuota1;
-  let montocuota2: number = monto.cuota2;
-  let montocuota3: number = monto.cuota3;
-  let montocuota4: number = monto.cuota4;
-  let montocuota5: number = monto.cuota5;
+  let montopreInscripcion: number | string = monto.pre_inscripcion === "0.00" ? '' : monto.pre_inscripcion;
+  let montoinscripcion: number | string = monto.inscripcion === "0.00" ? '' : monto.inscripcion;
+  let montocuota1: number | string = monto.cuota1 === "0.00" ? '' : monto.cuota1;
+  let montocuota2: number | string = monto.cuota2 === "0.00" ? '' : monto.cuota2;
+  let montocuota3: number | string = monto.cuota3 === "0.00" ? '' : monto.cuota3;
+  let montocuota4: number | string = monto.cuota4 === "0.00" ? '' : monto.cuota4;
+  let montocuota5: number | string = monto.cuota5 === "0.00" ? '' : monto.cuota5;
 
   $: if (inscripcionChecked && inscripcion === "") inscripcion = today;
   $: if (cuota1Checked && cuota1 === "") cuota1 = today;
@@ -57,6 +57,7 @@
     data.append("telefono", estudiante.telefono)
     return async ({ update }) => {
       await update();
+      alert("Datos cambiados exitosamente")
       window.location.reload()
     };
   };
@@ -134,7 +135,7 @@
           <option value="0426">0426</option>
         </select>
         <input
-          class="text-xl bg-transparent border-dashed border-2 w-3/6 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
+          class="text-xl bg-transparent border-dashed border-2 w-3/5 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
           required
           type="text"
           min="0"

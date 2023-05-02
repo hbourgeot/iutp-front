@@ -66,7 +66,7 @@
     return async ({ update }) => {
       await update();
       addPago = false;
-      goto(`/estudiantes/${cedula}`)
+      window.location.reload()  
     };
   };
 
@@ -87,7 +87,7 @@
 </script>
 
 <section class="flex flex-col p-7 gap-y-5 h-screen-sm w-full overflow-x-auto bg-light-50">
-  <div class="flex self-end justify-around items-center w-full md:w-[600px]">
+  <div class="flex self-end justify-around items-center w-full md:w-[650px]">
     <button
       type="button"
       class="rounded-lg bg-blue-400 text-white font-bold py-3 px-5"
@@ -95,8 +95,8 @@
     >
     <button
       type="button"
-      class="rounded-lg bg-blue-400 text-white font-bold py-3 px-5"
-      on:click="{() => pdf()}">Hacer PDF</button
+      class="rounded-lg bg-pink-400 text-white font-bold py-3 px-5"
+      on:click="{() => pdf()}">Descargar reporte</button
     >
     <input
       type="text"

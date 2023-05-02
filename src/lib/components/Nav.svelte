@@ -14,7 +14,7 @@
     <button on:click="{toggleSidebar}" class="md:invisible"><Icon src={Menu2} class="h-10 w-10"/></button>
   <nav class="w-auto grid grid-cols-[repeat(3,300px)] h-full justify-around">
     <a href="/estudiantes" class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100">Estudiantes</a>
-    <a href="/pagos" class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100">Registrar pagos</a>
+    <a href="/pagos" class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100">Pagos registrados</a>
     <a href="/logout" class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100">Cerrar sesion</a>
   </nav>
 </header>
