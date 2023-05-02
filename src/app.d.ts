@@ -23,7 +23,7 @@ interface Estudiante{
 }
 
 interface Pago{
-	id: number,
+	id: number;
 	pre_inscripcion: string;
 	inscripcion: string;
 	cuota1: string;
@@ -32,28 +32,18 @@ interface Pago{
 	cuota4: string;
 	cuota5: string;
 	cedula_estudiante: string;
+	montoPreInscripcion: number;
+	montoInscripcion: number;
+	montoCuota1: number;
+	montoCuota2: number;
+	montoCuota3: number;
+	montoCuota4: number;
+	montoCuota5: number;
+	id_pago: number
 }
 
 interface Monto {
 	id: number,
-	pre_inscripcion: number;
-	inscripcion: number;
-	cuota1: number;
-	cuota2: number;
-	cuota3: number;
-	cuota4: number;
-	cuota5: number;
-	id_pago: number
 }
 
-interface PagosEstudiante {
-	estudiante: Estudiante;
-	pago: Pago;
-}
-
-interface MontoPagos {
-	monto: Monto;
-	pago: Pago;
-}
-
-export {Estudiante, Pago, PagosEstudiante, Monto, MontoPagos};
+export {Estudiante, Pago};

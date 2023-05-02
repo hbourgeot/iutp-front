@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createSearchStore, searchHandler } from "$lib/resources/store";
   import { onDestroy } from "svelte";
-  import type { Estudiante, PagosEstudiante } from "../../../app";
+  import type { Estudiante } from "../../../app";
   import type { SubmitFunction } from "$app/forms";
   import type { ActionData, PageData } from "./$types";
   import ModalLarge from "$lib/components/ModalLarge.svelte";
@@ -10,8 +10,8 @@
   export let data: PageData;
   export let form: ActionData;
 
-  $: if (form?.message){
-    alert(form.message)
+  $: if (form?.message) {
+    alert(form.message);
   }
 
   let estado: string = "en curso";
@@ -21,21 +21,21 @@
   let cedulaInput: string = "";
   let prefijo: string = "0412";
   let telefonoInput: string = "";
-  let telefono: string = ""
-  $: cedula = `${documento}-${cedulaInput}`
-  $: telefono = `${prefijo}-${telefonoInput}`
+  let telefono: string = "";
+  $: cedula = `${documento}-${cedulaInput}`;
+  $: telefono = `${prefijo}-${telefonoInput}`;
   let estudiantes: Estudiante[] = data.estudiantes;
-  $: estudiantes = data.estudiantes
+  $: estudiantes = data.estudiantes;
   let estudiantesTerms = estudiantes.map((estudiante) => ({
     ...estudiante,
-    searchTerms: `${estudiante.cedula} ${estudiante.cedula.replace("V-" || "E-", "")} ${estudiante.correo} ${
-      estudiante.estado
-    } ${estudiante.semestre} ${
+    searchTerms: `${estudiante.cedula} ${estudiante.cedula.replace(
+      "V-" || "E-",
+      ""
+    )} ${estudiante.correo} ${estudiante.estado} ${estudiante.semestre} ${
       estudiante.telefono
     } ${estudiante.nombre.toLowerCase()}`,
   }));
 
-  console.log(estudiantesTerms);
 
   const estudianteSearch = createSearchStore(estudiantesTerms);
 
@@ -47,17 +47,16 @@
     unsubscribe();
   });
 
-  const destroy = () => onDestroy(() => estudiantes = data.estudiantes)
+  const destroy = () => onDestroy(() => (estudiantes = data.estudiantes));
 
-  const handleSubmit: SubmitFunction = ({data}) => {
-    data.append("cedula", cedula)
-    data.append("telefono", telefono)
-    return async({update})=>{
-      await update()
+  const handleSubmit: SubmitFunction = ({ data }) => {
+    data.append("cedula", cedula);
+    data.append("telefono", telefono);
+    return async ({ update }) => {
+      await update();
       addStudent = false;
-      window.location.reload()
-    }
-  }
+    };
+  };
 </script>
 
 <section class="flex flex-col p-7 gap-y-5 w-full overflow-x-auto">
@@ -79,37 +78,41 @@
       <div class="flex flex-col justify-between">
         <h3 class="text-left font-bold text-2xl text-[#db0081]">Cédula</h3>
         {#each $estudianteSearch.filtered as estudiante}
-        <p class="text-xl w-full">{estudiante.cedula}</p>
+          <p class="text-xl w-full my-1 text-blue-700 font-semibold">
+            <a href="/estudiantes/{estudiante.cedula}" class="no-underline"
+              >{estudiante.cedula}</a
+            >
+          </p>
         {/each}
       </div>
       <div class="flex flex-col justify-between">
         <h3 class="text-left font-bold text-2xl text-[#db0081]">Nombre</h3>
         {#each $estudianteSearch.filtered as estudiante}
-        <p class="text-xl w-full">{estudiante.nombre}</p>
+          <p class="text-xl w-full my-1">{estudiante.nombre}</p>
         {/each}
       </div>
       <div class="flex flex-col justify-between">
         <h3 class="text-left font-bold text-2xl text-[#db0081]">Correo</h3>
         {#each $estudianteSearch.filtered as estudiante}
-        <p class="text-xl w-full">{estudiante.correo}</p>
+          <p class="text-xl w-full my-1">{estudiante.correo}</p>
         {/each}
       </div>
       <div class="flex flex-col justify-between">
         <h3 class="text-left font-bold text-2xl text-[#db0081]">Teléfono</h3>
         {#each $estudianteSearch.filtered as estudiante}
-        <p class="text-xl w-full">{estudiante.telefono}</p>
+          <p class="text-xl w-full my-1">{estudiante.telefono}</p>
         {/each}
       </div>
       <div class="flex flex-col justify-between">
         <h3 class="text-left font-bold text-2xl text-[#db0081]">Semestre</h3>
         {#each $estudianteSearch.filtered as estudiante}
-        <p class="text-xl w-full">{estudiante.semestre}</p>
+          <p class="text-xl w-full my-1">{estudiante.semestre}</p>
         {/each}
       </div>
       <div class="flex flex-col justify-between">
         <h3 class="text-left font-bold text-2xl text-[#db0081]">Estado</h3>
         {#each $estudianteSearch.filtered as estudiante}
-        <p class="text-xl w-full">{estudiante.estado}</p>
+          <p class="text-xl w-full my-1">{estudiante.estado}</p>
         {/each}
       </div>
     </article>
@@ -120,7 +123,7 @@
   {/if}
 </section>
 <ModalLarge open="{addStudent}" headerText="Añadir estudiante" big>
-  <form method="post" use:enhance={handleSubmit}>
+  <form method="post" use:enhance="{handleSubmit}">
     <label for="cedula" class="flex flex-col">
       Cédula
       <div class="flex justify-start">
@@ -166,32 +169,32 @@
       />
     </label>
     <label for="telefono" class="flex flex-col">
-        Teléfono
-        <div class="flex justify-start">
-          <select
-            bind:value="{prefijo}"
-            name=""
-            id="prefijo"
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[100px]"
-          >
-            <option value="0412">0412</option>
-            <option value="0414">0414</option>
-            <option value="0424">0424</option>
-            <option value="0416">0416</option>
-            <option value="0426">0426</option>
-          </select>
-          <input
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
-            required
-            type="number"
-            min="0"
-            maxlength="7"
-            name="cedula"
-            id="cedula"
-            bind:value="{telefonoInput}"
-          />
-        </div>
-      </label>
+      Teléfono
+      <div class="flex justify-start">
+        <select
+          bind:value="{prefijo}"
+          name=""
+          id="prefijo"
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[100px]"
+        >
+          <option value="0412">0412</option>
+          <option value="0414">0414</option>
+          <option value="0424">0424</option>
+          <option value="0416">0416</option>
+          <option value="0426">0426</option>
+        </select>
+        <input
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          required
+          type="number"
+          min="0"
+          maxlength="7"
+          name="cedula"
+          id="cedula"
+          bind:value="{telefonoInput}"
+        />
+      </div>
+    </label>
     <label for="semestre" class="flex flex-col">
       Semestre
       <input

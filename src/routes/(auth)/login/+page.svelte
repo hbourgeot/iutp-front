@@ -7,20 +7,18 @@
 
     export let form: ActionData;
     $: if (form?.message){
-        alert(form.message)
-    }
+			alert(form.message)
+		}
   import { enhance } from '$app/forms';
 
 	let y: number;
 </script>
 
 <svelte:head>
-	<title>Home</title>
+	<title>Login al sistema de administracion</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 <svelte:window bind:innerHeight="{y}"/>
-
-<main class="flex flex-col-reverse xl:flex-row-reverse justify-center w-full">
 	<section class="w-full xl:w-1/2 flex flex-col justify-center items-center mb-15 xl:mb-0">
 		<form use:enhance method="post" class="flex flex-col justify-center items-center gap-5 login xl:h-2/3 h-full xl:mt-0 w-3/4">
             <img src={Pascal} alt="Instituto Pascal" class="w-1/5">
@@ -34,32 +32,11 @@
 				<input type="password" name="password" id="password" placeholder="Contraseña" class="w-full border-0 outline-0 border-l-2 bg-transparent rounded-tr-lg rounded-br-lg text-xl">
 			</label>
 			<button type="submit" class="rounded-xl text-light-50 py-2 px-10 text-2xl m-auto bg-[#dc0183]">Enviar</button>
+			<p class="text-lg">¿No tienes cuenta? <a href="/registrarse" class="font-bold">Regístrate</a></p>
 		</form>
 	</section>
-</main>
 
 <style lang="scss">
-	@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&family=PT+Serif:wght@400;700&display=swap');
-
-
-	:global(body) {
-		font-family: 'Hind Siliguri', sans-serif;
-
-	}
-	h1, h2, h3, h4, h5, h6{
-		font-family: 'PT Serif', serif;
-	}
-
-	main{
-		background-image: url("$lib/images/layered-waves-haikei.svg");
-		background-size: cover;
-		background-position: center center;
-		background-attachment: fixed;
-		height: auto;
-		@media (min-width:1280px) {
-			height: 100vh;
-		}
-	}
 
 	.login{
 		background-color: white;

@@ -9,14 +9,15 @@ export const load: PageServerLoad = async () => {
 }
 
 export const actions: Actions = {
-    default: async ({request}) =>{
+    default: async ({request, locals:{client}}) =>{
         const { username, password }: { username?: string, password?: string } = Object.fromEntries(await request.formData())
-        
-        logStore.set({log: "in"})
-        throw redirect(302, "/dash")
-        // if (username === "pascadmin" && password === "iutppasc4l23") {
-        // } else {    
-        //     return fail(400, {"message": "Usuario o pass incorrecto"})
-        // }
+        const payload = {usuario: username, clave: password}
+        const { login } = await client.POST("/api/usuario/login", payload)
+        if (login) {
+            logStore.set({ log: "in" })
+            throw redirect(302, "/estudiantes")
+        } else {
+            return fail(400, {message: "Usuario o contraseña inválida"})
+        }
     }
 }
