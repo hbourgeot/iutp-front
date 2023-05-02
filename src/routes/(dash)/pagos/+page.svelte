@@ -17,7 +17,7 @@
   let disableCedula = $page.url.searchParams.get("regPago") != null ? true : false;
   let estudiantes: { cedula: string; nombre: string }[] = data.estudiantes;
   let pagos: Pago[] = data.pagos;
-  let cedula: string = $page.url.searchParams.get("regPago") || estudiantes[0].cedula;
+  let cedula: string = estudiantes.length ? $page.url.searchParams.get("regPago") || estudiantes[0].cedula : "";
   let pagosTerms = pagos.map((pago) => ({
     ...pago,
     searchTerms: `${pago.cedula_estudiante} ${pago.cedula_estudiante.replace(
@@ -86,7 +86,7 @@
   }
 </script>
 
-<section class="flex flex-col p-7 gap-y-5 w-full overflow-x-auto bg-light-50">
+<section class="flex flex-col p-7 gap-y-5 h-screen-sm w-full overflow-x-auto bg-light-50">
   <div class="flex self-end justify-around items-center w-full md:w-[600px]">
     <button
       type="button"
