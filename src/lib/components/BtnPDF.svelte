@@ -10,7 +10,7 @@
 
 </script>
 
-<section id="thepdf" class="w-[800px] absolute top-0 z-10 bg-light-50">
+<section id="thepdf" class="w-[800px] absolute top-0 -z-10 bg-light-50">
   <header class="py-5 flex justify-center gap-x-3 items-center">
     <img src="{pascalConFondo}" alt="" class="h-[fit-content] w-1/7" />
     <section class="text-center w-4/7">
