@@ -62,14 +62,15 @@
   $: if (cuota4Checked) cuota4 = today;
   $: if (cuota5Checked) cuota5 = today;
 
-    for (let i = 0; i < data.pagos.length; i++) {      
-      if (data.pagos[i].pre_inscripcion === hoy) {
+  console.log("pgos", pagos.length);
+  $: for (let i = 0; i < pagos.length; i++) {      
+      if (pagos[i].pre_inscripcion === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
           (estudiante: Estudiante) =>
-            estudiante.cedula === data.pagos[i].cedula_estudiante
+            estudiante.cedula === pagos[i].cedula_estudiante
         );
         let montos = data.montos.find(
-          (monto: Pago) => monto.id_pago === data.pagos[i].id
+          (monto: Pago) => monto.id_pago === pagos[i].id
         );
         pdfData = [...pdfData, {
           cedula: estudiante.cedula,
@@ -78,13 +79,13 @@
           monto: montos.pre_inscripcion,
         }]
       }
-      if (data.pagos[i].inscripcion === hoy) {
+      if (pagos[i].inscripcion === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
           (estudiante: Estudiante) =>
-            estudiante.cedula === data.pagos[i].cedula_estudiante
+            estudiante.cedula === pagos[i].cedula_estudiante
         );
         let montos = data.montos.find(
-          (monto: Pago) => monto.id_pago === data.pagos[i].id
+          (monto: Pago) => monto.id_pago === pagos[i].id
         );
         pdfData = [...pdfData, {
           cedula: estudiante.cedula,
@@ -93,13 +94,13 @@
           monto: montos.inscripcion,
         }]
       }
-      if (data.pagos[i].cuota1 === hoy) {
+      if (pagos[i].cuota1 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
           (estudiante: Estudiante) =>
-            estudiante.cedula === data.pagos[i].cedula_estudiante
+            estudiante.cedula === pagos[i].cedula_estudiante
         );
         let montos = data.montos.find(
-          (monto: Pago) => monto.id_pago === data.pagos[i].id
+          (monto: Pago) => monto.id_pago === pagos[i].id
         );
         pdfData = [...pdfData, {
           cedula: estudiante.cedula,
@@ -108,13 +109,13 @@
           monto: montos.cuota1,
         }]
       }
-      if (data.pagos[i].cuota2 === hoy) {
+      if (pagos[i].cuota2 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
           (estudiante: Estudiante) =>
-            estudiante.cedula === data.pagos[i].cedula_estudiante
+            estudiante.cedula === pagos[i].cedula_estudiante
         );
         let montos = data.montos.find(
-          (monto: Pago) => monto.id_pago === data.pagos[i].id
+          (monto: Pago) => monto.id_pago === pagos[i].id
         );
         pdfData = 
         [...pdfData, {
@@ -124,13 +125,13 @@
           monto: montos.cuota2,
         }]
       }
-      if (data.pagos[i].cuota3 === hoy) {
+      if (pagos[i].cuota3 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
           (estudiante: Estudiante) =>
-            estudiante.cedula === data.pagos[i].cedula_estudiante
+            estudiante.cedula === pagos[i].cedula_estudiante
         );
         let montos = data.montos.find(
-          (monto: Pago) => monto.id_pago === data.pagos[i].id
+          (monto: Pago) => monto.id_pago === pagos[i].id
         );
         pdfData = [...pdfData, {
           cedula: estudiante.cedula,
@@ -139,13 +140,13 @@
           monto: montos.cuota3,
         }]
       }
-      if (data.pagos[i].cuota4 === hoy) {
+      if (pagos[i].cuota4 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
           (estudiante: Estudiante) =>
-            estudiante.cedula === data.pagos[i].cedula_estudiante
+            estudiante.cedula === pagos[i].cedula_estudiante
         );
         let montos = data.montos.find(
-          (monto: Pago) => monto.id_pago === data.pagos[i].id
+          (monto: Pago) => monto.id_pago === pagos[i].id
         );
         pdfData = [...pdfData, {
           cedula: estudiante.cedula,
@@ -154,13 +155,13 @@
           monto: montos.cuota4,
         }]
       }
-      if (data.pagos[i].cuota5 === hoy) {
+      if (pagos[i].cuota5 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
           (estudiante: Estudiante) =>
-            estudiante.cedula === data.pagos[i].cedula_estudiante
+            estudiante.cedula === pagos[i].cedula_estudiante
         );
         let montos = data.montos.find(
-          (monto: Pago) => monto.id_pago === data.pagos[i].id
+          (monto: Pago) => monto.id_pago === pagos[i].id
         );
         pdfData = [...pdfData, {
           cedula: estudiante.cedula,
