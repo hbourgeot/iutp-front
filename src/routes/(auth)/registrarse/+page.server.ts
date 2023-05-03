@@ -13,7 +13,7 @@ export const actions: Actions = {
         const { username, password }: { username?: string, password?: string } = Object.fromEntries(await request.formData())
         const payload = {usuario: username, clave: password}
         const { register } = await client.POST("/api/usuario/register", payload)
-        if (register!=="") {
+        if (register==="") {
             return fail(400, {message: "Error al registrar, puede que ya exista un usuario con ese nombre."})
         } else {
             throw redirect(302, "/login")

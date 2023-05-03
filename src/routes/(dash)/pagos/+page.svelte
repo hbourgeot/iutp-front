@@ -281,7 +281,7 @@
         />
         <section class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3">
           <span class="text-xl px-3">Bs.</span>
-          <input type="number" name="monto_pre_inscripcion" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold">
+          <input type="number" step="0.01" name="monto_pre_inscripcion" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold">
         </section>
       </div>
     </label>
@@ -307,7 +307,7 @@
           />
           <section class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3">
             <span class="text-xl px-3">Bs.</span>
-            <input type="number" name="monto_inscripcion" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold">
+            <input type="number" step="0.01" name="monto_inscripcion" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold">
           </section>
         </div>
       </label>
@@ -335,7 +335,7 @@
           />
           <section class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3">
             <span class="text-xl px-3">Bs.</span>
-            <input type="number" name="monto_cuota1" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
+            <input type="number" step="0.01" name="monto_cuota1" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
           </section>
         </div>
       </label>
@@ -363,7 +363,7 @@
           />
           <section class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3">
             <span class="text-xl px-3">Bs.</span>
-            <input type="number" name="monto_cuota2" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
+            <input type="number" step="0.01" name="monto_cuota2" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
           </section>
         </div>
       </label>
@@ -391,7 +391,7 @@
           />
           <section class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3">
             <span class="text-xl px-3">Bs.</span>
-            <input type="number" name="monto_cuota3" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
+            <input type="number" step="0.01" name="monto_cuota3" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
           </section>
         </div>
       </label>
@@ -418,7 +418,7 @@
           />
           <section class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3">
             <span class="text-xl px-3">Bs.</span>
-            <input type="number" name="monto_cuota4" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
+            <input type="number" step="0.01" name="monto_cuota4" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
           </section>
         </div>
       </label>
@@ -445,7 +445,7 @@
           />
           <section class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3">
             <span class="text-xl px-3">Bs.</span>
-            <input type="number" name="monto_cuota5" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
+            <input type="number" step="0.01" name="monto_cuota5" required min="0" placeholder="Ingrese monto" class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500">
           </section>
         </div>
       </label>
