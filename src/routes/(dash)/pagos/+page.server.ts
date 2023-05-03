@@ -61,15 +61,15 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         montoCuota5: data.montos[i].cuota5,
       });
 
-      let estudiante: any = estudiantesConPagos.find(
-        (estudiante: Estudiante) =>
-          estudiante.cedula === data.pagos[i].cedula_estudiante
-      );
-      let montos = data.montos.find(
-        (monto: Pago) => monto.id_pago === data.pagos[i].id
-      );
-
+      
       if (data.pagos[i].pre_inscripcion === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
         pdfData.push({
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
@@ -78,6 +78,13 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         });
       }
       if (data.pagos[i].inscripcion === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
         pdfData.push({
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
@@ -86,6 +93,13 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         });
       }
       if (data.pagos[i].cuota1 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
         pdfData.push({
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
@@ -94,6 +108,14 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         });
       }
       if (data.pagos[i].cuota2 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
+        
         pdfData.push({
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
@@ -102,6 +124,13 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         });
       }
       if (data.pagos[i].cuota3 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
         pdfData.push({
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
@@ -110,6 +139,13 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         });
       }
       if (data.pagos[i].cuota4 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
         pdfData.push({
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
@@ -118,6 +154,13 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         });
       }
       if (data.pagos[i].cuota5 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
         pdfData.push({
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
