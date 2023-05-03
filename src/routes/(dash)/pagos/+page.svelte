@@ -71,12 +71,12 @@
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-        pdfData.push({
+        pdfData = [...pdfData, {
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Pre Inscripcion",
           monto: montos.pre_inscripcion,
-        });
+        }]
       }
       if (data.pagos[i].inscripcion === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
@@ -86,12 +86,12 @@
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-        pdfData.push({
+        pdfData = [...pdfData, {
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Inscripcion",
           monto: montos.inscripcion,
-        });
+        }]
       }
       if (data.pagos[i].cuota1 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
@@ -101,12 +101,12 @@
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-        pdfData.push({
+        pdfData = [...pdfData, {
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 1",
           monto: montos.cuota1,
-        });
+        }]
       }
       if (data.pagos[i].cuota2 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
@@ -116,13 +116,13 @@
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-        
-        pdfData.push({
+        pdfData = 
+        [...pdfData, {
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 2",
           monto: montos.cuota2,
-        });
+        }]
       }
       if (data.pagos[i].cuota3 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
@@ -132,12 +132,12 @@
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-        pdfData.push({
+        pdfData = [...pdfData, {
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 3",
           monto: montos.cuota3,
-        });
+        }]
       }
       if (data.pagos[i].cuota4 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
@@ -147,12 +147,12 @@
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-        pdfData.push({
+        pdfData = [...pdfData, {
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 4",
           monto: montos.cuota4,
-        });
+        }]
       }
       if (data.pagos[i].cuota5 === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
@@ -162,15 +162,17 @@
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-        pdfData.push({
+        pdfData = [...pdfData, {
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 5",
           monto: montos.cuota5,
-        });
+        }]
       }
+      console.log(`en for ${i}`, pdfData);
     }
 
+    $: console.log("fuera de for", pdfData);
   const pagosSearch = createSearchStore(pagosTerms);
 
   const unsubscribe = pagosSearch.subscribe((model) => searchHandler(model));
