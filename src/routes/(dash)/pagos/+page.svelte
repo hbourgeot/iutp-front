@@ -64,6 +64,7 @@
 
   console.log("pgos", pagos.length);
   $: for (let i = 0; i < pagos.length; i++) {      
+    console.log(i, pagos, pagos[i]);
       if (pagos[i].pre_inscripcion === hoy) {
         let estudiante: any = data.estudiantesPagos.find(
           (estudiante: Estudiante) =>
