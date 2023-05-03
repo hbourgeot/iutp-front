@@ -15,13 +15,7 @@
 
   let addPago: boolean = $page.url.searchParams.get("regPago") != null ? true : false;
   let disableCedula = $page.url.searchParams.get("regPago") != null ? true : false;
-  let hoy = `${new Date().getFullYear()}-${
-    new Date().getMonth() + 1 > 9
-      ? new Date().getMonth() + 1
-      : "0" + (new Date().getMonth() + 1)
-  }-${
-    new Date().getDate() > 9 ? new Date().getDate() : "0" + new Date().getDate()
-  }`;
+  let hoy = "2023-05-02"
   let estudiantes: { cedula: string; nombre: string }[] = data.estudiantes;
   let pagos: Pago[] = data.pagos;
   let cedula: string = estudiantes.length ? $page.url.searchParams.get("regPago") || estudiantes[0].cedula : "";
@@ -62,7 +56,6 @@
   $: if (cuota4Checked) cuota4 = today;
   $: if (cuota5Checked) cuota5 = today;
 
-  console.log("pgos", pagos.length);
   $: for (let i = 0; i < pagos.length; i++) {      
     console.log(i, pagos, pagos[i]);
       if (pagos[i].pre_inscripcion === hoy) {
