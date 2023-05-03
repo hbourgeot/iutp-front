@@ -46,6 +46,8 @@
   let cuota3: string = "";
   let cuota4: string = "";
   let cuota5: string = "";
+  let pdfData: {cedula:string, nombre:string, pago: string, monto: number}[] = [];
+  $: pdfData = data.pdf as unknown as {cedula:string, nombre:string, pago: string, monto: number}[];
 
   $: if (inscripcionChecked) inscripcion = today;
   $: if (cuota1Checked) cuota1 = today;
@@ -61,7 +63,7 @@
   onDestroy(() => {
     unsubscribe();
   });
-  $: console.log(data.pdf);
+  
 
   const handleSubmit: SubmitFunction = ({ data }) => {
     return async ({ update }) => {
@@ -247,7 +249,7 @@
     </h3>
   {/if}
 </section>
-<BtnPdf data={data.pdf} />
+<BtnPdf data={pdfData} />
 <ModalLarge open="{addPago}" headerText="Registrar Pago" big>
   <form method="post" use:enhance="{handleSubmit}">
     <label for="cedula" class="flex flex-col">
