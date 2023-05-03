@@ -61,7 +61,6 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         montoCuota5: data.montos[i].cuota5,
       });
 
-      
       if (data.pagos[i].pre_inscripcion === hoy) {
         let estudiante: any = estudiantesConPagos.find(
           (estudiante: Estudiante) =>
@@ -115,7 +114,7 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-        
+
         pdfData.push({
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
@@ -206,7 +205,7 @@ export const actions: Actions = {
 
     const { ok, data } = await client.POST("/api/admin/add", payload);
     if (!ok) {
-      return fail(400, { message: data.message });
+      return fail(400, { message: "Error al insertar" });
     }
   },
 };
