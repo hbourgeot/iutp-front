@@ -61,6 +61,7 @@
   onDestroy(() => {
     unsubscribe();
   });
+  $: console.log(data.pdf);
 
   const handleSubmit: SubmitFunction = ({ data }) => {
     return async ({ update }) => {
