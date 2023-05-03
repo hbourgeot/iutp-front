@@ -7,6 +7,13 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
   const { ok: okey, data: estudiantes } = await client.GET("/api/students");
   let estudiantesSinPagos: Estudiante[] = [];
   let estudiantesConPagos: Estudiante[] = [];
+  let hoy = `${new Date().getFullYear()}-${
+    new Date().getMonth() + 1 > 9
+      ? new Date().getMonth() + 1
+      : "0" + (new Date().getMonth() + 1)
+  }-${
+    new Date().getDate() > 9 ? new Date().getDate() : "0" + new Date().getDate()
+  }`;
   estudiantes.map((estudiante: any) => {
     let pago = data.pagos.filter((pago: any) => {
       if (pago.cedula_estudiante === estudiante.cedula) return pago;
@@ -35,6 +42,13 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
   }
 
   let allData: Pago[] = [];
+  let pdfData: {
+    cedula: string;
+    nombre: string;
+    pago: string;
+    monto: number;
+  }[] = [];
+  try {
     for (let i = 0; i < data.pagos.length; i++) {
       allData.push({
         ...data.pagos[i],
@@ -48,11 +62,120 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
       });
 
       
+      if (data.pagos[i].pre_inscripcion === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
+        pdfData.push({
+          cedula: estudiante.cedula,
+          nombre: estudiante.nombre,
+          pago: "Pre Inscripcion",
+          monto: montos.pre_inscripcion,
+        });
+      }
+      if (data.pagos[i].inscripcion === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
+        pdfData.push({
+          cedula: estudiante.cedula,
+          nombre: estudiante.nombre,
+          pago: "Inscripcion",
+          monto: montos.inscripcion,
+        });
+      }
+      if (data.pagos[i].cuota1 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
+        pdfData.push({
+          cedula: estudiante.cedula,
+          nombre: estudiante.nombre,
+          pago: "Cuota 1",
+          monto: montos.cuota1,
+        });
+      }
+      if (data.pagos[i].cuota2 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
+        
+        pdfData.push({
+          cedula: estudiante.cedula,
+          nombre: estudiante.nombre,
+          pago: "Cuota 2",
+          monto: montos.cuota2,
+        });
+      }
+      if (data.pagos[i].cuota3 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
+        pdfData.push({
+          cedula: estudiante.cedula,
+          nombre: estudiante.nombre,
+          pago: "Cuota 3",
+          monto: montos.cuota3,
+        });
+      }
+      if (data.pagos[i].cuota4 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
+        pdfData.push({
+          cedula: estudiante.cedula,
+          nombre: estudiante.nombre,
+          pago: "Cuota 4",
+          monto: montos.cuota4,
+        });
+      }
+      if (data.pagos[i].cuota5 === hoy) {
+        let estudiante: any = estudiantesConPagos.find(
+          (estudiante: Estudiante) =>
+            estudiante.cedula === data.pagos[i].cedula_estudiante
+        );
+        let montos = data.montos.find(
+          (monto: Pago) => monto.id_pago === data.pagos[i].id
+        );
+        pdfData.push({
+          cedula: estudiante.cedula,
+          nombre: estudiante.nombre,
+          pago: "Cuota 5",
+          monto: montos.cuota5,
+        });
+      }
     }
+  } catch (e) {
+    console.log(e);
+  }
 
   return {
     pagos: allData,
-    estudiantesPagos: estudiantesConPagos,
+    pdf: pdfData,
     estudiantes: estudiantesSinPagos.map((estudiante: Estudiante) => ({
       cedula: estudiante.cedula,
       nombre: estudiante.nombre,
