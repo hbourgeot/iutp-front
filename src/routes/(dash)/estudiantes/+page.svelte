@@ -36,7 +36,6 @@
     } ${estudiante.nombre.toLowerCase()}`,
   }));
 
-
   const estudianteSearch = createSearchStore(estudiantesTerms);
 
   const unsubscribe = estudianteSearch.subscribe((model) =>
@@ -47,7 +46,6 @@
     unsubscribe();
   });
 
-  const destroy = () => onDestroy(() => (estudiantes = data.estudiantes));
 
   const handleSubmit: SubmitFunction = ({ data }) => {
     data.append("cedula", cedula);
@@ -55,7 +53,7 @@
     return async ({ update }) => {
       await update();
       addStudent = false;
-      window.location.reload()
+      window.location.reload();
     };
   };
 </script>
@@ -140,9 +138,15 @@
         <input
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
           required
-          type="number"
+          type="text"
           min="0"
+          on:invalid="{() => {
+            let html = window.document.getElementById('cedula');
+            html.setCustomValidity('Por favor ingrese solo numeros');
+          }}"
           minlength="5"
+          maxlength="{documento === 'V' ? 8 : 13}"
+          pattern="\d+"
           name="cedula"
           id="cedula"
           bind:value="{cedulaInput}"
@@ -156,6 +160,13 @@
         required
         type="text"
         name="nombre"
+        minlength="6"
+        on:invalid="{() => {
+          let html = window.document.getElementById('nombre');
+          html.setCustomValidity(
+            'Por favor introduzca el nombre completo del estudiante'
+          );
+        }}"
         id="nombre"
       />
     </label>
@@ -187,42 +198,57 @@
         <input
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
           required
-          type="number"
+          type="text"
           min="0"
+          minlength="7"
           maxlength="7"
-          name="cedula"
-          id="cedula"
+          name=""
+          pattern="\d+"
+          on:invalid="{() => {
+            let html = window.document.getElementById('telefonoinp');
+            html.setCustomValidity('Por favor ingrese solo numeros');
+          }}"
+          id="telefonoinp"
           bind:value="{telefonoInput}"
         />
       </div>
     </label>
-    <label for="semestre" class="flex flex-col">
-      Semestre
-      <input
-        class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
-        required
-        value="1"
-        type="number"
-        min="1"
-        max="10"
-        name="semestre"
-        id="semestre"
-      />
-    </label>
-    <label for="estado" class="flex flex-col">
-      Estado
-      <select
-        bind:value="{estado}"
-        name="estado"
-        id="estado"
-        class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
-      >
-        <option value="en curso">En curso</option>
-        <option value="congelado">Congelado</option>
-        <option value="suspendido">Suspendido</option>
-        <option value="expulsado">Expulsado</option>
-      </select>
-    </label>
+    <div class="flex justify-start gap-x-4 w-full">
+      <label for="semestre" class="flex flex-col w-1/4">
+        Semestre
+        <select
+          name="semestre"
+          id="semestre"
+          value="1"
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+        >
+          <option value="1">Primero</option>
+          <option value="2">Segundo</option>
+          <option value="3">Tercero</option>
+          <option value="4">Cuarto</option>
+          <option value="5">Quinto</option>
+          <option value="6">Sexto</option>
+          <option value="7">Séptimo</option>
+          <option value="8">Octavo</option>
+          <option value="9">Noveno</option>
+          <option value="10">Décimo</option>
+        </select>
+      </label>
+      <label for="estado" class="flex flex-col w-1/4">
+        Estado
+        <select
+          bind:value="{estado}"
+          name="estado"
+          id="estado"
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
+        >
+          <option value="en curso">En curso</option>
+          <option value="congelado">Congelado</option>
+          <option value="suspendido">Suspendido</option>
+          <option value="expulsado">Expulsado</option>
+        </select>
+      </label>
+    </div>
     <div
       class="flex flex-col md:flex-row justify-center gap-4 items-center w-full p-3"
     >
