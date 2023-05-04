@@ -198,16 +198,10 @@
         <input
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
           required
-          type="text"
-          min="0"
+          type="number"
           minlength="7"
           maxlength="7"
           name=""
-          pattern="\d+"
-          on:invalid="{() => {
-            let html = window.document.getElementById('telefonoinp');
-            html.setCustomValidity('Por favor ingrese solo numeros');
-          }}"
           id="telefonoinp"
           bind:value="{telefonoInput}"
         />
