@@ -33,3 +33,11 @@
     >
   </nav>
 </header>
+
+<style>
+  @media print{
+    header{
+      display: none !important;
+    }
+  }
+</style>

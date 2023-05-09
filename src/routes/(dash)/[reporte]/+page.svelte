@@ -1,16 +1,21 @@
 <script lang="ts">
-  import pascalConFondo from "$lib/images/pascalConFondo.png";
+  import type { PageData } from "./$types";
+  import pascalConFondo from "$lib/images/pascalConFondo.png"
+  import { page } from "$app/stores";
+
+  export let data: PageData;
   export let titles: string[] = ["Cédula", "Nombre", "Pago", "Monto"];
-  export let data: {
+
+  let pdf: {
     cedula: string;
     nombre: string;
     pago: string;
-    monto: number;
-  }[] = [{ cedula: "", nombre: "", pago: "", monto: 0 }];
-
+    monto: string;
+  }[] = data.pdfData;
 </script>
 
-<section id="thepdf" class="w-[800px] absolute top-0 -z-10 bg-light-50">
+<button type="button" class="bg-pink-600 px-5 py-2 text-lg absolute top-5 right-5 text-light-200 font-extrabold save" on:click="{() => window.print()}">Imprimir reporte</button>
+<section id="thepdf" class="w-[800px] bg-light-50">
   <header class="py-5 flex justify-center gap-x-3 items-center">
     <img src="{pascalConFondo}" alt="" class="h-[fit-content] w-1/7" />
     <section class="text-center w-4/7">
@@ -28,21 +33,23 @@
     <section
       class="text-center w-1/4 bg-blue-400 border-1 border-blue-400 border-solid h-auto rounded-lg"
     >
-      <p class="text-light-50 text-sm text-center h-[30px]">Fecha del reporte</p>
+      <p class="text-light-50 text-sm text-center h-[30px]">
+        Fecha del reporte
+      </p>
       <div class="px-3 py-3 bg-light-50 rounded-br-lg rounded-bl-lg">
         <span>{new Date().toLocaleString()}</span>
       </div>
     </section>
   </header>
-  <main class="py-5 px-30 w-full mx-auto">
-    <h2 class="text-2xl font-bold text-center">Reporte de pagos</h2>
+  <main class="py-5 px-10 w-full mx-auto">
+    <h2 class="text-2xl font-bold text-center">Reporte de pagos {#if data.param == "dia"}del día{:else if data.param == "semanal"}de los últimos siete días{:else if data.param == "mensual"}del último mes{/if}</h2>
     <table class="my-5 w-full">
       <thead>
         {#each titles as title}
           <th class="text-xl font-semibold">{title}</th>
         {/each}
       </thead>
-      {#each data as row}
+      {#each pdf as row}
         <tr>
           <td>{row.cedula}</td>
           <td>{row.nombre}</td>
@@ -55,12 +62,18 @@
 </section>
 
 <style>
-  th{
+  th {
     padding: 0 0 10px !important;
     text-align: left;
   }
-  td{
+  td {
     padding: 2px 0;
     text-align: 0;
+  }
+
+  @media print{
+    .save{
+      display: none !important;
+    }
   }
 </style>

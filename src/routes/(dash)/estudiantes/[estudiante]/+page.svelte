@@ -56,7 +56,6 @@
   $: if (cuota3Checked && cuota3 === "") cuota3 = today;
   $: if (cuota4Checked && cuota4 === "") cuota4 = today;
   $: if (cuota5Checked && cuota5 === "") cuota5 = today;
-  $: if (estudiante.semestre > 10) estudiante.semestre = 10;
   $: if (telefono.length > 7) {
     telefono = telefono.slice(0, 6);
   }

@@ -17,7 +17,7 @@ interface Estudiante{
 	cedula: string;
 	correo: string;
 	nombre: string;
-	semestre: number;
+	semestre: number | string;
 	telefono: string;
 	estado: string
 }

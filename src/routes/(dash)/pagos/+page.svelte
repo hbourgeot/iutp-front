@@ -4,12 +4,10 @@
   import type { Pago } from "../../../app";
   import type { SubmitFunction } from "$app/forms";
   import type { ActionData, PageData } from "./$types";
-  import BtnPdf from "$lib/components/BtnPDF.svelte";
   import ModalLarge from "$lib/components/ModalLarge.svelte";
   import { enhance } from "$app/forms";
   import { page } from "$app/stores";
   import { jsPDF } from "jspdf";
-  import { goto } from "$app/navigation";
 
   export let data: PageData;
 
@@ -31,7 +29,7 @@
       pago.cuota5
     } ${pago.pre_inscripcion} ${pago.inscripcion}`,
   }));
-
+  let getReport: boolean = false;
   let cuota1Checked: boolean = false;
   let cuota2Checked: boolean = false;
   let cuota3Checked: boolean = false;
@@ -56,12 +54,6 @@
     pago: string;
     monto: number;
   }[] = [];
-  $: pdfData = data.pdf as unknown as {
-    cedula: string;
-    nombre: string;
-    pago: string;
-    monto: number;
-  }[];
 
   $: if (inscripcionChecked) inscripcion = today;
   $: if (cuota1Checked) cuota1 = today;
@@ -123,7 +115,7 @@
     <button
       type="button"
       class="rounded-lg bg-pink-400 text-white font-bold py-3 px-5"
-      on:click="{() => pdf()}">Descargar reporte</button
+      on:click="{() => (getReport = true)}">Descargar reporte</button
     >
     <input
       type="text"
@@ -274,7 +266,6 @@
     </h3>
   {/if}
 </section>
-<BtnPdf data="{pdfData}" />
 <ModalLarge open="{addPago}" headerText="Registrar Pago" big>
   <form method="post" use:enhance="{handleSubmit}">
     <label for="cedula" class="flex flex-col">
@@ -643,6 +634,14 @@
       >
     </div>
   </form>
+</ModalLarge>
+<ModalLarge open="{getReport}" headerText="Generar reporte">
+  <div class="flex justify-">
+    <a href="/dia">Dia</a><a href="/semanal">Semanal</a><a href="/mensual"
+      >Mensual</a
+    >
+  </div>
+  <button type="button" on:click={() => getReport = false}>Cancelar</button>
 </ModalLarge>
 
 <style>
