@@ -6,6 +6,7 @@
   import type { ActionData, PageData } from "./$types";
   import ModalLarge from "$lib/components/ModalLarge.svelte";
   import { enhance } from "$app/forms";
+  import { browser } from "$app/environment";
 
   export let data: PageData;
   export let form: ActionData;
@@ -14,7 +15,7 @@
     alert(form.message);
   }
 
-  let estado: string = "en curso";
+  let estado: string = "nuevo ingreso";
   let documento: string = "V";
   let addStudent: boolean = false;
   let cedula: string = "";
@@ -46,6 +47,22 @@
     unsubscribe();
   });
 
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+
+
 
   const handleSubmit: SubmitFunction = ({ data }) => {
     data.append("cedula", cedula);
@@ -53,6 +70,15 @@
     return async ({ update }) => {
       await update();
       addStudent = false;
+      const logs: any = browser
+      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
+      : [];
+    logs.push(
+      `${new Date().getDate()} de ${
+        months[new Date().getMonth()]
+      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} >>> se ha registrado un estudiante con la cédula ${cedula}`
+    );
+    localStorage.setItem("log", JSON.stringify(logs));
       window.location.reload();
     };
   };
@@ -211,10 +237,10 @@
           id="estado"
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
         >
-          <option value="en curso">En curso</option>
-          <option value="congelado">Congelado</option>
-          <option value="suspendido">Suspendido</option>
-          <option value="expulsado">Expulsado</option>
+          <option value="nuevo ingreso">Nuevo ingreso</option>
+          <option value="regular">Regular</option>
+          <option value="repitiente">Repitiente</option>
+          <option value="abandona">Abandona</option>
         </select>
       </label>
     </div>

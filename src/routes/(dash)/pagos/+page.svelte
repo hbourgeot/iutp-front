@@ -7,6 +7,7 @@
   import ModalLarge from "$lib/components/ModalLarge.svelte";
   import { enhance } from "$app/forms";
   import { page } from "$app/stores";
+  import { browser } from "$app/environment";
 
   export let data: PageData;
 
@@ -65,6 +66,22 @@
     unsubscribe();
   });
 
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+
+
   const handleSubmit: SubmitFunction = ({ cancel }) => {
     const date = new Date();
     let preInscripcionDate: Date = new Date(preInscripcion);
@@ -78,6 +95,15 @@
     return async ({ update }) => {
       await update();
       addPago = false;
+      const logs: any = browser
+      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
+      : [];
+    logs.push(
+      `${new Date().getDate()} de ${
+        months[new Date().getMonth()]
+      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} >>> se ha registrado un pago correspondiente al estudiante con la cédula ${cedula}`
+    );
+    localStorage.setItem("log", JSON.stringify(logs));
       window.location.reload();
     };
   };
@@ -663,10 +689,6 @@
     height: calc(100vh - 100px);
   }
   
-  article > div {
-    width: 100%;
-    row-gap: 30px;
-  }
   :global(input[type="checkbox"]) {
     color: #db0081;
     border-color: #db0081;

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { enhance, type SubmitFunction } from "$app/forms";
   import type { Estudiante } from "../../../../app";
   import type { ActionData, PageData } from "./$types";
@@ -6,15 +7,20 @@
   export let data: PageData;
   export let form: ActionData;
 
-  $: if (form?.message) {
-    alert(form.message);
+  $: if (form?.message && browser) {
+    window.alert(form.message)
   }
-  let estudiante: Estudiante = data.estudiante;
-  estudiante.semestre = estudiante.semestre.toString();
+  let nombre = data.estudiante.nombre;
+  let cedula = data.estudiante.cedula;
+  let correo = data.estudiante.correo;
+  let estado = data.estudiante.estado;
+  let semestre = data.estudiante.semestre.toString();
+  let prefTelefono = "";
+  const viejosDatos: Estudiante = data.estudiante;
   let pagos: any = data.pago;
   let monto: any = data.monto;
-  let prefijo: string = estudiante.telefono.slice(0, 4);
-  let telefono: string = estudiante.telefono.slice(5);
+  let prefijo: string = data.estudiante.telefono.slice(0, 4);
+  let telefono: string = data.estudiante.telefono.slice(5);
   let cuota1Checked: boolean = pagos.cuota1 !== "" ? true : false;
   let cuota2Checked: boolean = pagos.cuota2 !== "" ? true : false;
   let cuota3Checked: boolean = pagos.cuota3 !== "" ? true : false;
@@ -59,12 +65,53 @@
   $: if (telefono.length > 7) {
     telefono = telefono.slice(0, 6);
   }
-  $: estudiante.telefono = `${prefijo}-${telefono}`;
+  $: prefTelefono = `${prefijo}-${telefono}`;
 
-  const handleSubmit: SubmitFunction = ({ data }) => {
-    data.append("telefono", estudiante.telefono);
+  const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+
+
+  const handleEstudiante: SubmitFunction = ({ data }) => {
+    data.append("telefono", prefTelefono);
     return async ({ update }) => {
       await update();
+      const logs: any = browser
+      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
+      : [];
+    logs.push(
+      `${new Date().getDate()} de ${
+        months[new Date().getMonth()]
+      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} >>> se ha modificado al estudiante con la cédula ${cedula}, campos modificados: ${viejosDatos.correo !== correo ? 'correo,' : ''} ${viejosDatos.nombre !== nombre ? 'nombre,' : ''} ${viejosDatos.semestre !== semestre ? 'semestre,' : ''} ${viejosDatos.estado !== estado ? 'estado' : ''} ${viejosDatos.telefono !== telefono ? 'y telefono' : ''}`
+    );
+    localStorage.setItem("log", JSON.stringify(logs));
+      window.location.reload();
+    };
+  };
+
+  const handlePago: SubmitFunction = ({ data }) => {
+    return async ({ update }) => {
+      await update();
+      const logs: any = browser
+      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
+      : [];
+    logs.push(
+      `${new Date().getDate()} de ${
+        months[new Date().getMonth()]
+      } del año ${new Date().getFullYear()} a las ${new Date().getHours() > 9 ? new Date().getHours() : '0' + new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0'+new Date().getMinutes()}:${new Date().getSeconds() > 9 ? new Date().getSeconds() : '0' + new Date().getSeconds()} >>> se ha modificado un pago del estudiande con la cédula ${cedula}, campos modificados: ${preInscripcion !== pagos.pre_inscripcion ? 'preinscripcion,' : ''} ${inscripcion !== pagos.inscripcion ? 'inscripcion,' : ''} ${cuota1 !== pagos.cuota1 ? 'cuota1,' : ''} ${cuota2 !== pagos.cuota2 ? 'cuota2,' : ''} ${cuota3 !== pagos.cuota3 ? 'cuota3,' : ''} ${cuota4 !== pagos.cuota4 ? 'cuota4,' : ''} ${cuota5 !== pagos.cuota5 ? 'cuota5,' : ''} ${montopreInscripcion != monto.pre_inscripcion && monto.pre_inscripcion  != "0.00" ? 'monto de la preinscripcion,' : ''} ${montoinscripcion != monto.inscripcion && monto.inscripcion  !== "0.00" ? 'monto de la inscripcion,' : ''} ${montocuota1 != monto.cuota1 && monto.cuota1  !== "0.00" ? 'monto de la cuota 1,' : ''} ${montocuota2 != monto.cuota2 && monto.cuota2  !== "0.00" ? 'monto de la cuota 2,' : ''} ${montocuota3 != monto.cuota3 && monto.cuota3  !== "0.00" ? 'monto de la cuota 3,' : ''} ${montocuota4 != monto.cuota4 && monto.cuota4  !== "0.00" ? 'monto de la cuota 4,' : ''} ${montocuota5 != monto.cuota5 && monto.cuota5  !== "0.00" ? 'monto de la cuota 5' : ''}`
+    );
+    localStorage.setItem("log", JSON.stringify(logs));
       window.location.reload();
     };
   };
@@ -85,7 +132,7 @@
     <form
       method="POST"
       action="?/estudiante"
-      use:enhance="{handleSubmit}"
+      use:enhance="{handleEstudiante}"
       class="flex flex-col gap-y-3 w-2/5"
     >
       <h3 class="text-4xl my-3 font-bold text-pink-500">Datos</h3>
@@ -103,7 +150,7 @@
             );
           }}"
           id="nombre"
-          bind:value="{estudiante.nombre}"
+          bind:value="{nombre}"
         />
       </p>
       <p class="text-2xl w-full flex items-center">
@@ -112,7 +159,7 @@
           type="text"
           name="cedula"
           class="text-xl bg-transparent border-dashed border-2 w-4/5 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
-          bind:value="{estudiante.cedula}"
+          bind:value="{cedula}"
         />
       </p>
       <p class="text-2xl w-full flex items-center">
@@ -121,7 +168,7 @@
           required
           name="email"
           class="text-xl bg-transparent border-dashed border-2 w-4/5 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
-          bind:value="{estudiante.correo}"
+          bind:value="{correo}"
         />
       </p>
       <p class="text-2xl w-full flex items-center">
@@ -130,7 +177,7 @@
           name="semestre"
           id="semestre"
           class="text-xl bg-transparent border-dashed border-2 w-4/5 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
-          bind:value="{estudiante.semestre}"
+          bind:value="{semestre}"
         >
           <option value="1">Primero</option>
           <option value="2">Segundo</option>
@@ -138,24 +185,20 @@
           <option value="4">Cuarto</option>
           <option value="5">Quinto</option>
           <option value="6">Sexto</option>
-          <option value="7">Séptimo</option>
-          <option value="8">Octavo</option>
-          <option value="9">Noveno</option>
-          <option value="10">Décimo</option>
         </select>
       </p>
       <p class="text-2xl w-full flex items-center">
         <span class="w-1/2">Estado:</span>
         <select
-          bind:value="{estudiante.estado}"
+          bind:value="{estado}"
           name="estado"
           id="estado"
           class="text-xl bg-transparent border-dashed border-2 w-4/5 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
         >
-          <option value="en curso">En curso</option>
-          <option value="congelado">Congelado</option>
-          <option value="suspendido">Suspendido</option>
-          <option value="expulsado">Expulsado</option>
+        <option value="nuevo ingreso">Nuevo ingreso</option>
+        <option value="regular">Regular</option>
+        <option value="repitiente">Repitiente</option>
+        <option value="abandona">Abandona</option>
         </select>
       </p>
       <p class="text-2xl w-full flex items-center">
@@ -193,7 +236,7 @@
         >
       </div>
     </form>
-    <form method="post" action="?/pago" use:enhance="{handleSubmit}">
+    <form method="post" action="?/pago" use:enhance="{handlePago}">
       <input type="hidden" name="id_monto" value="{monto.id}" />
       <input type="hidden" name="id_pago" value="{monto.id_pago}" />
       <h3 class="text-4xl my-3 font-bold text-pink-500">Pagos</h3>
