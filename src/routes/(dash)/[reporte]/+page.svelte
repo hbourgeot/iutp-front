@@ -4,17 +4,25 @@
   import { page } from "$app/stores";
 
   export let data: PageData;
-  export let titles: string[] = ["Cédula", "Nombre", "Pago", "Monto"];
+  let titles: string[] = ["Fecha","Cédula", "Nombre", "Pago", "Monto"];
 
   let pdf: {
+    fecha: string;
     cedula: string;
     nombre: string;
     pago: string;
     monto: string;
   }[] = data.pdfData;
+
+  const day = new Date($page.url.searchParams.get("d") as unknown as string)
+  day.setHours(24)
+
 </script>
 
-<button type="button" class="bg-pink-600 px-5 py-2 text-lg absolute top-5 right-5 text-light-200 font-extrabold save" on:click="{() => window.print()}">Imprimir reporte</button>
+<div class="absolute right-5 top-5 flex justify-between gap-3">
+  <button type="button" class="bg-pink-600 px-5 py-2 text-lg text-light-200 font-extrabold save" on:click="{() => window.print()}">Imprimir reporte</button>
+  <a href="/pagos" class="bg-sky-600 px-5 py-2 text-lg text-light-200 font-extrabold save">Volver atrás</a>
+</div>
 <section id="thepdf" class="w-[800px] bg-light-50">
   <header class="py-5 flex justify-center gap-x-3 items-center">
     <img src="{pascalConFondo}" alt="" class="h-[fit-content] w-1/7" />
@@ -42,7 +50,7 @@
     </section>
   </header>
   <main class="py-5 px-10 w-full mx-auto">
-    <h2 class="text-2xl font-bold text-center">Reporte de pagos {#if data.param == "dia"}del día{:else if data.param == "semanal"}de los últimos siete días{:else if data.param == "mensual"}del último mes{/if}</h2>
+    <h2 class="text-2xl font-bold text-center">Reporte de pagos {#if data.param == "dia"}del {`${day.getDate()}/${day.getMonth()+1}/${day.getFullYear()}`} {:else if data.param == "semanal"}de los últimos siete días{:else if data.param == "mensual"}del último mes{/if}</h2>
     <table class="my-5 w-full">
       <thead>
         {#each titles as title}
@@ -51,6 +59,7 @@
       </thead>
       {#each pdf as row}
         <tr>
+          <td>{row.fecha}</td>
           <td>{row.cedula}</td>
           <td>{row.nombre}</td>
           <td>{row.pago}</td>

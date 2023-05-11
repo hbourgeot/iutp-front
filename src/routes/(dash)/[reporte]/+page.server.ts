@@ -1,10 +1,11 @@
 import type { Estudiante, Pago } from "../../../app";
 import type { PageServerLoad } from "./$types";
 
-export const load = (async ({ locals: { client }, params }) => {
+export const load = (async ({ locals: { client }, params, url }) => {
   const { ok, data } = await client.GET("/api/admin");
   const { ok: okey, data: estudiantes } = await client.GET("/api/students");
   let pdfData: {
+    fecha: string;
     cedula: string;
     nombre: string;
     pago: string;
@@ -13,7 +14,7 @@ export const load = (async ({ locals: { client }, params }) => {
   let fecha: string = "";
   let fechas: string[] = [];
   if (params.reporte === "dia") {
-    fecha = `${new Date().getFullYear()}-${
+    fecha = url.searchParams.get("d") as unknown as string || `${new Date().getFullYear()}-${
       new Date().getMonth() + 1 > 9
         ? new Date().getMonth() + 1
         : "0" + (new Date().getMonth() + 1)
@@ -106,6 +107,7 @@ export const load = (async ({ locals: { client }, params }) => {
             (monto: Pago) => monto.id_pago === data.pagos[i].id
           );
           pdfData.push({
+            fecha: data.pagos[i].pre_inscripcion,
             cedula: estudiante.cedula,
             nombre: estudiante.nombre,
             pago: "Pre Inscripcion",
@@ -121,6 +123,7 @@ export const load = (async ({ locals: { client }, params }) => {
             (monto: Pago) => monto.id_pago === data.pagos[i].id
           );
           pdfData.push({
+            fecha: data.pagos[i].inscripcion,
             cedula: estudiante.cedula,
             nombre: estudiante.nombre,
             pago: "Inscripcion",
@@ -136,6 +139,7 @@ export const load = (async ({ locals: { client }, params }) => {
             (monto: Pago) => monto.id_pago === data.pagos[i].id
           );
           pdfData.push({
+            fecha: data.pagos[i].cuota1,
             cedula: estudiante.cedula,
             nombre: estudiante.nombre,
             pago: "Cuota 1",
@@ -152,6 +156,7 @@ export const load = (async ({ locals: { client }, params }) => {
           );
   
           pdfData.push({
+            fecha: data.pagos[i].cuota2,
             cedula: estudiante.cedula,
             nombre: estudiante.nombre,
             pago: "Cuota 2",
@@ -167,6 +172,7 @@ export const load = (async ({ locals: { client }, params }) => {
             (monto: Pago) => monto.id_pago === data.pagos[i].id
           );
           pdfData.push({
+            fecha: data.pagos[i].cuota3,
             cedula: estudiante.cedula,
             nombre: estudiante.nombre,
             pago: "Cuota 3",
@@ -182,6 +188,7 @@ export const load = (async ({ locals: { client }, params }) => {
             (monto: Pago) => monto.id_pago === data.pagos[i].id
           );
           pdfData.push({
+            fecha: data.pagos[i].cuota4,
             cedula: estudiante.cedula,
             nombre: estudiante.nombre,
             pago: "Cuota 4",
@@ -197,6 +204,7 @@ export const load = (async ({ locals: { client }, params }) => {
             (monto: Pago) => monto.id_pago === data.pagos[i].id
           );
           pdfData.push({
+            fecha: data.pagos[i].cuota5,
             cedula: estudiante.cedula,
             nombre: estudiante.nombre,
             pago: "Cuota 5",
@@ -216,6 +224,7 @@ export const load = (async ({ locals: { client }, params }) => {
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
         pdfData.push({
+          fecha: data.pagos[i].pre_inscripcion,
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Pre Inscripcion",
@@ -231,6 +240,7 @@ export const load = (async ({ locals: { client }, params }) => {
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
         pdfData.push({
+          fecha: data.pagos[i].inscripcion,
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Inscripcion",
@@ -246,6 +256,7 @@ export const load = (async ({ locals: { client }, params }) => {
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
         pdfData.push({
+          fecha: data.pagos[i].cuota1,
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 1",
@@ -260,8 +271,8 @@ export const load = (async ({ locals: { client }, params }) => {
         let montos = data.montos.find(
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
-
         pdfData.push({
+          fecha: data.pagos[i].cuota2,
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 2",
@@ -277,6 +288,7 @@ export const load = (async ({ locals: { client }, params }) => {
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
         pdfData.push({
+          fecha: data.pagos[i].cuota3,
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 3",
@@ -292,6 +304,7 @@ export const load = (async ({ locals: { client }, params }) => {
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
         pdfData.push({
+          fecha: data.pagos[i].cuota4,
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 4",
@@ -307,6 +320,7 @@ export const load = (async ({ locals: { client }, params }) => {
           (monto: Pago) => monto.id_pago === data.pagos[i].id
         );
         pdfData.push({
+          fecha: data.pagos[i].cuota5,
           cedula: estudiante.cedula,
           nombre: estudiante.nombre,
           pago: "Cuota 5",

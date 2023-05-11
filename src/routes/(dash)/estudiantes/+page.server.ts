@@ -23,7 +23,7 @@ export const actions: Actions = {
         }
         const { ok, data } = await client.POST("/api/students/add", payload)
         if (!ok) {
-            return fail(400, {"message": data})
+            return fail(400, {"message": "Error al crear el estudiante"})
         }
     }
 };

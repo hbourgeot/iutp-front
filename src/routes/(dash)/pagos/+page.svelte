@@ -7,7 +7,6 @@
   import ModalLarge from "$lib/components/ModalLarge.svelte";
   import { enhance } from "$app/forms";
   import { page } from "$app/stores";
-  import { jsPDF } from "jspdf";
 
   export let data: PageData;
 
@@ -48,12 +47,8 @@
   let cuota3: string = "";
   let cuota4: string = "";
   let cuota5: string = "";
-  let pdfData: {
-    cedula: string;
-    nombre: string;
-    pago: string;
-    monto: number;
-  }[] = [];
+  let reportDay: string = today;
+  let opcionReporte: string = "dia";
 
   $: if (inscripcionChecked) inscripcion = today;
   $: if (cuota1Checked) cuota1 = today;
@@ -86,26 +81,9 @@
       window.location.reload();
     };
   };
-
-  function pdf() {
-    const doc = new jsPDF("p", "px", "letter");
-    const thePDF: HTMLElement = window.document.getElementById(
-      "thepdf"
-    ) as unknown as HTMLElement;
-
-    doc.html(thePDF, {
-      callback: function (doc) {
-        doc.save("reporte.pdf");
-      },
-      x: 10,
-      y: 10,
-      width: 150,
-      windowWidth: 280,
-    });
-  }
 </script>
 
-<section class="flex flex-col p-7 gap-y-5 h-screen-sm w-full bg-light-50">
+<section class="flex flex-col p-7 gap-y-10 h-screen-sm w-full bg-light-50">
   <div class="flex self-end justify-around items-center w-full md:w-[650px]">
     <button
       type="button"
@@ -125,141 +103,120 @@
     />
   </div>
   {#if pagos.length && $pagosSearch.filtered.length}
-    <article class="flex justify-between gap-x-4 min-w-full">
-      <div class="flex flex-col justify-around">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Estudiante</h3>
-        <div class="h-full flex flex-col justify-start gap-y-15">
-          {#each $pagosSearch.filtered as pago}
-            <p class="text-xl w-full text-blue-700 font-semibold">
-              <a
-                href="/estudiantes/{pago.cedula_estudiante}"
-                class="no-underline">{pago.cedula_estudiante}</a
-              >
-            </p>
-          {/each}
-        </div>
-      </div>
-      <div class="flex flex-col justify-around">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">
-          Preinscripción
-        </h3>
-        <div class="h-full flex flex-col justify-start gap-y-8">
-          {#each $pagosSearch.filtered as pago}
-            <div class="h-full flex flex-col justify-start">
+    <table>
+      <thead>
+        <th>Estudiante</th>
+        <th>Preinscripción</th>
+        <th>Inscripción</th>
+        <th>Cuota1</th>
+        <th>Cuota2</th>
+        <th>Cuota3</th>
+        <th>Cuota4</th>
+        <th>Cuota5</th>
+      </thead>
+      <tbody>
+        {#each $pagosSearch.filtered as pago}
+          <tr>
+            <td
+              ><a class="pl-5 text-[#064690] underline font-semibold" href="/estudiantes/{pago.cedula_estudiante}"
+                >{pago.cedula_estudiante}</a
+              ></td
+            >
+            <td>
               <p class="text-xl w-full">{pago.pre_inscripcion}</p>
               <p class="text-xl w-full bordered">
                 <span class="font-bold">Monto:</span>
                 {pago.montoPreInscripcion} Bs.
               </p>
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="flex flex-col justify-around">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Inscripcion</h3>
-        <div class="h-full flex flex-col justify-start gap-y-8">
-          {#each $pagosSearch.filtered as pago}
-            <div class="h-full flex flex-col justify-start">
-              <p class="text-xl w-full">{pago.inscripcion}</p>
-              <p class="text-xl w-full bordered">
-                <span class="font-bold">Monto:</span>
-                {pago.montoInscripcion} Bs.
-              </p>
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="flex flex-col justify-around">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Cuota 1</h3>
-        <div class="h-full flex flex-col justify-start gap-y-8">
-          {#each $pagosSearch.filtered as pago}
-            <div class="h-full flex flex-col justify-start">
-              <p class="text-xl w-full bordered">
-                {pago.cuota1 == "" ? "No registrada" : pago.cuota1}
-              </p>
-              {#if pago.cuota1 !== ""}
+            </td>
+            <td
+              ><div class="h-full flex flex-col justify-start">
+                <p class="text-xl w-full bordered">
+                  {pago.inscripcion == "" ? "No registrada" : pago.inscripcion}
+                </p>
+                {#if pago.inscripcion !== ""}
+                <p class="text-xl w-full bordered">
+                  <span class="font-bold">Monto:</span>
+                  {pago.montoInscripcion} Bs.
+                </p>
+                {/if}
+              </div>
+              </td
+            >
+            <td
+              ><div class="h-full flex flex-col justify-start">
+                <p class="text-xl w-full bordered">
+                  {pago.cuota1 == "" ? "No registrada" : pago.cuota1}
+                </p>
+                {#if pago.cuota1 !== ""}
                 <p class="text-xl w-full bordered">
                   <span class="font-bold">Monto:</span>
                   {pago.montoCuota1} Bs.
                 </p>
-              {/if}
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="flex flex-col justify-around">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Cuota 2</h3>
-        <div class="h-full flex flex-col justify-start gap-y-8">
-          {#each $pagosSearch.filtered as pago}
-            <div class="h-full flex flex-col justify-start">
-              <p class="text-xl w-full bordered">
-                {pago.cuota2 === "" ? "No registrada" : pago.cuota2}
-              </p>
-              {#if pago.cuota2 !== ""}
+                {/if}
+              </div>
+              </td
+            >
+            <td
+              ><div class="h-full flex flex-col justify-start">
+                <p class="text-xl w-full bordered">
+                  {pago.cuota2 == "" ? "No registrada" : pago.cuota2}
+                </p>
+                {#if pago.cuota2 !== ""}
                 <p class="text-xl w-full bordered">
                   <span class="font-bold">Monto:</span>
                   {pago.montoCuota2} Bs.
                 </p>
-              {/if}
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="flex flex-col justify-around">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Cuota 3</h3>
-        <div class="h-full flex flex-col justify-start gap-y-8">
-          {#each $pagosSearch.filtered as pago}
-            <div class="h-full flex flex-col justify-start">
-              <p class="text-xl w-full bordered">
-                {pago.cuota3 === "" ? "No registrada" : pago.cuota3}
-              </p>
-              {#if pago.cuota3 !== ""}
+                {/if}
+              </div>
+              </td
+            >
+            <td
+              ><div class="h-full flex flex-col justify-start">
+                <p class="text-xl w-full bordered">
+                  {pago.cuota3 == "" ? "No registrada" : pago.cuota3}
+                </p>
+                {#if pago.cuota3 !== ""}
                 <p class="text-xl w-full bordered">
                   <span class="font-bold">Monto:</span>
                   {pago.montoCuota3} Bs.
                 </p>
-              {/if}
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="flex flex-col justify-around">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Cuota 4</h3>
-        <div class="h-full flex flex-col justify-start gap-y-8">
-          {#each $pagosSearch.filtered as pago}
-            <div class="h-full flex flex-col justify-start">
-              <p class="text-xl w-full bordered">
-                {pago.cuota4 === "" ? "No registrada" : pago.cuota4}
-              </p>
-              {#if pago.cuota4 !== ""}
+                {/if}
+              </div>
+              </td
+            >
+            <td
+              ><div class="h-full flex flex-col justify-start">
+                <p class="text-xl w-full bordered">
+                  {pago.cuota4 == "" ? "No registrada" : pago.cuota4}
+                </p>
+                {#if pago.cuota4 !== ""}
                 <p class="text-xl w-full bordered">
                   <span class="font-bold">Monto:</span>
                   {pago.montoCuota4} Bs.
                 </p>
-              {/if}
-            </div>
-          {/each}
-        </div>
-      </div>
-      <div class="flex flex-col justify-around">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Cuota 5</h3>
-        <div class="h-full flex flex-col justify-start gap-y-8">
-          {#each $pagosSearch.filtered as pago}
-            <div class="h-full flex flex-col justify-start">
-              <p class="text-xl w-full bordered">
-                {pago.cuota5 === "" ? "No registrada" : pago.cuota5}
-              </p>
-              {#if pago.cuota5 !== ""}
+                {/if}
+              </div>
+              </td
+            >
+            <td
+              ><div class="h-full flex flex-col justify-start">
+                <p class="text-xl w-full bordered">
+                  {pago.cuota5 == "" ? "No registrada" : pago.cuota5}
+                </p>
+                {#if pago.cuota5 !== ""}
                 <p class="text-xl w-full bordered">
                   <span class="font-bold">Monto:</span>
                   {pago.montoCuota5} Bs.
                 </p>
-              {/if}
-            </div>
-          {/each}
-        </div>
-      </div>
-    </article>
+                {/if}
+              </div>
+              </td
+            >
+          </tr>
+        {/each}
+      </tbody>
+    </table>
   {:else}
     <h3 class="text-5xl font-extrabold text-[#db0081]">
       No hay pagos registrados.
@@ -636,15 +593,72 @@
   </form>
 </ModalLarge>
 <ModalLarge open="{getReport}" headerText="Generar reporte">
-  <div class="flex justify-">
-    <a href="/dia">Dia</a><a href="/semanal">Semanal</a><a href="/mensual"
-      >Mensual</a
-    >
-  </div>
-  <button type="button" on:click={() => getReport = false}>Cancelar</button>
+  <section class="flex flex-col gap-y-5">
+    <label for="reporte">
+      Seleccione su tipo de reporte
+      <select
+        bind:value="{opcionReporte}"
+        name="reporte"
+        id="reporte"
+        class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+      >
+        <option value="dia">Dia</option>
+        <option value="semana">Semanal</option>
+        <option value="mes">Mensual</option>
+      </select>
+    </label>
+    {#if opcionReporte == "dia"}
+      <label for="report-date" class="w-full"
+        >Fecha de reporte
+        <input
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          required
+          type="date"
+          max="{today}"
+          name="report-date"
+          id="report-date"
+          bind:value="{reportDay}"
+          on:invalid="{() => {
+            let html = window.document.getElementById('cuota3');
+            html.setCustomValidity(
+              'El valor debe ser igual a la fecha actual o anterior'
+            );
+          }}"
+        />
+      </label>
+    {/if}
+
+    <footer class="flex justify-between gap-x-5 flex-row-reverse text-center">
+      {#if opcionReporte == "dia"}
+        <a
+          href="/dia?d={reportDay}"
+          class="bg-sky-600 px-5 py-2 rounded-md text-light-50 font-bold w-1/2"
+          >Generar reporte</a
+        >
+      {:else if opcionReporte == "semana"}
+        <a
+          href="/semanal"
+          class="bg-sky-600 px-5 py-2 rounded-md text-light-50 font-bold w-1/2"
+          >Generar reporte</a
+        >
+      {:else}
+        <a
+          href="/mensual"
+          class="bg-sky-600 px-5 py-2 rounded-md text-light-50 font-bold w-1/2"
+          >Generar reporte</a
+        >
+      {/if}
+      <button
+        type="button"
+        on:click="{() => (getReport = false)}"
+        class="bg-pink-600 px-5 py-2 rounded-md text-light-50 font-bold w-1/2"
+        >Cancelar</button
+      >
+    </footer>
+  </section>
 </ModalLarge>
 
-<style>
+<style lang="scss">
   article > div {
     width: 100%;
     row-gap: 30px;
@@ -656,5 +670,23 @@
 
   :global(input[type="checkbox"]:focus) {
     box-shadow: 0 0 0 0;
+  }
+
+  table {
+    font-size: 25px;
+    line-height: 1.5;
+  }
+
+  thead th {
+    text-align: left;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: lighten($color: #db0081, $amount: 50%);
+  }
+
+  th,
+  td {
+    padding: 10px 0;
   }
 </style>

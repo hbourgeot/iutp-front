@@ -58,7 +58,7 @@
   };
 </script>
 
-<section class="flex flex-col p-7 gap-y-5 w-full overflow-x-auto">
+<section class="flex flex-col p-7 gap-y-10 w-full overflow-x-auto">
   <div class="flex self-end justify-around items-center w-full md:w-[600px]">
     <button
       type="button"
@@ -73,48 +73,27 @@
     />
   </div>
   {#if estudiantes.length && $estudianteSearch.filtered.length}
-    <article class="flex justify-between gap-x-4 min-w-full">
-      <div class="flex flex-col justify-between">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Cédula</h3>
+    <table>
+      <thead>
+        <th>Cédula</th>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Semestre</th>
+        <th>Estado</th>
+      </thead>
+      <tbody>
         {#each $estudianteSearch.filtered as estudiante}
-          <p class="text-xl w-full my-1 text-blue-700 font-semibold">
-            <a href="/estudiantes/{estudiante.cedula}" class="no-underline"
-              >{estudiante.cedula}</a
-            >
-          </p>
+        <tr>
+          <td>{estudiante.cedula}</td>
+          <td>{estudiante.nombre}</td>
+          <td>{estudiante.telefono}</td>
+          <td>{estudiante.semestre}</td>
+          <td>{estudiante.estado}</td>
+          <td></td>
+        </tr>
         {/each}
-      </div>
-      <div class="flex flex-col justify-between">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Nombre</h3>
-        {#each $estudianteSearch.filtered as estudiante}
-          <p class="text-xl w-full my-1">{estudiante.nombre}</p>
-        {/each}
-      </div>
-      <div class="flex flex-col justify-between">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Correo</h3>
-        {#each $estudianteSearch.filtered as estudiante}
-          <p class="text-xl w-full my-1">{estudiante.correo}</p>
-        {/each}
-      </div>
-      <div class="flex flex-col justify-between">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Teléfono</h3>
-        {#each $estudianteSearch.filtered as estudiante}
-          <p class="text-xl w-full my-1">{estudiante.telefono}</p>
-        {/each}
-      </div>
-      <div class="flex flex-col justify-between">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Semestre</h3>
-        {#each $estudianteSearch.filtered as estudiante}
-          <p class="text-xl w-full my-1">{estudiante.semestre}</p>
-        {/each}
-      </div>
-      <div class="flex flex-col justify-between">
-        <h3 class="text-left font-bold text-2xl text-[#db0081]">Estado</h3>
-        {#each $estudianteSearch.filtered as estudiante}
-          <p class="text-xl w-full my-1">{estudiante.estado}</p>
-        {/each}
-      </div>
-    </article>
+      </tbody>
+    </table>
   {:else}
     <h3 class="text-5xl font-extrabold text-[#db0081]">
       No hay estudiantes registrados.
@@ -222,10 +201,6 @@
           <option value="4">Cuarto</option>
           <option value="5">Quinto</option>
           <option value="6">Sexto</option>
-          <option value="7">Séptimo</option>
-          <option value="8">Octavo</option>
-          <option value="9">Noveno</option>
-          <option value="10">Décimo</option>
         </select>
       </label>
       <label for="estado" class="flex flex-col w-1/4">
@@ -264,3 +239,21 @@
     </div>
   </form>
 </ModalLarge>
+<style lang="scss">
+  table{
+    font-size: 25px;
+    line-height: 1.5;
+  }
+
+  thead th{
+    text-align: left;
+  }
+
+tbody tr:nth-child(odd) {
+  background-color: lighten($color: #db0081, $amount: 50%);
+}
+
+th, td{
+  padding: 10px 0;
+}
+</style>
