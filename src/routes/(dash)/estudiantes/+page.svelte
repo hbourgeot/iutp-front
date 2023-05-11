@@ -58,7 +58,7 @@
   };
 </script>
 
-<section class="flex flex-col p-7 gap-y-10 w-full overflow-x-auto">
+<section class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto">
   <div class="flex self-end justify-around items-center w-full md:w-[600px]">
     <button
       type="button"
@@ -240,6 +240,11 @@
   </form>
 </ModalLarge>
 <style lang="scss">
+
+  section{
+    height: calc(100vh - 100px);
+  }
+
   table{
     font-size: 25px;
     line-height: 1.5;
@@ -254,6 +259,6 @@ tbody tr:nth-child(odd) {
 }
 
 th, td{
-  padding: 10px 0;
+  padding: 10px 15px;
 }
 </style>

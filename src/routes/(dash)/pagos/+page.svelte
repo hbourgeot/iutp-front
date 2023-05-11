@@ -83,7 +83,7 @@
   };
 </script>
 
-<section class="flex flex-col p-7 gap-y-10 h-screen-sm w-full bg-light-50">
+<section id="pagos" class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto bg-light-50">
   <div class="flex self-end justify-around items-center w-full md:w-[650px]">
     <button
       type="button"
@@ -659,6 +659,10 @@
 </ModalLarge>
 
 <style lang="scss">
+  #pagos{
+    height: calc(100vh - 100px);
+  }
+  
   article > div {
     width: 100%;
     row-gap: 30px;
