@@ -2,6 +2,8 @@
   import type { PageData } from "./$types";
   import pascalConFondo from "$lib/images/pascalConFondo.png"
   import { page } from "$app/stores";
+  import { browser } from "$app/environment";
+  import { json } from "@sveltejs/kit";
 
   export let data: PageData;
   let titles: string[] = ["Fecha","Cédula", "Nombre", "Pago", "Monto"];
@@ -14,13 +16,21 @@
     monto: string;
   }[] = data.pdfData;
 
+  const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+
   const day = new Date($page.url.searchParams.get("d") as unknown as string)
   day.setHours(24)
 
+const print = () => {
+  const logs: any = browser ? JSON.parse(localStorage.getItem("log") as unknown as string) || [] : []
+  logs.push(`${new Date().getDate()} de ${months[new Date().getMonth()]} del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}: se ha generado un reporte `)
+  localStorage.setItem("log", JSON.stringify(logs))
+  window.print()
+}
 </script>
 
 <div class="absolute right-5 top-5 flex justify-between gap-3">
-  <button type="button" class="bg-pink-600 px-5 py-2 text-lg text-light-200 font-extrabold save" on:click="{() => window.print()}">Imprimir reporte</button>
+  <button type="button" class="bg-pink-600 px-5 py-2 text-lg text-light-200 font-extrabold save" on:click="{() => print()}">Imprimir reporte</button>
   <a href="/pagos" class="bg-sky-600 px-5 py-2 text-lg text-light-200 font-extrabold save">Volver atrás</a>
 </div>
 <section id="thepdf" class="w-[800px] bg-light-50">
