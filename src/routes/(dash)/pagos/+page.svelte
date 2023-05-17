@@ -101,7 +101,7 @@
     logs.push(
       `${new Date().getDate()} de ${
         months[new Date().getMonth()]
-      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} >>> se ha registrado un pago correspondiente al estudiante con la cédula ${cedula}`
+      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0'+ new Date().getMinutes()}:${new Date().getSeconds() > 9 ? new Date().getSeconds() : '0'+ new Date().getSeconds()} >>> se ha registrado un pago correspondiente al estudiante con la cédula ${cedula}`
     );
     localStorage.setItem("log", JSON.stringify(logs));
       window.location.reload();

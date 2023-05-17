@@ -5,5 +5,5 @@ import { get } from 'svelte/store';
 
 export const load: LayoutServerLoad = async () => {
     const status = get(logStore)
-    if (status.log === "in") throw redirect(302, "/estudiantes")
+    if (status.log === "in") throw redirect(302, "/inicio")
 }

@@ -1,12 +1,14 @@
-<script>
-  import pascalLogo from "$lib/images/pascalConFondo.png";
+<script lang="ts">
+  import { page } from "$app/stores";
+import pascalLogo from "$lib/images/pascalConFondo.png";
+
 </script>
 
 <header
-  class="flex justify-between w-full h-20 items-center p-3 text-light-50 bg-[#0868b2] sticky top-0"
+  class="flex justify-between h-20 items-center p-3 text-light-50 bg-[#0868b2] sticky top-0"
 >
   <h1 class="text-2xl inline">
-    <a href="/estudiantes" class="flex items-center font-bold gap-1">
+    <a href="/inicio" class="flex items-center font-bold gap-1">
       <img
         src={pascalLogo}
         alt="Logo del Instituto Pascal"
@@ -15,28 +17,11 @@
       IUT Pascal</a
     >
   </h1>
-  <nav class="w-auto grid grid-cols-[repeat(4,300px)] h-full justify-around">
-    <a
-      href="/estudiantes"
-      class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100"
-      >Estudiantes</a
-    >
-    <a
-      href="/pagos"
-      class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100"
-      >Pagos registrados</a
-    >
-    <a
-      href="/log"
-      class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100"
-      >Movimientos</a
-    >
-    <a
+  <a
       href="/logout"
-      class="text-2xl font-bold h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100"
+      class="text-2xl font-bold w-1/10 h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-100"
       >Cerrar sesion</a
     >
-  </nav>
 </header>
 
 <style>
@@ -44,5 +29,9 @@
     header{
       display: none !important;
     }
+  }
+
+  header{
+    width: 100%;
   }
 </style>

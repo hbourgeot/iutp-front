@@ -5,7 +5,8 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			client: client
+			client: client,
+			user: Usuario,
 		}
 		// interface PageData {}
 		// interface Platform {}
@@ -42,8 +43,8 @@ interface Pago{
 	id_pago: number
 }
 
-interface Monto {
-	id: number,
+interface Usuario {
+	user: string,
 }
 
-export {Estudiante, Pago};
+export {Estudiante, Pago, Usuario};

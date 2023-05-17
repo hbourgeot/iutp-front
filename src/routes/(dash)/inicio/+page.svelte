@@ -1,0 +1,55 @@
+<script lang="ts">
+    import type { PageData } from './$types';
+    import {Icon} from "@steeze-ui/svelte-icon"
+    import {UserCheck, Receipt, CalendarTime} from "@steeze-ui/tabler-icons"
+    export let data: PageData;
+
+      const months = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+  ];
+</script>
+
+<section class="w-full overflow-y-auto">
+    <h2 class="text-5xl font-bold text-pink-600 my-5 text-center">Bienvenido</h2>
+    <div class="flex w-full flex-wrap items-center h-10/12 justify-center overflow-y-auto">
+        <article class="w-1/4 flex justify-between items-center">
+            <Icon src={UserCheck} class="h-25 w-25 stroke-pink-600"/>
+            <div class="w-full">
+                <h3 class="text-xl font-bold text-pink-600">{data.estudiantes}</h3>
+                <h3 class="text-xl">{data.estudiantes > 1 ? 'Estudiantes registrados': 'Estudiante registrado'}</h3>
+            </div>
+        </article>
+        <article class="w-1/4 flex justify-between items-center">
+        <Icon src={Receipt} class="h-25 w-25 stroke-pink-600"/>
+        <div class="w-full">
+            <h3 class="text-xl font-bold text-pink-600">{data.pagos}</h3>
+            <h3 class="text-xl">{data.pagos > 1 ? 'Pagos registrados': 'Pago registrado'}</h3>
+        </div>
+    </article>
+    <article class="w-1/4 flex justify-between items-center">
+        <Icon src={CalendarTime} class="h-25 w-25 stroke-pink-600"/>
+        <div class="w-full">
+            <h3 class="text-xl font-bold text-pink-600">{data.pagosDelMes}</h3>
+            <h3 class="text-xl">{data.pagos > 1 ? 'Pagos registrados en '+ months[new Date().getMonth()]: 'Pago registrado en'+ months[new Date().getMonth()]}</h3>
+        </div>
+    </article>
+</div>
+</section>
+
+<style>
+    section.w-full{
+         height: calc(100vh - 80px);
+         width: 100%;
+    }
+</style>

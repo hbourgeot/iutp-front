@@ -93,7 +93,7 @@
     logs.push(
       `${new Date().getDate()} de ${
         months[new Date().getMonth()]
-      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()} >>> se ha modificado al estudiante con la cédula ${cedula}, campos modificados: ${viejosDatos.correo !== correo ? 'correo,' : ''} ${viejosDatos.nombre !== nombre ? 'nombre,' : ''} ${viejosDatos.semestre !== semestre ? 'semestre,' : ''} ${viejosDatos.estado !== estado ? 'estado' : ''} ${viejosDatos.telefono !== telefono ? 'y telefono' : ''}`
+      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0'+ new Date().getMinutes()}:${new Date().getSeconds() > 9 ? new Date().getSeconds() : '0'+ new Date().getSeconds()} >>> se ha modificado al estudiante con la cédula ${cedula}, campos modificados: ${viejosDatos.correo !== correo ? 'correo,' : ''} ${viejosDatos.nombre !== nombre ? 'nombre,' : ''} ${viejosDatos.semestre !== semestre ? 'semestre,' : ''} ${viejosDatos.estado !== estado ? 'estado' : ''} ${viejosDatos.telefono !== telefono ? 'y telefono' : ''}`
     );
     localStorage.setItem("log", JSON.stringify(logs));
       window.location.reload();

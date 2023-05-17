@@ -32,7 +32,6 @@
 				<input type="password" name="password" id="password" placeholder="Contraseña" class="w-full border-0 outline-0 border-l-2 bg-transparent rounded-tr-lg rounded-br-lg text-xl">
 			</label>
 			<button type="submit" class="rounded-xl text-light-50 py-2 px-10 text-2xl m-auto bg-[#dc0183]">Enviar</button>
-			<p class="text-lg">¿No tienes cuenta? <a href="/registrarse" class="font-bold">Regístrate</a></p>
 		</form>
 	</section>
 

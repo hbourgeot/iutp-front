@@ -5,6 +5,7 @@ import { get } from "svelte/store";
 
 export const load: PageServerLoad = async () => {
   let status = get(logStore)
+
   if (status.log === "in") throw redirect(302,"/estudiantes")
   throw redirect(302, "/login")
 }
