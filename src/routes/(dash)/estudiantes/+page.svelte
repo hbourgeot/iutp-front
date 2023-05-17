@@ -94,7 +94,7 @@
     <input
       type="text"
       bind:value="{$estudianteSearch.search}"
-      class="self-end rounded-lg border-[#db0081] border-dashed border-4 w-full md:w-[300px]"
+      class="self-end rounded-lg border-[#db0081] border-dashed border-4 w-full p-2 md:w-[300px]"
       placeholder="Buscar estudiante..."
     />
   </div>
