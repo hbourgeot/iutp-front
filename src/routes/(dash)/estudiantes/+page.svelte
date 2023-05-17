@@ -85,7 +85,7 @@
 </script>
 
 <section class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto">
-  <div class="flex self-end justify-around items-center w-full md:w-[600px]">
+  <div class="flex self-end justify-around items-center w-[530px]">
     <button
       type="button"
       class="rounded-lg bg-blue-400 text-white font-bold py-3 px-5"
@@ -94,7 +94,7 @@
     <input
       type="text"
       bind:value="{$estudianteSearch.search}"
-      class="self-end rounded-lg border-[#db0081] border-dashed border-4 w-full p-2 md:w-[300px]"
+      class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[300px]"
       placeholder="Buscar estudiante..."
     />
   </div>

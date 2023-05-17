@@ -110,7 +110,7 @@
 </script>
 
 <section id="pagos" class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto bg-light-50">
-  <div class="flex self-end justify-around items-center w-full md:w-[675px]">
+  <div class="flex self-end justify-around items-center w-[650px]">
     <button
       type="button"
       class="rounded-lg bg-blue-400 text-white font-bold py-3 px-5"
@@ -124,7 +124,7 @@
     <input
       type="text"
       bind:value="{$pagosSearch.search}"
-      class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-full md:w-[300px]"
+      class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[300px]"
       placeholder="Buscar pago..."
     />
   </div>
