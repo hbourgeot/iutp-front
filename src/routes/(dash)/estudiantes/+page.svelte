@@ -62,23 +62,34 @@
     "Diciembre",
   ];
 
-
-
-  const handleSubmit: SubmitFunction = ({ data }) => {
+  const handleSubmit: SubmitFunction = ({ data, cancel }) => {
+    if (estudiantes.find((estudiante) => estudiante.cedula === cedula)) {
+      alert("Ya existe un estudiante con esa cédula, introduzca otra");
+      return cancel();
+    }
     data.append("cedula", cedula);
     data.append("telefono", telefono);
+
     return async ({ update }) => {
       await update();
       addStudent = false;
       const logs: any = browser
-      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
-      : [];
-    logs.push(
-      `${new Date().getDate()} de ${
-        months[new Date().getMonth()]
-      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0'+ new Date().getMinutes()}:${new Date().getSeconds() > 9 ? new Date().getSeconds() : '0'+ new Date().getSeconds()} >>> se ha registrado un estudiante con la cédula ${cedula}`
-    );
-    localStorage.setItem("log", JSON.stringify(logs));
+        ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
+        : [];
+      logs.push(
+        `${new Date().getDate()} de ${
+          months[new Date().getMonth()]
+        } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${
+          new Date().getMinutes() > 9
+            ? new Date().getMinutes()
+            : "0" + new Date().getMinutes()
+        }:${
+          new Date().getSeconds() > 9
+            ? new Date().getSeconds()
+            : "0" + new Date().getSeconds()
+        } >>> se ha registrado un estudiante con la cédula ${cedula}`
+      );
+      localStorage.setItem("log", JSON.stringify(logs));
       window.location.reload();
     };
   };
@@ -89,11 +100,11 @@
     <button
       type="button"
       class="rounded-lg bg-blue-400 text-white font-bold py-3 px-5"
-      on:click="{() => (addStudent = true)}">Agregar Estudiante</button
+      on:click={() => (addStudent = true)}>Agregar Estudiante</button
     >
     <input
       type="text"
-      bind:value="{$estudianteSearch.search}"
+      bind:value={$estudianteSearch.search}
       class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[300px]"
       placeholder="Buscar estudiante..."
     />
@@ -109,14 +120,14 @@
       </thead>
       <tbody>
         {#each $estudianteSearch.filtered as estudiante}
-        <tr>
-          <td>{estudiante.cedula}</td>
-          <td>{estudiante.nombre}</td>
-          <td>{estudiante.telefono}</td>
-          <td>{estudiante.semestre}</td>
-          <td>{estudiante.estado}</td>
-          <td></td>
-        </tr>
+          <tr>
+            <td>{estudiante.cedula}</td>
+            <td>{estudiante.nombre}</td>
+            <td>{estudiante.telefono}</td>
+            <td>{estudiante.semestre}</td>
+            <td>{estudiante.estado}</td>
+            <td />
+          </tr>
         {/each}
       </tbody>
     </table>
@@ -126,13 +137,13 @@
     </h3>
   {/if}
 </section>
-<ModalLarge open="{addStudent}" headerText="Añadir estudiante" big>
-  <form method="post" use:enhance="{handleSubmit}">
+<ModalLarge open={addStudent} headerText="Añadir estudiante" big>
+  <form method="post" use:enhance={handleSubmit}>
     <label for="cedula" class="flex flex-col">
       Cédula
       <div class="flex justify-start">
         <select
-          bind:value="{documento}"
+          bind:value={documento}
           name="documento"
           id="documento"
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[80px]"
@@ -145,16 +156,16 @@
           required
           type="text"
           min="0"
-          on:invalid="{() => {
-            let html = window.document.getElementById('cedula');
-            html.setCustomValidity('Por favor ingrese solo numeros');
-          }}"
+          on:invalid={() => {
+            let html = window.document.getElementById("cedula");
+            html.setCustomValidity("Por favor ingrese solo numeros");
+          }}
           minlength="5"
-          maxlength="{documento === 'V' ? 8 : 13}"
+          maxlength={documento === "V" ? 8 : 13}
           pattern="\d+"
           name="cedula"
           id="cedula"
-          bind:value="{cedulaInput}"
+          bind:value={cedulaInput}
         />
       </div>
     </label>
@@ -166,12 +177,12 @@
         type="text"
         name="nombre"
         minlength="6"
-        on:invalid="{() => {
-          let html = window.document.getElementById('nombre');
+        on:invalid={() => {
+          let html = window.document.getElementById("nombre");
           html.setCustomValidity(
-            'Por favor introduzca el nombre completo del estudiante'
+            "Por favor introduzca el nombre completo del estudiante"
           );
-        }}"
+        }}
         id="nombre"
       />
     </label>
@@ -189,7 +200,7 @@
       Teléfono
       <div class="flex justify-start">
         <select
-          bind:value="{prefijo}"
+          bind:value={prefijo}
           name=""
           id="prefijo"
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[100px]"
@@ -208,7 +219,7 @@
           maxlength="7"
           name=""
           id="telefonoinp"
-          bind:value="{telefonoInput}"
+          bind:value={telefonoInput}
         />
       </div>
     </label>
@@ -232,7 +243,7 @@
       <label for="estado" class="flex flex-col w-1/4">
         Estado
         <select
-          bind:value="{estado}"
+          bind:value={estado}
           name="estado"
           id="estado"
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
@@ -250,9 +261,9 @@
       <button
         type="button"
         class="bg-blue-600 text-light-50 font-bold w-auto px-2 py-1"
-        on:click="{() => {
+        on:click={() => {
           addStudent = false;
-        }}">Cancelar</button
+        }}>Cancelar</button
       >
       <button type="reset" class="bg-red-300 font-bold w-auto px-2 py-1"
         >Resetear campos</button
@@ -265,26 +276,27 @@
     </div>
   </form>
 </ModalLarge>
-<style lang="scss">
 
-  section{
+<style lang="scss">
+  section {
     height: calc(100vh - 100px);
   }
 
-  table{
+  table {
     font-size: 25px;
     line-height: 1.5;
   }
 
-  thead th{
+  thead th {
     text-align: left;
   }
 
-tbody tr:nth-child(odd) {
-  background-color: lighten($color: #db0081, $amount: 50%);
-}
+  tbody tr:nth-child(odd) {
+    background-color: lighten($color: #db0081, $amount: 50%);
+  }
 
-th, td{
-  padding: 10px 15px;
-}
+  th,
+  td {
+    padding: 10px 15px;
+  }
 </style>
