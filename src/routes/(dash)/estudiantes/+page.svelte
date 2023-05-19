@@ -129,7 +129,7 @@
 <ModalLarge open="{addStudent}" headerText="Añadir estudiante" big>
   <form method="post" use:enhance="{handleSubmit}">
     <label for="cedula" class="flex flex-col">
-      Cédula
+      Cédula de Identidad
       <div class="flex justify-start">
         <select
           bind:value="{documento}"
@@ -159,7 +159,7 @@
       </div>
     </label>
     <label for="nombre" class="flex flex-col">
-      Nombre
+      Nombres y Apellidos
       <input
         class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
         required
@@ -176,7 +176,7 @@
       />
     </label>
     <label for="email" class="flex flex-col">
-      Correo
+      Correo Electrónico
       <input
         class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
         required
@@ -186,7 +186,7 @@
       />
     </label>
     <label for="telefono" class="flex flex-col">
-      Teléfono
+      Teléfono del Estudiante
       <div class="flex justify-start">
         <select
           bind:value="{prefijo}"
@@ -214,23 +214,23 @@
     </label>
     <div class="flex justify-start gap-x-4 w-full">
       <label for="semestre" class="flex flex-col w-1/4">
-        Semestre
+        Semestre del Estudiante
         <select
           name="semestre"
           id="semestre"
           value="1"
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
         >
-          <option value="1">Primero</option>
-          <option value="2">Segundo</option>
-          <option value="3">Tercero</option>
-          <option value="4">Cuarto</option>
-          <option value="5">Quinto</option>
-          <option value="6">Sexto</option>
+          <option value="1">1ero</option>
+          <option value="2">2do</option>
+          <option value="3">3ro</option>
+          <option value="4">4to</option>
+          <option value="5">5to</option>
+          <option value="6">6to</option>
         </select>
       </label>
       <label for="estado" class="flex flex-col w-1/4">
-        Estado
+        Estado Del Estudiante
         <select
           bind:value="{estado}"
           name="estado"
@@ -240,7 +240,7 @@
           <option value="nuevo ingreso">Nuevo ingreso</option>
           <option value="regular">Regular</option>
           <option value="repitiente">Repitiente</option>
-          <option value="abandona">Abandona</option>
+          <option value="abandona">Abandonó</option>
         </select>
       </label>
     </div>
