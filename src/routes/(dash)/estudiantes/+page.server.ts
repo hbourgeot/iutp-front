@@ -2,11 +2,13 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({locals:{client}, depends}) => {
-    const {ok, data} = await client.GET("/api/students")
+    const {ok, data: estudiantes} = await client.GET("/api/students")
     if (!ok) {
-        return {estudiantes: []}
+        return {estudiantes: [], carreras: []}
     }
-    return {estudiantes: data};
+
+    console.log(estudiantes);
+    return {estudiantes: estudiantes};
 }
 
 export const actions: Actions = {
@@ -19,7 +21,8 @@ export const actions: Actions = {
             password: obj.cedula.replace("V-", ""),
             estado: obj.estado,
             telefono: obj.telefono,
-            semestre: parseInt(obj.semestre)
+            semestre: parseInt(obj.semestre),
+            carrera: obj.carrera
         }
         const { ok, data } = await client.POST("/api/students/add", payload)
         if (!ok) {

@@ -38,6 +38,11 @@
   }));
 
   const estudianteSearch = createSearchStore(estudiantesTerms);
+  $: console.log(telefonoInput, telefonoInput.toString().length);
+  $: if(telefonoInput.toString().length > 7){
+    console.log(telefonoInput);
+    telefonoInput = telefonoInput.toString().slice(0,7)
+  }
 
   const unsubscribe = estudianteSearch.subscribe((model) =>
     searchHandler(model)
@@ -61,6 +66,8 @@
     "Noviembre",
     "Diciembre",
   ];
+
+  const carreras = ["Informática", "Tecnología de Alimentos", "Comunicación y Electrónica", "Diseño Gráfico", "Contabilidad y Costos", "Administración Bancaria y Financiera", "Administración Empresarial"]
 
   const handleSubmit: SubmitFunction = ({ data, cancel }) => {
     if (estudiantes.find((estudiante) => estudiante.cedula === cedula)) {
@@ -112,20 +119,22 @@
   {#if estudiantes.length && $estudianteSearch.filtered.length}
     <table>
       <thead>
-        <th>Cédula</th>
-        <th>Nombre</th>
+        <th>Cédula de Identidad</th>
+        <th>Nombres y Apellidos</th>
         <th>Teléfono</th>
         <th>Semestre</th>
         <th>Estado</th>
+        <th>Carrera</th>
       </thead>
       <tbody>
         {#each $estudianteSearch.filtered as estudiante}
           <tr>
             <td>{estudiante.cedula}</td>
-            <td>{estudiante.nombre}</td>
+            <td style="text-transform: capitalize;">{estudiante.nombre}</td>
             <td>{estudiante.telefono}</td>
             <td>{estudiante.semestre}</td>
-            <td>{estudiante.estado}</td>
+            <td style="text-transform: capitalize;">{estudiante.estado}</td>
+            <td style="text-transform: capitalize;">{carreras[estudiante.carrera - 1]}</td>
             <td />
           </tr>
         {/each}
@@ -224,8 +233,8 @@
       </div>
     </label>
     <div class="flex justify-start gap-x-4 w-full">
-      <label for="semestre" class="flex flex-col w-1/4">
-        Semestre del Estudiante
+      <label for="semestre" class="flex flex-col w-1/6">
+        Semestre
         <select
           name="semestre"
           id="semestre"
@@ -240,7 +249,24 @@
           <option value="6">6to</option>
         </select>
       </label>
-      <label for="estado" class="flex flex-col w-1/4">
+      <label for="carrera" class="flex flex-col w-3/6">
+        Carrera Del Estudiante
+        <select
+          value="1"
+          name="carrera"
+          id="carrera"
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
+        >
+          <option value="1">Informatica</option>
+          <option value="2">Tecnología de Alimentos</option>
+          <option value="3">Comunicación y Electrónica</option>
+          <option value="4">Diseño Gráfico</option>
+          <option value="5">Contabilidad y Costos</option>
+          <option value="6">Administración Bancaria y Financiera</option>
+          <option value="7">Administración de Empresas</option>
+        </select>
+      </label>
+      <label for="estado" class="flex flex-col w-2/6">
         Estado Del Estudiante
         <select
           bind:value={estado}

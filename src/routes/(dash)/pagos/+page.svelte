@@ -8,6 +8,7 @@
   import { enhance } from "$app/forms";
   import { page } from "$app/stores";
   import { browser } from "$app/environment";
+  import { goto } from "$app/navigation";
 
   export let data: PageData;
 
@@ -81,7 +82,6 @@
     "Diciembre",
   ];
 
-
   const handleSubmit: SubmitFunction = ({ cancel }) => {
     const date = new Date();
     let preInscripcionDate: Date = new Date(preInscripcion);
@@ -95,21 +95,33 @@
     return async ({ update }) => {
       await update();
       addPago = false;
+      let estudiante = estudiantes.find(estudiante => estudiante.cedula === cedula);
       const logs: any = browser
-      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
-      : [];
-    logs.push(
-      `${new Date().getDate()} de ${
-        months[new Date().getMonth()]
-      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0'+ new Date().getMinutes()}:${new Date().getSeconds() > 9 ? new Date().getSeconds() : '0'+ new Date().getSeconds()} >>> se ha registrado un pago correspondiente al estudiante con la cédula ${cedula}`
-    );
-    localStorage.setItem("log", JSON.stringify(logs));
-      window.location.reload();
+        ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
+        : [];
+      logs.push(
+        `${new Date().getDate()} de ${
+          months[new Date().getMonth()]
+        } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${
+          new Date().getMinutes() > 9
+            ? new Date().getMinutes()
+            : "0" + new Date().getMinutes()
+        }:${
+          new Date().getSeconds() > 9
+            ? new Date().getSeconds()
+            : "0" + new Date().getSeconds()
+        } >>> se ha registrado un pago correspondiente al estudiante con la cédula ${cedula}`
+      );
+      localStorage.setItem("log", JSON.stringify(logs));
+      goto(`/factura?e=${estudiante?.nombre}&ci=${estudiante.cedula}&m=`)
     };
   };
 </script>
 
-<section id="pagos" class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto bg-light-50">
+<section
+  id="pagos"
+  class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto bg-light-50"
+>
   <div class="flex self-end justify-around items-center w-[650px]">
     <button
       type="button"
@@ -144,7 +156,9 @@
         {#each $pagosSearch.filtered as pago}
           <tr>
             <td
-              ><a class="pl-5 text-[#064690] underline font-semibold" href="/estudiantes/{pago.cedula_estudiante}"
+              ><a
+                class="pl-5 text-[#064690] underline font-semibold"
+                href="/estudiantes/{pago.cedula_estudiante}"
                 >{pago.cedula_estudiante}</a
               ></td
             >
@@ -161,84 +175,78 @@
                   {pago.inscripcion == "" ? "No registrada" : pago.inscripcion}
                 </p>
                 {#if pago.inscripcion !== ""}
-                <p class="text-xl w-full bordered">
-                  <span class="font-bold">Monto:</span>
-                  {pago.montoInscripcion} Bs.
-                </p>
+                  <p class="text-xl w-full bordered">
+                    <span class="font-bold">Monto:</span>
+                    {pago.montoInscripcion} Bs.
+                  </p>
                 {/if}
               </div>
-              </td
-            >
+            </td>
             <td
               ><div class="h-full flex flex-col justify-start">
                 <p class="text-xl w-full bordered">
                   {pago.cuota1 == "" ? "No registrada" : pago.cuota1}
                 </p>
                 {#if pago.cuota1 !== ""}
-                <p class="text-xl w-full bordered">
-                  <span class="font-bold">Monto:</span>
-                  {pago.montoCuota1} Bs.
-                </p>
+                  <p class="text-xl w-full bordered">
+                    <span class="font-bold">Monto:</span>
+                    {pago.montoCuota1} Bs.
+                  </p>
                 {/if}
               </div>
-              </td
-            >
+            </td>
             <td
               ><div class="h-full flex flex-col justify-start">
                 <p class="text-xl w-full bordered">
                   {pago.cuota2 == "" ? "No registrada" : pago.cuota2}
                 </p>
                 {#if pago.cuota2 !== ""}
-                <p class="text-xl w-full bordered">
-                  <span class="font-bold">Monto:</span>
-                  {pago.montoCuota2} Bs.
-                </p>
+                  <p class="text-xl w-full bordered">
+                    <span class="font-bold">Monto:</span>
+                    {pago.montoCuota2} Bs.
+                  </p>
                 {/if}
               </div>
-              </td
-            >
+            </td>
             <td
               ><div class="h-full flex flex-col justify-start">
                 <p class="text-xl w-full bordered">
                   {pago.cuota3 == "" ? "No registrada" : pago.cuota3}
                 </p>
                 {#if pago.cuota3 !== ""}
-                <p class="text-xl w-full bordered">
-                  <span class="font-bold">Monto:</span>
-                  {pago.montoCuota3} Bs.
-                </p>
+                  <p class="text-xl w-full bordered">
+                    <span class="font-bold">Monto:</span>
+                    {pago.montoCuota3} Bs.
+                  </p>
                 {/if}
               </div>
-              </td
-            >
+            </td>
             <td
               ><div class="h-full flex flex-col justify-start">
                 <p class="text-xl w-full bordered">
                   {pago.cuota4 == "" ? "No registrada" : pago.cuota4}
                 </p>
                 {#if pago.cuota4 !== ""}
-                <p class="text-xl w-full bordered">
-                  <span class="font-bold">Monto:</span>
-                  {pago.montoCuota4} Bs.
-                </p>
+                  <p class="text-xl w-full bordered">
+                    <span class="font-bold">Monto:</span>
+                    {pago.montoCuota4} Bs.
+                  </p>
                 {/if}
               </div>
-              </td
-            >
+            </td>
             <td
               ><div class="h-full flex flex-col justify-start">
                 <p class="text-xl w-full bordered">
                   {pago.cuota5 == "" ? "No registrada" : pago.cuota5}
                 </p>
                 {#if pago.cuota5 !== ""}
-                <p class="text-xl w-full bordered">
-                  <span class="font-bold">Monto:</span>
-                  {pago.montoCuota5} Bs.
-                </p>
+                  <p class="text-xl w-full bordered">
+                    <span class="font-bold">Monto:</span>
+                    {pago.montoCuota5} Bs.
+                  </p>
                 {/if}
               </div>
-              </td
-            >
+            </td>
           </tr>
         {/each}
       </tbody>
@@ -277,9 +285,9 @@
     </label>
     <label for="pre_inscripcion" class="flex flex-col">
       Preinscripción
-      <div class="flex w-full gap-5">
+      <div class="flex w-full items-end gap-5">
         <input
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
           required
           type="date"
           max="{today}"
@@ -294,7 +302,7 @@
           bind:value="{preInscripcion}"
         />
         <section
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
         >
           <span class="text-xl px-3">Bs.</span>
           <input
@@ -304,8 +312,23 @@
             required
             min="0"
             placeholder="Ingrese monto"
-            class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
+            class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
           />
+        </section>
+        <section
+          class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+        >
+          <select
+            value="disabled"
+            name="metodo_pre_inscripcion"
+            id="prefijo"
+            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+          >
+          <option value="disabled" disabled>Elija un método de pago</option>
+            <option value="transferencia">Transferencia</option>
+            <option value="bolivares">Efectivo en Bolívares</option>
+            <option value="dolares">Efectivo en Dólares</option>
+          </select>
         </section>
       </div>
     </label>
@@ -320,9 +343,9 @@
     </label>
     {#if inscripcionChecked}
       <label for="inscripcion" class="flex flex-col">
-        <div class="flex w-full gap-5">
+        <div class="flex w-full items-end gap-5">
           <input
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             required
             type="date"
             min="{preInscripcion}"
@@ -338,7 +361,7 @@
             bind:value="{inscripcion}"
           />
           <section
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
           >
             <span class="text-xl px-3">Bs.</span>
             <input
@@ -348,8 +371,23 @@
               required
               min="0"
               placeholder="Ingrese monto"
-              class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
+              class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
             />
+          </section>
+          <section
+            class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          >
+            <select
+              value="disabled"
+              name="metodo_inscripcion"
+              id="prefijo"
+              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+            >
+            <option value="disabled" disabled>Elija un método de pago</option>
+              <option value="transferencia">Transferencia</option>
+              <option value="bolivares">Efectivo en Bolívares</option>
+              <option value="dolares">Efectivo en Dólares</option>
+            </select>
           </section>
         </div>
       </label>
@@ -367,9 +405,9 @@
       </label>
       {#if cuota1Checked}
         <label for="cuota1" class="flex flex-col">
-          <div class="flex w-full gap-5">
+          <div class="flex w-full items-end gap-5">
             <input
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               required
               type="date"
               on:invalid="{() => {
@@ -385,7 +423,7 @@
               bind:value="{cuota1}"
             />
             <section
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3">Bs.</span>
               <input
@@ -395,8 +433,23 @@
                 required
                 min="0"
                 placeholder="Ingrese monto"
-                class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
+            </section>
+            <section
+              class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            >
+              <select
+                value="disabled"
+                name="metodo_cuota1"
+                id="prefijo"
+                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+              >
+              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="bolivares">Efectivo en Bolívares</option>
+                <option value="dolares">Efectivo en Dólares</option>
+              </select>
             </section>
           </div>
         </label>
@@ -415,9 +468,9 @@
       </label>
       {#if cuota2Checked}
         <label for="cuota2" class="flex flex-col">
-          <div class="flex w-full gap-5">
+          <div class="flex w-full items-end gap-5">
             <input
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               required
               type="date"
               on:invalid="{() => {
@@ -433,7 +486,7 @@
               bind:value="{cuota2}"
             />
             <section
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3">Bs.</span>
               <input
@@ -443,8 +496,23 @@
                 required
                 min="0"
                 placeholder="Ingrese monto"
-                class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
+            </section>
+            <section
+              class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            >
+              <select
+                value="disabled"
+                name="metodo_cuota2"
+                id="prefijo"
+                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+              >
+              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="bolivares">Efectivo en Bolívares</option>
+                <option value="dolares">Efectivo en Dólares</option>
+              </select>
             </section>
           </div>
         </label>
@@ -463,9 +531,9 @@
       </label>
       {#if cuota3Checked}
         <label for="cuota3" class="flex flex-col">
-          <div class="flex w-full gap-5">
+          <div class="flex w-full items-center gap-5">
             <input
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               required
               type="date"
               min="{cuota2}"
@@ -481,7 +549,7 @@
               }}"
             />
             <section
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3">Bs.</span>
               <input
@@ -491,8 +559,23 @@
                 required
                 min="0"
                 placeholder="Ingrese monto"
-                class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
+            </section>
+            <section
+              class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            >
+              <select
+                value="disabled"
+                name="metodo_cuota3"
+                id="prefijo"
+                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+              >
+              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="bolivares">Efectivo en Bolívares</option>
+                <option value="dolares">Efectivo en Dólares</option>
+              </select>
             </section>
           </div>
         </label>
@@ -513,7 +596,7 @@
         <label for="cuota4" class="flex flex-col">
           <div class="flex w-full gap-5">
             <input
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               required
               type="date"
               min="{cuota3}"
@@ -529,7 +612,7 @@
               bind:value="{cuota4}"
             />
             <section
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3">Bs.</span>
               <input
@@ -539,8 +622,24 @@
                 required
                 min="0"
                 placeholder="Ingrese monto"
-                class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
+            </section>
+            <section
+              class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            >
+              <select
+                value="disabled"
+                name="metodo_cuota4"
+                id="prefijo"
+                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+              >
+                
+              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="bolivares">Efectivo en Bolívares</option>
+                <option value="dolares">Efectivo en Dólares</option>
+              </select>
             </section>
           </div>
         </label>
@@ -590,12 +689,27 @@
                 class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
               />
             </section>
+            <section
+              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            >
+              <select
+                value="disabled"
+                name="metodo_cuota5"
+                id="prefijo"
+                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[100px]"
+              >
+              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="transferencia">Transferencia</option>
+                <option value="bolivares">Efectivo en Bolívares</option>
+                <option value="dolares">Efectivo en Dólares</option>
+              </select>
+            </section>
           </div>
         </label>
       {/if}
     {/if}
     <div
-      class="flex flex-col md:flex-row justify-center gap-4 items-center w-full p-3"
+      class="flex justify-center gap-4 items-center w-full p-3"
     >
       <button
         type="button"
@@ -685,10 +799,10 @@
 </ModalLarge>
 
 <style lang="scss">
-  #pagos{
+  #pagos {
     height: calc(100vh - 100px);
   }
-  
+
   :global(input[type="checkbox"]) {
     color: #db0081;
     border-color: #db0081;

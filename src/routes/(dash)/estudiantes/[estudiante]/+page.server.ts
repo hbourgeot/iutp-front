@@ -7,6 +7,8 @@ export const load = (async ({locals:{client}, params}) => {
         throw redirect(302, `/pagos?regPago=${params.estudiante}`)
     }
 
+    console.log(data.estudiante);
+
     return {
         estudiante: data.estudiante,
         pago: data.pago,
@@ -49,7 +51,8 @@ export const actions: Actions = {
             password: params.estudiante.replace("V-", ""),
             estado: obj.estado,
             telefono: obj.telefono,
-            semestre: parseInt(obj.semestre)
+            semestre: parseInt(obj.semestre),
+            carrera: obj.carrera
         }
         const { ok, data } = await client.PUT(`/api/students/update/${payload.cedula}`, payload)
         if (!ok) {

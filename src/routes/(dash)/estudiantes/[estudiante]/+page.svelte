@@ -14,6 +14,7 @@
   let cedula = data.estudiante.cedula;
   let correo = data.estudiante.correo;
   let estado = data.estudiante.estado;
+  let carrera = data.estudiante.carrera;
   let semestre = data.estudiante.semestre.toString();
   let prefTelefono = "";
   const viejosDatos: Estudiante = data.estudiante;
@@ -179,12 +180,12 @@
           class="text-xl bg-transparent border-dashed border-2 w-4/5 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
           bind:value="{semestre}"
         >
-          <option value="1">Primero</option>
-          <option value="2">Segundo</option>
-          <option value="3">Tercero</option>
-          <option value="4">Cuarto</option>
-          <option value="5">Quinto</option>
-          <option value="6">Sexto</option>
+          <option value="1">1ro</option>
+          <option value="2">2do</option>
+          <option value="3">3ro</option>
+          <option value="4">4to</option>
+          <option value="5">5to</option>
+          <option value="6">6to</option>
         </select>
       </p>
       <p class="text-2xl w-full flex items-center">
@@ -198,7 +199,24 @@
         <option value="nuevo ingreso">Nuevo ingreso</option>
         <option value="regular">Regular</option>
         <option value="repitiente">Repitiente</option>
-        <option value="abandona">Abandona</option>
+        <option value="abandona">Abandono</option>
+        </select>
+      </p>
+      <p class="text-2xl w-full flex items-center">
+        <span class="w-1/2">Carrera:</span>
+        <select
+          name="carrera"
+          id="carrera"
+          class="text-xl bg-transparent border-dashed border-2 w-4/5 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
+          bind:value="{carrera}"
+        >
+          <option value="1">Informatica</option>
+          <option value="2">Tecnología de Alimentos</option>
+          <option value="3">Comunicación y Electrónica</option>
+          <option value="4">Diseño Gráfico</option>
+          <option value="5">Contabilidad y Costos</option>
+          <option value="6">Administración Bancaria y Financiera</option>
+          <option value="7">Administración de Empresas</option>
         </select>
       </p>
       <p class="text-2xl w-full flex items-center">
