@@ -5,8 +5,7 @@ export function moneyBsConverter(n: number) {
   });
 
   let some: string = formatter.format(n)
-  console.log(some);
-  return some.replace("VED", "Bs. ")
+  return some.replace("VED", "Bs.")
 }
 
 export function moneyUsdConverter(n: number) {
