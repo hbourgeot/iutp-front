@@ -20,7 +20,8 @@ interface Estudiante{
 	nombre: string;
 	semestre: number | string;
 	telefono: string;
-	estado: string
+	estado: string;
+	carrera: number;
 }
 
 interface Pago{

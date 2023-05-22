@@ -4,16 +4,15 @@ import type { Estudiante, Pago } from "../../../app";
 
 export const load: PageServerLoad = async ({ locals: { client }, url }) => {
   const { ok, data } = await client.GET("/api/admin");
+  console.log(data);
   const { ok: okey, data: estudiantes } = await client.GET("/api/students");
   let estudiantesSinPagos: Estudiante[] = [];
   let estudiantesConPagos: Estudiante[] = [];
-  let hoy = `${new Date().getFullYear()}-${
-    new Date().getMonth() + 1 > 9
-      ? new Date().getMonth() + 1
-      : "0" + (new Date().getMonth() + 1)
-  }-${
-    new Date().getDate() > 9 ? new Date().getDate() : "0" + new Date().getDate()
-  }`;
+  const response = await fetch(
+    "https://api.exchangedyn.com/markets/quotes/usdves/bcv"
+  );
+  const currency = await response.json();
+  const bcv = currency.sources.BCV.quote;
   estudiantes.map((estudiante: any) => {
     let pago = data.pagos.filter((pago: any) => {
       if (pago.cedula_estudiante === estudiante.cedula) return pago;
@@ -53,6 +52,13 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
         montoCuota3: data.montos[i].cuota3,
         montoCuota4: data.montos[i].cuota4,
         montoCuota5: data.montos[i].cuota5,
+        metodoPreInscripcion: data.metodos[i].pre_inscripcion,
+        metodoInscripcion: data.metodos[i].inscripcion,
+        metodoCuota1: data.metodos[i].cuota1,
+        metodoCuota2: data.metodos[i].cuota2,
+        metodoCuota3: data.metodos[i].cuota3,
+        metodoCuota4: data.metodos[i].cuota4,
+        metodoCuota5: data.metodos[i].cuota5,
       });
     }
   } catch (e) {
@@ -64,7 +70,7 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
     estudiantes: estudiantesSinPagos.map((estudiante: Estudiante) => ({
       cedula: estudiante.cedula,
       nombre: estudiante.nombre,
-    })),
+    })), tasa: bcv
   };
 };
 
@@ -80,13 +86,20 @@ export const actions: Actions = {
       cuota3: obj.cuota3 ?? "",
       cuota4: obj.cuota4 ?? "",
       cuota5: obj.cuota5 ?? "",
-      montoPreInscripcion: obj.monto_pre_inscripcion,
-      montoInscripcion: obj.monto_inscripcion ?? 0,
-      montoCuota1: obj.monto_cuota1 ?? 0,
-      montoCuota2: obj.monto_cuota2 ?? 0,
-      montoCuota3: obj.monto_cuota3 ?? 0,
-      montoCuota4: obj.monto_cuota4 ?? 0,
-      montoCuota5: obj.monto_cuota5 ?? 0,
+      metodo_pre_inscripcion: obj.metodo_pre_inscripcion,
+      metodo_inscripcion: obj.metodo_inscripcion,
+      metodo_cuota1: obj.metodo_cuota1 ?? "",
+      metodo_cuota2: obj.metodo_cuota2 ?? "",
+      metodo_cuota3: obj.metodo_cuota3 ?? "",
+      metodo_cuota4: obj.metodo_cuota4 ?? "",
+      metodo_cuota5: obj.metodo_cuota5 ?? "",
+      monto_pre_inscripcion: obj.monto_pre_inscripcion,
+      monto_inscripcion: obj.monto_inscripcion ?? 0,
+      monto_cuota1: obj.monto_cuota1 ?? 0,
+      monto_cuota2: obj.monto_cuota2 ?? 0,
+      monto_cuota3: obj.monto_cuota3 ?? 0,
+      monto_cuota4: obj.monto_cuota4 ?? 0,
+      monto_cuota5: obj.monto_cuota5 ?? 0,
     };
 
     const { ok, data } = await client.POST("/api/admin/add", payload);

@@ -9,6 +9,7 @@
   import { page } from "$app/stores";
   import { browser } from "$app/environment";
   import { goto } from "$app/navigation";
+  import { moneyUsdConverter, moneyBsConverter } from "$lib/resources/moneyConverter";
 
   export let data: PageData;
 
@@ -49,8 +50,23 @@
   let cuota3: string = "";
   let cuota4: string = "";
   let cuota5: string = "";
+  let montoPreInscripcion: string = today;
+  let montoInscripcion: string = "";
+  let montoCuota1: string = "";
+  let montoCuota2: string = "";
+  let montoCuota3: string = "";
+  let montoCuota4: string = "";
+  let montoCuota5: string = "";
+  let metodoPreInscripcion: string = "disabled";
+  let metodoInscripcion: string = "disabled";
+  let metodoCuota1: string = "disabled";
+  let metodoCuota2: string = "disabled";
+  let metodoCuota3: string = "disabled";
+  let metodoCuota4: string = "disabled";
+  let metodoCuota5: string = "disabled";
   let reportDay: string = today;
   let opcionReporte: string = "dia";
+  let cambios: string[] = [];
 
   $: if (inscripcionChecked) inscripcion = today;
   $: if (cuota1Checked) cuota1 = today;
@@ -95,7 +111,9 @@
     return async ({ update }) => {
       await update();
       addPago = false;
-      let estudiante = estudiantes.find(estudiante => estudiante.cedula === cedula);
+      let estudiante = estudiantes.find(
+        (estudiante) => estudiante.cedula === cedula
+      );
       const logs: any = browser
         ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
         : [];
@@ -113,8 +131,63 @@
         } >>> se ha registrado un pago correspondiente al estudiante con la cédula ${cedula}`
       );
       localStorage.setItem("log", JSON.stringify(logs));
-      goto(`/factura?e=${estudiante?.nombre}&ci=${estudiante.cedula}&m=`)
+      let prei = `d=pre-inscripcion&t=${
+        metodoPreInscripcion == "dolares"
+          ? parseFloat(montoPreInscripcion) * parseInt(data.tasa)
+          : parseFloat(montoPreInscripcion)
+      }&m=${metodoPreInscripcion}&`;
+      let insc = inscripcionChecked
+        ? `d=inscripcion&t=${
+            metodoInscripcion == "dolares"
+              ? parseFloat(montoInscripcion) * parseFloat(data.tasa)
+              : parseFloat(montoInscripcion)
+          }&m=${metodoInscripcion}&`
+        : "";
+      let cuo1 = cuota1Checked
+        ? `d=cuota+1&t=${
+            metodoCuota1 == "dolares"
+              ? parseFloat(montoCuota1) * parseFloat(data.tasa)
+              : parseFloat(montoCuota1)
+          }&m=${metodoCuota1}&`
+        : "";
+      let cuo2 = cuota2Checked
+        ? `d=cuota+2&t=${
+            metodoCuota2 == "dolares"
+              ? parseFloat(montoCuota2) * parseFloat(data.tasa)
+              : parseFloat(montoCuota2)
+          }&m=${metodoCuota2}&`
+        : "";
+      let cuo3 = cuota3Checked
+        ? `d=cuota+1&t=${
+            metodoCuota1 == "dolares"
+              ? parseFloat(montoCuota3) * parseFloat(data.tasa)
+              : parseFloat(montoCuota3)
+          }&m=${metodoCuota3}&`
+        : "";
+      let cuo4 = cuota4Checked
+        ? `d=cuota+1&t=${
+            metodoCuota1 == "dolares"
+              ? parseFloat(montoCuota4) * parseFloat(data.tasa)
+              : parseFloat(montoCuota4)
+          }&m=${metodoCuota4}&`
+        : "";
+      let cuo5 = cuota5Checked
+        ? `d=cuota+1&t=${
+            metodoCuota1 == "dolares"
+              ? parseFloat(montoCuota5) * parseFloat(data.tasa)
+              : parseFloat(montoCuota5)
+          }&m=${metodoCuota5}&`
+        : "";
+      goto(
+        `/factura?e=${estudiante?.nombre}&ci=${estudiante.cedula}&${prei}${insc}${cuo1}${cuo2}${cuo3}${cuo4}${cuo5}`
+      );
     };
+  };
+
+  const change = (title: string) => {
+    if (!cambios.includes(title)) {
+      cambios = [...cambios, title];
+    }
   };
 </script>
 
@@ -166,7 +239,7 @@
               <p class="text-xl w-full">{pago.pre_inscripcion}</p>
               <p class="text-xl w-full bordered">
                 <span class="font-bold">Monto:</span>
-                {pago.montoPreInscripcion} Bs.
+                 {#if pago.metodoPreInscripcion === "dolares"}{moneyUsdConverter(+pago.montoPreInscripcion)}{:else}{moneyBsConverter(+pago.montoPreInscripcion)}{/if}
               </p>
             </td>
             <td
@@ -177,7 +250,7 @@
                 {#if pago.inscripcion !== ""}
                   <p class="text-xl w-full bordered">
                     <span class="font-bold">Monto:</span>
-                    {pago.montoInscripcion} Bs.
+                     {#if pago.metodoInscripcion === "dolares"}{moneyUsdConverter(+pago.montoInscripcion)}{:else}{moneyBsConverter(+pago.montoInscripcion)}{/if}.
                   </p>
                 {/if}
               </div>
@@ -190,7 +263,7 @@
                 {#if pago.cuota1 !== ""}
                   <p class="text-xl w-full bordered">
                     <span class="font-bold">Monto:</span>
-                    {pago.montoCuota1} Bs.
+                     {#if pago.metodoCuota1 === "dolares"}{moneyUsdConverter(+pago.montoCuota1)}{:else}{moneyBsConverter(+pago.montoCuota1)}{/if}
                   </p>
                 {/if}
               </div>
@@ -203,7 +276,7 @@
                 {#if pago.cuota2 !== ""}
                   <p class="text-xl w-full bordered">
                     <span class="font-bold">Monto:</span>
-                    {pago.montoCuota2} Bs.
+                     {#if pago.metodoCuota2 === "dolares"}{moneyUsdConverter(+pago.montoCuota2)}{:else}{moneyBsConverter(+pago.montoCuota2)}{/if}
                   </p>
                 {/if}
               </div>
@@ -216,7 +289,7 @@
                 {#if pago.cuota3 !== ""}
                   <p class="text-xl w-full bordered">
                     <span class="font-bold">Monto:</span>
-                    {pago.montoCuota3} Bs.
+                     {#if pago.metodoCuota3 === "dolares"}{moneyUsdConverter(+pago.montoCuota3)}{:else}{moneyBsConverter(+pago.montoCuota3)}{/if}
                   </p>
                 {/if}
               </div>
@@ -229,7 +302,7 @@
                 {#if pago.cuota4 !== ""}
                   <p class="text-xl w-full bordered">
                     <span class="font-bold">Monto:</span>
-                    {pago.montoCuota4} Bs.
+                     {#if pago.metodoCuota4 === "dolares"}{moneyUsdConverter(+pago.montoCuota4)}{:else}{moneyBsConverter(+pago.montoCuota4)}{/if}
                   </p>
                 {/if}
               </div>
@@ -242,7 +315,7 @@
                 {#if pago.cuota5 !== ""}
                   <p class="text-xl w-full bordered">
                     <span class="font-bold">Monto:</span>
-                    {pago.montoCuota5} Bs.
+                     {#if pago.metodoCuota5 === "dolares"}{moneyUsdConverter(+pago.montoCuota5)}{:else}{moneyBsConverter(+pago.montoCuota5)}{/if}
                   </p>
                 {/if}
               </div>
@@ -276,7 +349,7 @@
               >
             {/each}
           {:else}
-            <option value=""
+            <option value="" disabled
               >Registre un estudiante para registrar un pago</option
             >
           {/if}
@@ -304,14 +377,18 @@
         <section
           class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
         >
-          <span class="text-xl px-3">Bs.</span>
+          <span class="text-xl px-3"
+            >{#if metodoPreInscripcion === "dolares"}${:else}Bs.{/if}</span
+          >
           <input
             type="number"
             step="0.01"
             name="monto_pre_inscripcion"
             required
             min="0"
+            on:change="{() => change('pre-inscripcion')}"
             placeholder="Ingrese monto"
+            bind:value="{montoPreInscripcion}"
             class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
           />
         </section>
@@ -319,12 +396,12 @@
           class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
         >
           <select
-            value="disabled"
             name="metodo_pre_inscripcion"
             id="prefijo"
+                        bind:value="{metodoPreInscripcion}"
             class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
           >
-          <option value="disabled" disabled>Elija un método de pago</option>
+            <option value="disabled" disabled>Elija un método de pago</option>
             <option value="transferencia">Transferencia</option>
             <option value="bolivares">Efectivo en Bolívares</option>
             <option value="dolares">Efectivo en Dólares</option>
@@ -363,14 +440,18 @@
           <section
             class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
           >
-            <span class="text-xl px-3">Bs.</span>
+            <span class="text-xl px-3"
+              >{#if metodoInscripcion === "dolares"}${:else}Bs.{/if}</span
+            >
             <input
               type="number"
               step="0.01"
               name="monto_inscripcion"
               required
               min="0"
+              on:change="{() => change('inscripcion')}"
               placeholder="Ingrese monto"
+              bind:value="{montoInscripcion}"
               class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
             />
           </section>
@@ -378,12 +459,12 @@
             class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
           >
             <select
-              value="disabled"
               name="metodo_inscripcion"
               id="prefijo"
+                            bind:value="{metodoInscripcion}"
               class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
             >
-            <option value="disabled" disabled>Elija un método de pago</option>
+              <option value="disabled" disabled>Elija un método de pago</option>
               <option value="transferencia">Transferencia</option>
               <option value="bolivares">Efectivo en Bolívares</option>
               <option value="dolares">Efectivo en Dólares</option>
@@ -425,14 +506,18 @@
             <section
               class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
-              <span class="text-xl px-3">Bs.</span>
+              <span class="text-xl px-3"
+                >{#if metodoCuota1 === "dolares"}${:else}Bs.{/if}</span
+              >
               <input
                 type="number"
                 step="0.01"
                 name="monto_cuota1"
                 required
                 min="0"
+                on:change="{() => change('cuota1')}"
                 placeholder="Ingrese monto"
+                bind:value="{montoCuota1}"
                 class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
             </section>
@@ -440,12 +525,14 @@
               class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <select
-                value="disabled"
                 name="metodo_cuota1"
                 id="prefijo"
+                                bind:value="{metodoCuota1}"
                 class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="disabled" disabled
+                  >Elija un método de pago</option
+                >
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -488,14 +575,18 @@
             <section
               class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
-              <span class="text-xl px-3">Bs.</span>
+              <span class="text-xl px-3"
+                >{#if metodoCuota2 === "dolares"}${:else}Bs.{/if}</span
+              >
               <input
                 type="number"
                 step="0.01"
+                on:change="{() => change('cuota2')}"
                 name="monto_cuota2"
                 required
                 min="0"
                 placeholder="Ingrese monto"
+                bind:value="{montoCuota2}"
                 class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
             </section>
@@ -503,12 +594,14 @@
               class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <select
-                value="disabled"
                 name="metodo_cuota2"
                 id="prefijo"
+                                bind:value="{metodoCuota2}"
                 class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="disabled" disabled
+                  >Elija un método de pago</option
+                >
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -537,6 +630,7 @@
               required
               type="date"
               min="{cuota2}"
+              on:change="{() => change('cuota3')}"
               max="{today}"
               name="cuota3"
               id="cuota3"
@@ -551,7 +645,9 @@
             <section
               class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
-              <span class="text-xl px-3">Bs.</span>
+              <span class="text-xl px-3"
+                >{#if metodoCuota3 === "dolares"}${:else}Bs.{/if}</span
+              >
               <input
                 type="number"
                 step="0.01"
@@ -559,6 +655,7 @@
                 required
                 min="0"
                 placeholder="Ingrese monto"
+                bind:value="{montoCuota3}"
                 class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
             </section>
@@ -566,12 +663,14 @@
               class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <select
-                value="disabled"
                 name="metodo_cuota3"
                 id="prefijo"
+                                bind:value="{metodoCuota3}"
                 class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="disabled" disabled
+                  >Elija un método de pago</option
+                >
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -614,14 +713,18 @@
             <section
               class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
-              <span class="text-xl px-3">Bs.</span>
+              <span class="text-xl px-3"
+                >{#if metodoCuota4 === "dolares"}${:else}Bs.{/if}</span
+              >
               <input
                 type="number"
                 step="0.01"
                 name="monto_cuota4"
+                on:change="{() => change('cuota4')}"
                 required
                 min="0"
                 placeholder="Ingrese monto"
+                bind:value="{montoCuota4}"
                 class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
             </section>
@@ -629,13 +732,14 @@
               class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <select
-                value="disabled"
                 name="metodo_cuota4"
                 id="prefijo"
+                                bind:value="{metodoCuota4}"
                 class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-                
-              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="disabled" disabled
+                  >Elija un método de pago</option
+                >
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -672,9 +776,12 @@
             <section
               class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
-              <span class="text-xl px-3">Bs.</span>
+              <span class="text-xl px-3"
+                >{#if metodoCuota5 === "dolares"}${:else}Bs.{/if}</span
+              >
               <input
                 type="number"
+                on:change="{() => change('cuota5')}"
                 step="0.01"
                 name="monto_cuota5"
                 required
@@ -686,6 +793,7 @@
                   );
                 }}"
                 placeholder="Ingrese monto"
+                bind:value="{montoCuota5}"
                 class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
               />
             </section>
@@ -693,12 +801,14 @@
               class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
               <select
-                value="disabled"
                 name="metodo_cuota5"
                 id="prefijo"
+                                bind:value="{metodoCuota5}"
                 class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[100px]"
               >
-              <option value="disabled" disabled>Elija un método de pago</option>
+                <option value="disabled" disabled
+                  >Elija un método de pago</option
+                >
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -708,9 +818,7 @@
         </label>
       {/if}
     {/if}
-    <div
-      class="flex justify-center gap-4 items-center w-full p-3"
-    >
+    <div class="flex justify-center gap-4 items-center w-full p-3">
       <button
         type="button"
         class="bg-blue-600 text-light-50 font-bold w-auto px-2 py-1"
