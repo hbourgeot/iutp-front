@@ -15,6 +15,8 @@
     alert(form.message);
   }
 
+  const carreras = ["Informática", "Tecnología de Alimentos", "Comunicación y Electrónica", "Diseño Gráfico", "Contabilidad y Costos", "Administración Bancaria y Financiera", "Administración Empresarial"]
+
   let estado: string = "nuevo ingreso";
   let documento: string = "V";
   let addStudent: boolean = false;
@@ -32,13 +34,12 @@
     searchTerms: `${estudiante.cedula} ${estudiante.cedula.replace(
       "V-" || "E-",
       ""
-    )} ${estudiante.correo} ${estudiante.estado} ${estudiante.semestre} ${
-      estudiante.telefono
-    } ${estudiante.nombre.toLowerCase()}`,
+    )} ${estudiante.correo} ${estudiante.estado} ${estudiante.semestre}to ${
+      estudiante.telefono} ${carreras[estudiante.carrera - 1].toLowerCase()} ${estudiante.nombre.toLowerCase()}`,
   }));
+  console.log(estudiantesTerms);
 
   const estudianteSearch = createSearchStore(estudiantesTerms);
-  $: console.log(telefonoInput, telefonoInput.toString().length);
   $: if(telefonoInput.toString().length > 7){
     console.log(telefonoInput);
     telefonoInput = telefonoInput.toString().slice(0,7)
@@ -67,7 +68,9 @@
     "Diciembre",
   ];
 
-  const carreras = ["Informática", "Tecnología de Alimentos", "Comunicación y Electrónica", "Diseño Gráfico", "Contabilidad y Costos", "Administración Bancaria y Financiera", "Administración Empresarial"]
+  let semestre = "";
+  let carrera = "";
+  let search = "";
 
   const handleSubmit: SubmitFunction = ({ data, cancel }) => {
     if (estudiantes.find((estudiante) => estudiante.cedula === cedula)) {
@@ -100,19 +103,35 @@
       window.location.reload();
     };
   };
+
 </script>
 
 <section class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto">
-  <div class="flex self-end justify-around items-center w-[530px]">
+  <div class="flex self-end justify-around items-center w-[980px]">
     <button
       type="button"
       class="rounded-lg bg-blue-400 text-white font-bold py-3 px-5"
       on:click={() => (addStudent = true)}>Agregar Estudiante</button
     >
+    <select name="" id="semestre" bind:value="{semestre}" on:change={() => $estudianteSearch.search = semestre} class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[190px]">
+      <option value="">Filtrar por semestre</option>
+      <option value="1to">1ro</option>
+      <option value="2to">2do</option>
+      <option value="3to">3ro</option>
+      <option value="4to">4to</option>
+      <option value="5to">5to</option>
+      <option value="6to">6to</option>
+    </select>
+    <select name="" id="carrera" bind:value="{carrera}" on:change={() => $estudianteSearch.search = carrera} class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[300px]">
+      <option value="">Filtrar por carrera</option>
+      {#each carreras as carrera, i}
+        <option value={carrera.toLowerCase()}>{carrera}</option>
+      {/each}
+    </select>
     <input
       type="text"
-      bind:value={$estudianteSearch.search}
-      class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[300px]"
+      bind:value={search} on:change="{() => $estudianteSearch.search = search}"
+      class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[280px]"
       placeholder="Buscar estudiante..."
     />
   </div>

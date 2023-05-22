@@ -14,6 +14,7 @@ export const createSearchStore = (data: any[]) => {
   return {subscribe, set, update}
 }
 
+
 export const searchHandler = (store: any) => {
   const searchTerm = store.search.toLowerCase() || ""
   store.filtered = store.data.filter((item: any) => {
