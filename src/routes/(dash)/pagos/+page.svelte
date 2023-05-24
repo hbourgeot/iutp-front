@@ -66,6 +66,7 @@
   let metodoCuota5: string = "disabled";
   let reportDay: string = today;
   let opcionReporte: string = "dia";
+  let filtroReporte: string = "";
   let cambios: string[] = [];
 
   $: if (inscripcionChecked) inscripcion = today;
@@ -231,7 +232,7 @@
             <td
               ><a
                 class="pl-5 text-[#064690] underline font-semibold"
-                href="/estudiantes/{pago.cedula_estudiante}"
+                href="/pagos/{pago.cedula_estudiante}"
                 >{pago.cedula_estudiante}</a
               ></td
             >
@@ -386,7 +387,6 @@
             name="monto_pre_inscripcion"
             required
             min="0"
-            on:change="{() => change('pre-inscripcion')}"
             placeholder="Ingrese monto"
             bind:value="{montoPreInscripcion}"
             class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
@@ -449,7 +449,6 @@
               name="monto_inscripcion"
               required
               min="0"
-              on:change="{() => change('inscripcion')}"
               placeholder="Ingrese monto"
               bind:value="{montoInscripcion}"
               class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
@@ -515,7 +514,6 @@
                 name="monto_cuota1"
                 required
                 min="0"
-                on:change="{() => change('cuota1')}"
                 placeholder="Ingrese monto"
                 bind:value="{montoCuota1}"
                 class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
@@ -581,7 +579,6 @@
               <input
                 type="number"
                 step="0.01"
-                on:change="{() => change('cuota2')}"
                 name="monto_cuota2"
                 required
                 min="0"
@@ -630,7 +627,6 @@
               required
               type="date"
               min="{cuota2}"
-              on:change="{() => change('cuota3')}"
               max="{today}"
               name="cuota3"
               id="cuota3"
@@ -720,7 +716,6 @@
                 type="number"
                 step="0.01"
                 name="monto_cuota4"
-                on:change="{() => change('cuota4')}"
                 required
                 min="0"
                 placeholder="Ingrese monto"
@@ -761,60 +756,57 @@
         Cuota 5
       </label>
       {#if cuota5Checked}
-        <label for="cuota1" class="flex flex-col">
-          <div class="flex w-full gap-5">
+        <label for="cuota5" class="flex flex-col">
+          <div class="flex w-full items-end gap-5">
+          <input
+            class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            required
+            type="date"
+            min="{cuota4}"
+            max="{today}"
+            on:invalid="{() => {
+              let html = window.document.getElementById('cuota5');
+              html.setCustomValidity(
+                'El valor debe ser igual a la fecha actual o posterior a la preinscripcion'
+              );
+            }}"
+            name="cuota5"
+            id="cuota5"
+            bind:value="{cuota5}"
+          />
+          <section
+            class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          >
+            <span class="text-xl px-3"
+              >{#if metodoCuota5 === "dolares"}${:else}Bs.{/if}</span
+            >
             <input
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              type="number"
+              step="0.01"
+              name="monto_cuota5"
               required
-              type="date"
-              min="{cuota4}"
-              max="{today}"
-              name="cuota5"
-              id="cuota5"
-              bind:value="{cuota5}"
+              min="0"
+              placeholder="Ingrese monto"
+              bind:value="{montoCuota5}"
+              class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
             />
-            <section
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          </section>
+          <section
+            class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          >
+            <select
+              name="metodo_cuota5"
+              id="prefijo"
+                            bind:value="{metodoCuota5}"
+              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
             >
-              <span class="text-xl px-3"
-                >{#if metodoCuota5 === "dolares"}${:else}Bs.{/if}</span
-              >
-              <input
-                type="number"
-                on:change="{() => change('cuota5')}"
-                step="0.01"
-                name="monto_cuota5"
-                required
-                min="0"
-                on:invalid="{() => {
-                  let html = window.document.getElementById('cuota5');
-                  html.setCustomValidity(
-                    'El valor debe ser igual a la fecha actual o posterior a la fecha de la cuota 4'
-                  );
-                }}"
-                placeholder="Ingrese monto"
-                bind:value="{montoCuota5}"
-                class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
-              />
-            </section>
-            <section
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
-            >
-              <select
-                name="metodo_cuota5"
-                id="prefijo"
-                                bind:value="{metodoCuota5}"
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[100px]"
-              >
-                <option value="disabled" disabled
-                  >Elija un método de pago</option
-                >
-                <option value="transferencia">Transferencia</option>
-                <option value="bolivares">Efectivo en Bolívares</option>
-                <option value="dolares">Efectivo en Dólares</option>
-              </select>
-            </section>
-          </div>
+              <option value="disabled" disabled>Elija un método de pago</option>
+              <option value="transferencia">Transferencia</option>
+              <option value="bolivares">Efectivo en Bolívares</option>
+              <option value="dolares">Efectivo en Dólares</option>
+            </select>
+          </section>
+        </div>
         </label>
       {/if}
     {/if}
@@ -855,6 +847,20 @@
         <option value="mes">Mensual</option>
       </select>
     </label>
+    <label for="filtro">
+      ¿Cuáles pagos desea que estén en el reporte?
+      <select
+        bind:value="{filtroReporte}"
+        name="filtro"
+        id="filtro"
+        class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+      >
+        <option value="">Ninguno</option>
+        <option value="transferencia">Transferencia</option>
+        <option value="bolivares">Bolívares en efectivo</option>
+        <option value="dolares">Dólares en efectivo</option>
+      </select>
+    </label>
     {#if opcionReporte == "dia"}
       <label for="report-date" class="w-full"
         >Fecha de reporte
@@ -879,19 +885,19 @@
     <footer class="flex justify-between gap-x-5 flex-row-reverse text-center">
       {#if opcionReporte == "dia"}
         <a
-          href="/dia?d={reportDay}"
+          href="/reporte/dia?d={reportDay}{filtroReporte !== '' ? `&f=${filtroReporte}` : '' }"
           class="bg-sky-600 px-5 py-2 rounded-md text-light-50 font-bold w-1/2"
           >Generar reporte</a
         >
       {:else if opcionReporte == "semana"}
         <a
-          href="/semanal"
+          href="/reporte/semanal{filtroReporte !== '' ? `?f=${filtroReporte}` : '' }"
           class="bg-sky-600 px-5 py-2 rounded-md text-light-50 font-bold w-1/2"
           >Generar reporte</a
         >
       {:else}
         <a
-          href="/mensual"
+          href="/reporte/mensual{filtroReporte !== '' ? `?f=${filtroReporte}` : '' }"
           class="bg-sky-600 px-5 py-2 rounded-md text-light-50 font-bold w-1/2"
           >Generar reporte</a
         >

@@ -8,7 +8,7 @@
   export let form: ActionData;
 
   $: if (form?.message && browser) {
-    window.alert(form.message)
+    window.alert(form.message);
   }
   let nombre = data.estudiante.nombre;
   let cedula = data.estudiante.cedula;
@@ -20,6 +20,7 @@
   const viejosDatos: Estudiante = data.estudiante;
   let pagos: any = data.pago;
   let monto: any = data.monto;
+  let metodo: any = data.metodo;
   let prefijo: string = data.estudiante.telefono.slice(0, 4);
   let telefono: string = data.estudiante.telefono.slice(5);
   let cuota1Checked: boolean = pagos.cuota1 !== "" ? true : false;
@@ -57,6 +58,21 @@
   let montocuota5: number | string =
     monto.cuota5 === "0.00" ? "" : monto.cuota5;
 
+  let metodopreInscripcion: number | string =
+    metodo.pre_inscripcion === "0.00" ? "" : metodo.pre_inscripcion;
+  let metodoinscripcion: number | string =
+    metodo.inscripcion === "0.00" ? "" : metodo.inscripcion;
+  let metodocuota1: number | string =
+    metodo.cuota1 === "0.00" ? "" : metodo.cuota1;
+  let metodocuota2: number | string =
+    metodo.cuota2 === "0.00" ? "" : metodo.cuota2;
+  let metodocuota3: number | string =
+    metodo.cuota3 === "0.00" ? "" : metodo.cuota3;
+  let metodocuota4: number | string =
+    metodo.cuota4 === "0.00" ? "" : metodo.cuota4;
+  let metodocuota5: number | string =
+    metodo.cuota5 === "0.00" ? "" : metodo.cuota5;
+
   $: if (inscripcionChecked && inscripcion === "") inscripcion = today;
   $: if (cuota1Checked && cuota1 === "") cuota1 = today;
   $: if (cuota2Checked && cuota2 === "") cuota2 = today;
@@ -83,20 +99,33 @@
     "Diciembre",
   ];
 
-
   const handleEstudiante: SubmitFunction = ({ data }) => {
     data.append("telefono", prefTelefono);
     return async ({ update }) => {
       await update();
       const logs: any = browser
-      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
-      : [];
-    logs.push(
-      `${new Date().getDate()} de ${
-        months[new Date().getMonth()]
-      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0'+ new Date().getMinutes()}:${new Date().getSeconds() > 9 ? new Date().getSeconds() : '0'+ new Date().getSeconds()} >>> se ha modificado al estudiante con la cédula ${cedula}, campos modificados: ${viejosDatos.correo !== correo ? 'correo,' : ''} ${viejosDatos.nombre !== nombre ? 'nombre,' : ''} ${viejosDatos.semestre !== semestre ? 'semestre,' : ''} ${viejosDatos.estado !== estado ? 'estado' : ''} ${viejosDatos.telefono !== telefono ? 'y telefono' : ''}`
-    );
-    localStorage.setItem("log", JSON.stringify(logs));
+        ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
+        : [];
+      logs.push(
+        `${new Date().getDate()} de ${
+          months[new Date().getMonth()]
+        } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${
+          new Date().getMinutes() > 9
+            ? new Date().getMinutes()
+            : "0" + new Date().getMinutes()
+        }:${
+          new Date().getSeconds() > 9
+            ? new Date().getSeconds()
+            : "0" + new Date().getSeconds()
+        } >>> se ha modificado al estudiante con la cédula ${cedula}, campos modificados: ${
+          viejosDatos.correo !== correo ? "correo," : ""
+        } ${viejosDatos.nombre !== nombre ? "nombre," : ""} ${
+          viejosDatos.semestre !== semestre ? "semestre," : ""
+        } ${viejosDatos.estado !== estado ? "estado" : ""} ${
+          viejosDatos.telefono !== telefono ? "y telefono" : ""
+        }`
+      );
+      localStorage.setItem("log", JSON.stringify(logs));
       window.location.reload();
     };
   };
@@ -105,20 +134,69 @@
     return async ({ update }) => {
       await update();
       const logs: any = browser
-      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
-      : [];
-    logs.push(
-      `${new Date().getDate()} de ${
-        months[new Date().getMonth()]
-      } del año ${new Date().getFullYear()} a las ${new Date().getHours() > 9 ? new Date().getHours() : '0' + new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0'+new Date().getMinutes()}:${new Date().getSeconds() > 9 ? new Date().getSeconds() : '0' + new Date().getSeconds()} >>> se ha modificado un pago del estudiande con la cédula ${cedula}, campos modificados: ${preInscripcion !== pagos.pre_inscripcion ? 'preinscripcion,' : ''} ${inscripcion !== pagos.inscripcion ? 'inscripcion,' : ''} ${cuota1 !== pagos.cuota1 ? 'cuota1,' : ''} ${cuota2 !== pagos.cuota2 ? 'cuota2,' : ''} ${cuota3 !== pagos.cuota3 ? 'cuota3,' : ''} ${cuota4 !== pagos.cuota4 ? 'cuota4,' : ''} ${cuota5 !== pagos.cuota5 ? 'cuota5,' : ''} ${montopreInscripcion != monto.pre_inscripcion && monto.pre_inscripcion  != "0.00" ? 'monto de la preinscripcion,' : ''} ${montoinscripcion != monto.inscripcion && monto.inscripcion  !== "0.00" ? 'monto de la inscripcion,' : ''} ${montocuota1 != monto.cuota1 && monto.cuota1  !== "0.00" ? 'monto de la cuota 1,' : ''} ${montocuota2 != monto.cuota2 && monto.cuota2  !== "0.00" ? 'monto de la cuota 2,' : ''} ${montocuota3 != monto.cuota3 && monto.cuota3  !== "0.00" ? 'monto de la cuota 3,' : ''} ${montocuota4 != monto.cuota4 && monto.cuota4  !== "0.00" ? 'monto de la cuota 4,' : ''} ${montocuota5 != monto.cuota5 && monto.cuota5  !== "0.00" ? 'monto de la cuota 5' : ''}`
-    );
-    localStorage.setItem("log", JSON.stringify(logs));
+        ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
+        : [];
+      logs.push(
+        `${new Date().getDate()} de ${
+          months[new Date().getMonth()]
+        } del año ${new Date().getFullYear()} a las ${
+          new Date().getHours() > 9
+            ? new Date().getHours()
+            : "0" + new Date().getHours()
+        }:${
+          new Date().getMinutes() > 9
+            ? new Date().getMinutes()
+            : "0" + new Date().getMinutes()
+        }:${
+          new Date().getSeconds() > 9
+            ? new Date().getSeconds()
+            : "0" + new Date().getSeconds()
+        } >>> se ha modificado un pago del estudiande con la cédula ${cedula}, campos modificados: ${
+          preInscripcion !== pagos.pre_inscripcion ? "preinscripcion," : ""
+        } ${inscripcion !== pagos.inscripcion ? "inscripcion," : ""} ${
+          cuota1 !== pagos.cuota1 ? "cuota1," : ""
+        } ${cuota2 !== pagos.cuota2 ? "cuota2," : ""} ${
+          cuota3 !== pagos.cuota3 ? "cuota3," : ""
+        } ${cuota4 !== pagos.cuota4 ? "cuota4," : ""} ${
+          cuota5 !== pagos.cuota5 ? "cuota5," : ""
+        } ${
+          montopreInscripcion != monto.pre_inscripcion &&
+          monto.pre_inscripcion != "0.00"
+            ? "monto de la preinscripcion,"
+            : ""
+        } ${
+          montoinscripcion != monto.inscripcion && monto.inscripcion !== "0.00"
+            ? "monto de la inscripcion,"
+            : ""
+        } ${
+          montocuota1 != monto.cuota1 && monto.cuota1 !== "0.00"
+            ? "monto de la cuota 1,"
+            : ""
+        } ${
+          montocuota2 != monto.cuota2 && monto.cuota2 !== "0.00"
+            ? "monto de la cuota 2,"
+            : ""
+        } ${
+          montocuota3 != monto.cuota3 && monto.cuota3 !== "0.00"
+            ? "monto de la cuota 3,"
+            : ""
+        } ${
+          montocuota4 != monto.cuota4 && monto.cuota4 !== "0.00"
+            ? "monto de la cuota 4,"
+            : ""
+        } ${
+          montocuota5 != monto.cuota5 && monto.cuota5 !== "0.00"
+            ? "monto de la cuota 5"
+            : ""
+        }`
+      );
+      localStorage.setItem("log", JSON.stringify(logs));
       window.location.reload();
     };
   };
 </script>
 
-<section class="overflow-y-scroll p-7 gap-y-5 w-full h-[90vh]">
+<section class="overflow-y-auto p-7 gap-y-5 w-full h-[90vh]">
   <div class="flex w-full justify-between items-center p-8">
     <h2 class="text-5xl text-pink-500 font-bold">Estudiante</h2>
     <a
@@ -128,13 +206,13 @@
     >
   </div>
   <article
-    class="flex flex-col md:flex-row md:justify-evenly h-full md:items-center md:gap-x-5"
+    class="flex justify-between md:justify-evenly h-[fit-content] md:items-center md:gap-x-5"
   >
     <form
       method="POST"
       action="?/estudiante"
       use:enhance="{handleEstudiante}"
-      class="flex flex-col gap-y-3 w-2/5"
+      class="flex flex-col gap-y-3 w-2/5 h-[fit-content]"
     >
       <h3 class="text-4xl my-3 font-bold text-pink-500">Datos</h3>
       <p class="text-2xl w-full flex items-center">
@@ -196,10 +274,10 @@
           id="estado"
           class="text-xl bg-transparent border-dashed border-2 w-4/5 border-pink-500 text-blue-900 font-semibold rounded-lg px-5 py-2"
         >
-        <option value="nuevo ingreso">Nuevo ingreso</option>
-        <option value="regular">Regular</option>
-        <option value="repitiente">Repitiente</option>
-        <option value="abandona">Abandono</option>
+          <option value="nuevo ingreso">Nuevo ingreso</option>
+          <option value="regular">Regular</option>
+          <option value="repitiente">Repitiente</option>
+          <option value="abandona">Abandono</option>
         </select>
       </p>
       <p class="text-2xl w-full flex items-center">
@@ -254,15 +332,20 @@
         >
       </div>
     </form>
-    <form method="post" action="?/pago" use:enhance="{handlePago}">
+    <form
+      method="post"
+      action="?/pago"
+      use:enhance="{handlePago}"
+      class="w-1/2 h-[fit-content]"
+    >
+      <h2 class="text-4xl text-pink-500 font-bold mb-5">Pago</h2>
       <input type="hidden" name="id_monto" value="{monto.id}" />
       <input type="hidden" name="id_pago" value="{monto.id_pago}" />
-      <h3 class="text-4xl my-3 font-bold text-pink-500">Pagos</h3>
       <label for="pre_inscripcion" class="flex flex-col">
         Preinscripción
-        <div class="flex w-full gap-5">
+        <div class="flex text-lg w-full items-end gap-5">
           <input
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             required
             type="date"
             max="{today}"
@@ -277,19 +360,36 @@
             bind:value="{preInscripcion}"
           />
           <section
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
           >
-            <span class="text-xl px-3">Bs.</span>
+            <span class="text-xl px-3"
+              >{#if metodopreInscripcion === "dolares"}${:else}Bs.{/if}</span
+            >
             <input
               type="number"
               step="0.01"
               name="monto_pre_inscripcion"
-              bind:value="{montopreInscripcion}"
               required
               min="0"
               placeholder="Ingrese monto"
-              class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
+              bind:value="{montopreInscripcion}"
+              class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
             />
+          </section>
+          <section
+            class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          >
+            <select
+              name="metodo_pre_inscripcion"
+              id="prefijo"
+              bind:value="{metodopreInscripcion}"
+              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[8px] w-full"
+            >
+              <option value="disabled" disabled>Elija un método de pago</option>
+              <option value="transferencia">Transferencia</option>
+              <option value="bolivares">Efectivo en Bolívares</option>
+              <option value="dolares">Efectivo en Dólares</option>
+            </select>
           </section>
         </div>
       </label>
@@ -304,9 +404,9 @@
       </label>
       {#if inscripcionChecked}
         <label for="inscripcion" class="flex flex-col">
-          <div class="flex w-full gap-5">
+          <div class="flex text-lg w-full items-end gap-5">
             <input
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               required
               type="date"
               min="{preInscripcion}"
@@ -322,19 +422,38 @@
               bind:value="{inscripcion}"
             />
             <section
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
             >
-              <span class="text-xl px-3">Bs.</span>
+              <span class="text-xl px-3"
+                >{#if metodoinscripcion === "dolares"}${:else}Bs.{/if}</span
+              >
               <input
                 type="number"
                 step="0.01"
                 name="monto_inscripcion"
-                bind:value="{montoinscripcion}"
                 required
                 min="0"
                 placeholder="Ingrese monto"
-                class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
+                bind:value="{montoinscripcion}"
+                class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
               />
+            </section>
+            <section
+              class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+            >
+              <select
+                name="metodo_inscripcion"
+                id="prefijo"
+                bind:value="{metodoinscripcion}"
+                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[8px] w-full"
+              >
+                <option value="disabled" disabled
+                  >Elija un método de pago</option
+                >
+                <option value="transferencia">Transferencia</option>
+                <option value="bolivares">Efectivo en Bolívares</option>
+                <option value="dolares">Efectivo en Dólares</option>
+              </select>
             </section>
           </div>
         </label>
@@ -352,9 +471,9 @@
         </label>
         {#if cuota1Checked}
           <label for="cuota1" class="flex flex-col">
-            <div class="flex w-full gap-5">
+            <div class="flex text-lg w-full items-end gap-5">
               <input
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
                 required
                 type="date"
                 on:invalid="{() => {
@@ -370,19 +489,38 @@
                 bind:value="{cuota1}"
               />
               <section
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               >
-                <span class="text-xl px-3">Bs.</span>
+                <span class="text-xl px-3"
+                  >{#if metodocuota1 === "dolares"}${:else}Bs.{/if}</span
+                >
                 <input
                   type="number"
                   step="0.01"
                   name="monto_cuota1"
-                  bind:value="{montocuota1}"
                   required
                   min="0"
                   placeholder="Ingrese monto"
-                  class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                  bind:value="{montocuota1}"
+                  class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
                 />
+              </section>
+              <section
+                class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              >
+                <select
+                  name="metodo_cuota1"
+                  id="prefijo"
+                  bind:value="{metodocuota1}"
+                  class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[8px] w-full"
+                >
+                  <option value="disabled" disabled
+                    >Elija un método de pago</option
+                  >
+                  <option value="transferencia">Transferencia</option>
+                  <option value="bolivares">Efectivo en Bolívares</option>
+                  <option value="dolares">Efectivo en Dólares</option>
+                </select>
               </section>
             </div>
           </label>
@@ -401,9 +539,9 @@
         </label>
         {#if cuota2Checked}
           <label for="cuota2" class="flex flex-col">
-            <div class="flex w-full gap-5">
+            <div class="flex text-lg w-full items-end gap-5">
               <input
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
                 required
                 type="date"
                 on:invalid="{() => {
@@ -419,19 +557,38 @@
                 bind:value="{cuota2}"
               />
               <section
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               >
-                <span class="text-xl px-3">Bs.</span>
+                <span class="text-xl px-3"
+                  >{#if metodocuota2 === "dolares"}${:else}Bs.{/if}</span
+                >
                 <input
                   type="number"
                   step="0.01"
                   name="monto_cuota2"
-                  bind:value="{montocuota2}"
                   required
                   min="0"
                   placeholder="Ingrese monto"
-                  class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                  bind:value="{montocuota2}"
+                  class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
                 />
+              </section>
+              <section
+                class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              >
+                <select
+                  name="metodo_cuota2"
+                  id="prefijo"
+                  bind:value="{metodocuota2}"
+                  class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[8px] w-full"
+                >
+                  <option value="disabled" disabled
+                    >Elija un método de pago</option
+                  >
+                  <option value="transferencia">Transferencia</option>
+                  <option value="bolivares">Efectivo en Bolívares</option>
+                  <option value="dolares">Efectivo en Dólares</option>
+                </select>
               </section>
             </div>
           </label>
@@ -450,9 +607,9 @@
         </label>
         {#if cuota3Checked}
           <label for="cuota3" class="flex flex-col">
-            <div class="flex w-full gap-5">
+            <div class="flex text-lg w-full items-center gap-5">
               <input
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
                 required
                 type="date"
                 min="{cuota2}"
@@ -468,19 +625,38 @@
                 }}"
               />
               <section
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               >
-                <span class="text-xl px-3">Bs.</span>
+                <span class="text-xl px-3"
+                  >{#if metodocuota3 === "dolares"}${:else}Bs.{/if}</span
+                >
                 <input
                   type="number"
                   step="0.01"
                   name="monto_cuota3"
-                  bind:value="{montocuota3}"
                   required
                   min="0"
                   placeholder="Ingrese monto"
-                  class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                  bind:value="{montocuota3}"
+                  class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
                 />
+              </section>
+              <section
+                class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              >
+                <select
+                  name="metodo_cuota3"
+                  id="prefijo"
+                  bind:value="{metodocuota3}"
+                  class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[8px] w-full"
+                >
+                  <option value="disabled" disabled
+                    >Elija un método de pago</option
+                  >
+                  <option value="transferencia">Transferencia</option>
+                  <option value="bolivares">Efectivo en Bolívares</option>
+                  <option value="dolares">Efectivo en Dólares</option>
+                </select>
               </section>
             </div>
           </label>
@@ -499,9 +675,9 @@
         </label>
         {#if cuota4Checked}
           <label for="cuota4" class="flex flex-col">
-            <div class="flex w-full gap-5">
+            <div class="flex text-lg w-full gap-5">
               <input
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
                 required
                 type="date"
                 min="{cuota3}"
@@ -517,19 +693,38 @@
                 bind:value="{cuota4}"
               />
               <section
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               >
-                <span class="text-xl px-3">Bs.</span>
+                <span class="text-xl px-3"
+                  >{#if metodocuota4 === "dolares"}${:else}Bs.{/if}</span
+                >
                 <input
                   type="number"
                   step="0.01"
                   name="monto_cuota4"
-                  bind:value="{montocuota4}"
                   required
                   min="0"
                   placeholder="Ingrese monto"
-                  class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                  bind:value="{montocuota4}"
+                  class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
                 />
+              </section>
+              <section
+                class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              >
+                <select
+                  name="metodo_cuota4"
+                  id="prefijo"
+                  bind:value="{metodocuota4}"
+                  class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[8px] w-full"
+                >
+                  <option value="disabled" disabled
+                    >Elija un método de pago</option
+                  >
+                  <option value="transferencia">Transferencia</option>
+                  <option value="bolivares">Efectivo en Bolívares</option>
+                  <option value="dolares">Efectivo en Dólares</option>
+                </select>
               </section>
             </div>
           </label>
@@ -548,50 +743,67 @@
         </label>
         {#if cuota5Checked}
           <label for="cuota1" class="flex flex-col">
-            <div class="flex w-full gap-5">
+            <div class="flex w-full items-end gap-5 text-lg">
               <input
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
                 required
                 type="date"
                 min="{cuota4}"
                 max="{today}"
+                on:invalid="{() => {
+                  let html = window.document.getElementById('cuota5');
+                  html.setCustomValidity(
+                    'El valor debe ser igual a la fecha actual o posterior a la preinscripcion'
+                  );
+                }}"
                 name="cuota5"
                 id="cuota5"
                 bind:value="{cuota5}"
               />
               <section
-                class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+                class="bg-transparent border-dashed border-2 w-1/3 flex items-center h-[fit-content] border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               >
-                <span class="text-xl px-3">Bs.</span>
+                <span class="text-xl px-3"
+                  >{#if metodocuota5 === "dolares"}${:else}Bs.{/if}</span
+                >
                 <input
                   type="number"
                   step="0.01"
                   name="monto_cuota5"
-                  bind:value="{montocuota5}"
                   required
                   min="0"
-                  on:invalid="{() => {
-                    let html = window.document.getElementById('cuota5');
-                    html.setCustomValidity(
-                      'El valor debe ser igual a la fecha actual o posterior a la fecha de la cuota 4'
-                    );
-                  }}"
                   placeholder="Ingrese monto"
-                  class="bg-transparent border-dashed border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold accent-pink-500"
+                  bind:value="{montocuota5}"
+                  class="bg-transparent border-dashed w-[150px] border-l-2 border-t-transparent border-r-transparent border-b-transparent border-l-pink-500 text-blue-900 font-semibold"
                 />
+              </section>
+              <section
+                class="bg-transparent w-2/5 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              >
+                <select
+                  name="metodo_cuota5"
+                  id="prefijo"
+                  bind:value="{metodocuota5}"
+                  class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 px-3 py-[8px] w-full"
+                >
+                  <option value="disabled" disabled
+                    >Elija un método de pago</option
+                  >
+                  <option value="transferencia">Transferencia</option>
+                  <option value="bolivares">Efectivo en Bolívares</option>
+                  <option value="dolares">Efectivo en Dólares</option>
+                </select>
               </section>
             </div>
           </label>
         {/if}
       {/if}
-      <div
-        class="flex flex-col md:flex-row justify-center gap-4 items-center w-full p-3 py-9"
-      >
+      <div class="flex justify-center gap-4 items-center w-full p-3">
         <button
           type="submit"
           formaction="?/pago"
-          class="bg-rose-600 rounded-lg text-light-50 font-bold w-auto px-7 py-1"
-          >Editar</button
+          class="bg-rose-600 text-light-50 font-bold w-auto px-2 py-1"
+          >Editar pago</button
         >
       </div>
     </form>

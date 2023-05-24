@@ -3,18 +3,22 @@
   import pascalConFondo from "$lib/images/pascalConFondo.png";
   import { page } from "$app/stores";
   import { browser } from "$app/environment";
-  import { json } from "@sveltejs/kit";
+  import { moneyBsConverter, moneyUsdConverter } from "$lib/resources/moneyConverter";
+  import { goto } from "$app/navigation";
 
   export let data: PageData;
-  let titles: string[] = ["Fecha", "Cédula", "Nombre", "Pago", "Monto"];
+  let titles: string[] = ["Fecha", "Cédula", "Nombre", "Pago", "Monto", "Método"];
 
-  let pdf: {
-    fecha: string;
-    cedula: string;
-    nombre: string;
-    pago: string;
-    monto: string;
-  }[] = data.pdfData;
+  let pdf = data.pdfData;
+  let total: number = 0;
+  if (browser) {
+    if (!pdf.length) {
+      goto("/pagos");
+      window.alert("No hay pagos que cumplan con la condición de búsqueda.");
+    } else{
+      total = pdf.map((df) => df.montoNum).reduce((a, b) => a + b);
+    }
+  }
 
   const months = [
     "Enero",
@@ -41,12 +45,21 @@
     logs.push(
       `${new Date().getDate()} de ${
         months[new Date().getMonth()]
-      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${new Date().getMinutes() > 9 ? new Date().getMinutes() : '0'+ new Date().getMinutes()}:${new Date().getSeconds() > 9 ? new Date().getSeconds() : '0'+ new Date().getSeconds()} >>> se ha generado un reporte `
+      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${
+        new Date().getMinutes() > 9
+          ? new Date().getMinutes()
+          : "0" + new Date().getMinutes()
+      }:${
+        new Date().getSeconds() > 9
+          ? new Date().getSeconds()
+          : "0" + new Date().getSeconds()
+      } >>> se ha generado un reporte `
     );
     localStorage.setItem("log", JSON.stringify(logs));
     window.print();
   };
 </script>
+
 
 <section id="pdf">
   <div class="absolute right-10 top-5 flex justify-between gap-3">
@@ -89,14 +102,13 @@
       </section>
     </header>
     <main class="py-5 px-10 w-full mx-auto">
-      <h2 class="text-2xl font-bold text-center">
-        Reporte de pagos {#if data.param == "dia"}del {`${day.getDate()}/${
+      <h2 class="text-2xl font-bold">
+        Reporte de pagos {#if data.filtro == "bolivares"}hechos con bolívares en efectivo{:else if data.filtro == "dolares"}hechos con dólares en efectivo{:else if data.filtro == "transferencia"}por transferencia{/if} {#if data.param == "dia"}del {`${day.getDate()}/${
             day.getMonth() + 1
           }/${day.getFullYear()}`}
-        {:else if data.param == "semanal"}de los últimos siete días{:else if data.param == "mensual"}del
-          último mes{/if}
+        {:else if data.param == "semanal"}de los últimos siete días{:else if data.param == "mensual"}de {months[new Date().getMonth()]}{/if}
       </h2>
-      <table class="my-5 w-full">
+      <table class="my-5 w-23/24">
         <thead>
           {#each titles as title}
             <th class="text-xl font-semibold">{title}</th>
@@ -106,12 +118,16 @@
           <tr>
             <td>{row.fecha}</td>
             <td>{row.cedula}</td>
-            <td>{row.nombre}</td>
-            <td>{row.pago}</td>
-            <td>{row.monto} Bs.</td>
+            <td class="capitalize">{row.nombre}</td>
+            <td class="capitalize">{row.pago}</td>
+            <td>{row.monto}</td>
+            <td class="capitalize">{row.metodo}</td>
           </tr>
         {/each}
       </table>
+      <span class="text-xl font-semibold"
+        >Monto total: {#if data.filtro != "dolares"} {moneyBsConverter(total)} {:else}{moneyUsdConverter(total)}{/if} </span
+      >
     </main>
   </div>
 </section>
