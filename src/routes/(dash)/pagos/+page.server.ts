@@ -4,9 +4,7 @@ import type { Estudiante, Pago } from "../../../app";
 
 export const load: PageServerLoad = async ({ locals: { client }, url }) => {
   const { ok, data } = await client.GET("/api/admin");
-  console.log(data);
   const { ok: okey, data: estudiantes } = await client.GET("/api/students");
-  let estudiantesSinPagos: Estudiante[] = [];
   let estudiantesConPagos: Estudiante[] = [];
   const response = await fetch(
     "https://api.exchangedyn.com/markets/quotes/usdves/bcv"
@@ -18,9 +16,7 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
       if (pago.cedula_estudiante === estudiante.cedula) return pago;
     });
 
-    if (!pago[0]) {
-      estudiantesSinPagos.push(estudiante);
-    } else {
+    if (pago[0]) {
       estudiantesConPagos.push(estudiante);
     }
   });
@@ -31,12 +27,7 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
     }
 
     return {
-      pagos: [],
-      montos: [],
-      estudiantes: estudiantesSinPagos.map((estudiante: Estudiante) => ({
-        cedula: estudiante.cedula,
-        nombre: estudiante.nombre,
-      })),
+      pagos: []
     };
   }
 
@@ -66,45 +57,6 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
   }
 
   return {
-    pagos: allData,
-    estudiantes: estudiantesSinPagos.map((estudiante: Estudiante) => ({
-      cedula: estudiante.cedula,
-      nombre: estudiante.nombre,
-    })), tasa: bcv
+    pagos: allData, tasa: bcv
   };
-};
-
-export const actions: Actions = {
-  default: async ({ locals: { client }, request }) => {
-    let obj = Object.fromEntries(await request.formData()) as unknown as any;
-    const payload = {
-      cedula_student: obj.cedula,
-      pre_inscripcion: obj.pre_inscripcion,
-      inscripcion: obj.inscripcion,
-      cuota1: obj.cuota1 ?? "",
-      cuota2: obj.cuota2 ?? "",
-      cuota3: obj.cuota3 ?? "",
-      cuota4: obj.cuota4 ?? "",
-      cuota5: obj.cuota5 ?? "",
-      metodo_pre_inscripcion: obj.metodo_pre_inscripcion,
-      metodo_inscripcion: obj.metodo_inscripcion,
-      metodo_cuota1: obj.metodo_cuota1 ?? "",
-      metodo_cuota2: obj.metodo_cuota2 ?? "",
-      metodo_cuota3: obj.metodo_cuota3 ?? "",
-      metodo_cuota4: obj.metodo_cuota4 ?? "",
-      metodo_cuota5: obj.metodo_cuota5 ?? "",
-      monto_pre_inscripcion: obj.monto_pre_inscripcion,
-      monto_inscripcion: obj.monto_inscripcion ?? 0,
-      monto_cuota1: obj.monto_cuota1 ?? 0,
-      monto_cuota2: obj.monto_cuota2 ?? 0,
-      monto_cuota3: obj.monto_cuota3 ?? 0,
-      monto_cuota4: obj.monto_cuota4 ?? 0,
-      monto_cuota5: obj.monto_cuota5 ?? 0,
-    };
-
-    const { ok, data } = await client.POST("/api/admin/add", payload);
-    if (!ok) {
-      return fail(400, { message: "Error al insertar" });
-    }
-  },
 };

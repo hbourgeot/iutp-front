@@ -5,18 +5,28 @@
   import { browser } from "$app/environment";
   import { moneyBsConverter, moneyUsdConverter } from "$lib/resources/moneyConverter";
   import { goto } from "$app/navigation";
-
+  
   export let data: PageData;
-  let titles: string[] = ["Fecha", "Cédula", "Nombre", "Pago", "Monto", "Método"];
 
+  const totales = $page.url.searchParams.get("m");
+
+  let titles: string[] = ["Fecha", "Cédula", "Nombre", "Pago", "Monto", "Método"];
   let pdf = data.pdfData;
   let total: number = 0;
+  let transferencias: number = 0;
+  let bolivares: number = 0;
+  let dolares: number = 0;
   if (browser) {
     if (!pdf.length) {
       goto("/pagos");
       window.alert("No hay pagos que cumplan con la condición de búsqueda.");
     } else{
       total = pdf.map((df) => df.montoNum).reduce((a, b) => a + b);
+      if(totales === "monto"){
+        transferencias = pdf.map(pd => pd.metodo === "transferencia" ? pd.montoNum : 0).reduce((a, b) => a + b)
+        bolivares = pdf.map(pd => pd.metodo === "bolivares" ? pd.montoNum : 0).reduce((a, b) => a + b)
+        dolares = pdf.map(pd => pd.metodo === "dolares" ? pd.montoNum : 0).reduce((a, b) => a + b)
+      }
     }
   }
 
@@ -102,6 +112,22 @@
       </section>
     </header>
     <main class="py-5 px-10 w-full mx-auto">
+      {#if totales === "monto"}
+      <h2 class="text-2xl font-bold">Total de pagos: </h2>
+      <p class="flex justify-between my-3 text-lg w-11/12 font-semibold capitalize"
+        >transferencias: <span class="text-pink-600 font-bold text-2xl">{moneyBsConverter(transferencias)}</span>  </p
+      >
+      <p class="flex justify-between my-3 text-lg w-11/12 font-semibold capitalize"
+        >pagos con bolivares en efectivo: <span class="text-pink-600 font-bold text-2xl">{moneyBsConverter(bolivares)}</span> </p
+      >
+      <p class="flex justify-between my-3 text-lg w-11/12 font-semibold capitalize"
+        >pagos con dólares en efectivo (a tasa de BCV: {moneyBsConverter(+data.bcv)}): <span class="text-pink-600 font-bold text-2xl">{moneyBsConverter(dolares)}</span> </p
+      >
+      <hr class="border-sky-700 w-20/21 my-2" />
+      <p class="flex justify-between my-3 text-4xl w-11/12 font-bold capitalize"
+        >Total: <span class="text-pink-600">{moneyBsConverter(transferencias + bolivares + dolares)}</span> </p
+      >
+      {:else}
       <h2 class="text-2xl font-bold">
         Reporte de pagos {#if data.filtro == "bolivares"}hechos con bolívares en efectivo{:else if data.filtro == "dolares"}hechos con dólares en efectivo{:else if data.filtro == "transferencia"}por transferencia{/if} {#if data.param == "dia"}del {`${day.getDate()}/${
             day.getMonth() + 1
@@ -125,9 +151,12 @@
           </tr>
         {/each}
       </table>
+      {#if data.filtro !== "nada"}
       <span class="text-xl font-semibold"
         >Monto total: {#if data.filtro != "dolares"} {moneyBsConverter(total)} {:else}{moneyUsdConverter(total)}{/if} </span
       >
+      {/if}
+      {/if}
     </main>
   </div>
 </section>

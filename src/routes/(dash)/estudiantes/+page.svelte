@@ -34,8 +34,8 @@
     searchTerms: `${estudiante.cedula} ${estudiante.cedula.replace(
       "V-" || "E-",
       ""
-    )} ${estudiante.correo} ${estudiante.estado} ${estudiante.semestre}to ${
-      estudiante.telefono} ${carreras[estudiante.carrera - 1].toLowerCase()} ${estudiante.nombre.toLowerCase()}`,
+    )} ${estudiante.correo} ${estudiante.estado} ${
+      estudiante.telefono} ${carreras[estudiante.carrera - 1].toLowerCase()} ${estudiante.semestre}to ${estudiante.nombre.toLowerCase()}`,
   }));
   console.log(estudiantesTerms);
 
@@ -104,6 +104,7 @@
     };
   };
 
+$: console.log($estudianteSearch.search, $estudianteSearch.filtered);
 </script>
 
 <section class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto">
@@ -113,8 +114,9 @@
       class="rounded-lg bg-blue-400 text-white font-bold py-3 px-5"
       on:click={() => (addStudent = true)}>Agregar Estudiante</button
     >
-    <select name="" id="semestre" bind:value="{semestre}" on:change={() => $estudianteSearch.search = semestre} class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[190px]">
-      <option value="">Filtrar por semestre</option>
+    <select name="" id="semestre" bind:value="{semestre}" on:change={() => $estudianteSearch.search = `${carrera} ${semestre}`} class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[190px]">
+      <option value="disabled" disabled>Filtrar por semestre</option>
+      <option value="">Todos los semestres</option>
       <option value="1to">1ro</option>
       <option value="2to">2do</option>
       <option value="3to">3ro</option>
@@ -122,9 +124,10 @@
       <option value="5to">5to</option>
       <option value="6to">6to</option>
     </select>
-    <select name="" id="carrera" bind:value="{carrera}" on:change={() => $estudianteSearch.search = carrera} class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[300px]">
-      <option value="">Filtrar por carrera</option>
-      {#each carreras as carrera, i}
+    <select name="" id="carrera" bind:value="{carrera}" on:change={() => $estudianteSearch.search = `${carrera} ${semestre}`} class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[300px]">
+      <option value="disabled" disabled>Filtrar por carrera</option>
+      <option value="">Todas las carreras</option>
+      {#each carreras as carrera}
         <option value={carrera.toLowerCase()}>{carrera}</option>
       {/each}
     </select>

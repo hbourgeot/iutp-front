@@ -4,24 +4,50 @@
 import pascalLogo from "$lib/images/pascalConFondo.png";
   import { page } from "$app/stores";
   
+  let title: string= "";
+  $: switch($page.url.pathname){
+    case "/estudiantes":
+      title = "Estudiantes";
+      break;
+    case "/pagos":
+      title = "Pagos";
+      break;
+    case "/pagos/registrar":
+      title = "Registrar Pago";
+      break;
+    case "/factura":
+      title = "Factura";
+      break;
+    case "/inicio":
+      title = "Bienvenido";
+      break;
+    case "/movimientos":
+      title = "Movimientos";
+    default:
+      if($page.url.pathname.includes("/pago/V-") || $page.url.pathname.includes("/pago/E-")){
+        title = `Pago del Estudiante con cédula ${$page.url.pathname.replace("/", " ".toLowerCase().replace("Pagos ", ""))}`
+      } else if($page.url.pathname.includes("/reporte/")){
+        title = `Reporte ${$page.url.pathname.includes("dia") ? 'del ' + $page.url.href.slice(-10) : $page.url.pathname.replace("/reporte/", "")}`
+      }
+  }
 </script>
 
 <header
   class="flex justify-between h-20 items-center p-3 text-light-50 bg-[#0868b2] sticky top-0"
 >
-  <h1 class="text-2xl w-1/11">
+  <h1 class="text-2xl w-1/9">
     <a href="/inicio" class="flex items-center font-bold gap-1">
       <img
         src={pascalLogo}
         alt="Logo del Instituto Pascal"
-        class="mr-3 w-2/10 rounded-full"
+        class="mr-3 w-2/7 rounded-full"
       />
       IUT Pascal</a
     >
   </h1>
 
   <h3 class="text-2xl -ml-25 capitalize">
-    {$page.url.pathname.replaceAll("/", " ")}
+    {title}
   </h3>
   <a
       href="/logout" title="Cerrar sesión"

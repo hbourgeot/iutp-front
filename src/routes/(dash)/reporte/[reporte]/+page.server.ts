@@ -1,5 +1,5 @@
 import { moneyBsConverter, moneyUsdConverter } from "$lib/resources/moneyConverter";
-import type { Estudiante, Pago } from "../../../app";
+import type { Estudiante, Pago } from "../../../../app";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async ({ locals: { client }, params, url }) => {
@@ -757,5 +757,5 @@ export const load = (async ({ locals: { client }, params, url }) => {
       }
     }
   }
-  return { pdfData, param: params.reporte, filtro: filtro ?? "nada" };
+  return { pdfData, param: params.reporte, filtro: filtro ?? "nada", bcv: bcv };
 }) satisfies PageServerLoad;
