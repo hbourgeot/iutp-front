@@ -99,7 +99,7 @@
           Seleccione el estudiante
 
           <input
-            class="input autocomplete bg-sky-700/50 placeholder-light-50/90 text-light-50"
+            class="input autocomplete bg-pink-600/50 placeholder-light-50/90 text-light-50"
             type="search"
             name="autocomplete-search"
             bind:value="{inputPopupDemo}"
@@ -109,7 +109,7 @@
           <div data-popup="popupAutocomplete">
             <Autocomplete
               bind:input="{inputPopupDemo}"
-              class="bg-pink-700 text-light-50 rounded-lg w-full py-2 w-1/4 px-11"
+              class="bg-sky-600 text-light-50 rounded-lg w-full py-2 w-1/4 px-11"
               options="{estudiantesComplete}"
               on:selection="{onStudentSelection}"
             />
