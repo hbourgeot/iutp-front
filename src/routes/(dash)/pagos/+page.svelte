@@ -3,12 +3,50 @@
   import type { Estudiante, Pago } from "../../../app";
   import type { PageData } from "./$types";
   import DatePicker from "@beyonk/svelte-datepicker/src/components/DatePicker.svelte";
+  import { Autocomplete, popup } from "@skeletonlabs/skeleton";
+  import {
+    computePosition,
+    autoUpdate,
+    offset,
+    shift,
+    flip,
+    arrow,
+  } from "@floating-ui/dom";
+  import { storePopup } from "@skeletonlabs/skeleton";
+  import type {
+    AutocompleteOption,
+    PopupSettings,
+  } from "@skeletonlabs/skeleton";
 
   export let data: PageData;
 
+  storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
   let estudiantes: Estudiante[] | undefined = data.estudiantes;
+  const carreras = [
+    "Informática",
+    "Tecnología de Alimentos",
+    "Comunicación y Electrónica",
+    "Diseño Gráfico",
+    "Contabilidad y Costos",
+    "Administración Bancaria y Financiera",
+    "Administración Empresarial",
+  ];
+  let estudiantesComplete: AutocompleteOption[] = estudiantes?.map(
+    (estudiante) => ({
+      label: `${estudiante.cedula} - ${estudiante.nombre}`,
+      value: estudiante.cedula,
+      keywords: `${estudiante.cedula}, ${estudiante.cedula.replace(
+        "V-" || "E-",
+        ""
+      )}, ${estudiante.correo}, ${estudiante.estado}, ${
+        estudiante.telefono
+      }, ${carreras[estudiante.carrera - 1].toLowerCase()}, ${
+        estudiante.semestre
+      }to, ${estudiante.nombre.toLowerCase()}`,
+      meta: { healthy: false },
+    })
+  ) as unknown as AutocompleteOption[];
   let opcionReporte: string = "dia";
-  let montoCheck: boolean;
   let filtroReporte: string = "";
   let verEstudiante: string = estudiantes ? estudiantes[0].cedula : "";
   const date = new Date();
@@ -18,11 +56,25 @@
   let reportDay: any;
   let selected: any;
 
+  let popupSettings: PopupSettings = {
+    event: "focus-click",
+    target: "popupAutocomplete",
+    placement: "bottom",
+  };
+
+  let inputPopupDemo: string = "";
+
   function formatDate(date = new Date()) {
     const year = date.toLocaleString("default", { year: "numeric" });
     const month = date.toLocaleString("default", { month: "2-digit" });
     const day = date.toLocaleString("default", { day: "2-digit" });
     return [year, month, day].join("-");
+  }
+
+  function onStudentSelection(event: any): void {
+    inputPopupDemo = event.detail.label;
+    verEstudiante = event.detail.value;
+    console.log(verEstudiante);
   }
 </script>
 
@@ -45,21 +97,23 @@
         </h2>
         <label for="reporte">
           Seleccione el estudiante
-          <select
-            bind:value="{verEstudiante}"
-            name="reporte"
-            disabled="{estudiantes ? false : true}"
-            id="reporte"
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
-          >
-            {#if estudiantes}
-              {#each estudiantes as estudiante}
-                <option value="{estudiante.cedula}">{estudiante.nombre}</option>
-              {/each}
-            {:else}
-              <option value="">Registre un pago para buscar</option>
-            {/if}
-          </select>
+
+          <input
+            class="input autocomplete bg-sky-700/50 placeholder-light-50/90 text-light-50"
+            type="search"
+            name="autocomplete-search"
+            bind:value="{inputPopupDemo}"
+            placeholder="Buscar pagos..."
+            use:popup="{popupSettings}"
+          />
+          <div data-popup="popupAutocomplete">
+            <Autocomplete
+              bind:input="{inputPopupDemo}"
+              class="bg-pink-700 text-light-50 rounded-lg w-full py-2 w-1/4 px-11"
+              options="{estudiantesComplete}"
+              on:selection="{onStudentSelection}"
+            />
+          </div>
         </label>
         <a
           href="/pagos/{verEstudiante}"

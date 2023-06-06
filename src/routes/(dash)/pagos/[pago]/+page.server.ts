@@ -2,13 +2,10 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({locals:{client}, params}) => {
-    const {ok, data} = await client.GET(`/api/students/${params.estudiante}`)
+    const {ok, data} = await client.GET(`/api/students/${params.pago}`)
     if (ok && !data.estudiante) {
-        throw redirect(302, `/pagos?regPago=${params.estudiante}`)
+        throw redirect(302, `/pagos?regPago=${params.pago}`)
     }
-
-    console.log(data);
-
     return {
         estudiante: data.estudiante,
         pago: data.pago,
@@ -22,7 +19,7 @@ export const actions: Actions = {
         let obj = Object.fromEntries(await request.formData()) as unknown as any
         
         const payload = {
-          cedula_student: params.estudiante,
+          cedula_student: params.pago,
           pre_inscripcion: obj.pre_inscripcion,
           inscripcion: obj.inscripcion,
           cuota1: obj.cuota1 ?? "",
@@ -51,22 +48,4 @@ export const actions: Actions = {
             return fail(400, {"message": "Error al actualizar el pago, intente de nuevo"})
         }
     },
-
-    estudiante:async ({locals:{client}, request, params}) => {
-        let obj = Object.fromEntries(await request.formData()) as unknown as any
-        const payload = {
-            cedula: params.estudiante,
-            fullname: obj.nombre,
-            correo: obj.email,
-            password: params.estudiante.replace("V-", ""),
-            estado: obj.estado,
-            telefono: obj.telefono,
-            semestre: parseInt(obj.semestre),
-            carrera: obj.carrera
-        }
-        const { ok, data } = await client.PUT(`/api/students/update/${payload.cedula}`, payload)
-        if (!ok) {
-            return fail(400, {"message": "Error al actualizar el estudiante, intente de nuevo"})
-        }
-    }
 };

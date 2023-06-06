@@ -15,7 +15,15 @@
     alert(form.message);
   }
 
-  const carreras = ["Informática", "Tecnología de Alimentos", "Comunicación y Electrónica", "Diseño Gráfico", "Contabilidad y Costos", "Administración Bancaria y Financiera", "Administración Empresarial"]
+  const carreras = [
+    "Informática",
+    "Tecnología de Alimentos",
+    "Comunicación y Electrónica",
+    "Diseño Gráfico",
+    "Contabilidad y Costos",
+    "Administración Bancaria y Financiera",
+    "Administración Empresarial",
+  ];
 
   let estado: string = "nuevo ingreso";
   let documento: string = "V";
@@ -35,14 +43,15 @@
       "V-" || "E-",
       ""
     )} ${estudiante.correo} ${estudiante.estado} ${
-      estudiante.telefono} ${carreras[estudiante.carrera - 1].toLowerCase()} ${estudiante.semestre}to ${estudiante.nombre.toLowerCase()}`,
+      estudiante.telefono
+    } ${carreras[estudiante.carrera - 1].toLowerCase()} ${
+      estudiante.semestre
+    }to ${estudiante.nombre.toLowerCase()}`,
   }));
-  console.log(estudiantesTerms);
 
   const estudianteSearch = createSearchStore(estudiantesTerms);
-  $: if(telefonoInput.toString().length > 7){
-    console.log(telefonoInput);
-    telefonoInput = telefonoInput.toString().slice(0,7)
+  $: if (telefonoInput.toString().length > 7) {
+    telefonoInput = telefonoInput.toString().slice(0, 7);
   }
 
   const unsubscribe = estudianteSearch.subscribe((model) =>
@@ -104,77 +113,99 @@
     };
   };
 
-$: console.log($estudianteSearch.search, $estudianteSearch.filtered);
+  $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
 </script>
 
-<section class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto">
-  <div class="flex self-end justify-around items-center w-[980px]">
+<section class="main w-full">
+  <div class="bg-light-50/92 flex flex-col justify-start p-7 w-full h-full overflow-y-auto">
+  <div class="flex self-end justify-around items-center w-[auto]">
     <button
       type="button"
-      class="rounded-lg bg-blue-400 text-white font-bold py-3 px-5"
-      on:click={() => (addStudent = true)}>Agregar Estudiante</button
+      class="rounded-lg bg-sky-600 text-white font-bold py-3 px-5"
+      on:click="{() => (addStudent = true)}">Agregar Estudiante</button
     >
-    <select name="" id="semestre" bind:value="{semestre}" on:change={() => $estudianteSearch.search = `${carrera} ${semestre}`} class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[190px]">
-      <option value="disabled" disabled>Filtrar por semestre</option>
-      <option value="">Todos los semestres</option>
-      <option value="1to">1ro</option>
-      <option value="2to">2do</option>
-      <option value="3to">3ro</option>
-      <option value="4to">4to</option>
-      <option value="5to">5to</option>
-      <option value="6to">6to</option>
-    </select>
-    <select name="" id="carrera" bind:value="{carrera}" on:change={() => $estudianteSearch.search = `${carrera} ${semestre}`} class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[300px]">
-      <option value="disabled" disabled>Filtrar por carrera</option>
-      <option value="">Todas las carreras</option>
-      {#each carreras as carrera}
-        <option value={carrera.toLowerCase()}>{carrera}</option>
-      {/each}
-    </select>
-    <input
-      type="text"
-      bind:value={search} on:change="{() => $estudianteSearch.search = search}"
-      class="self-end rounded-lg border-[#db0081] border-dashed border-4 p-2 w-[280px]"
-      placeholder="Buscar estudiante..."
-    />
   </div>
-  {#if estudiantes.length && $estudianteSearch.filtered.length}
-    <table>
-      <thead>
-        <th>Cédula de Identidad</th>
-        <th>Nombres y Apellidos</th>
-        <th>Teléfono</th>
-        <th>Semestre</th>
-        <th>Estado</th>
-        <th>Carrera</th>
-      </thead>
-      <tbody>
-        {#each $estudianteSearch.filtered as estudiante}
-          <tr>
-            <td>{estudiante.cedula}</td>
-            <td style="text-transform: capitalize;">{estudiante.nombre}</td>
-            <td>{estudiante.telefono}</td>
-            <td>{estudiante.semestre}</td>
-            <td style="text-transform: capitalize;">{estudiante.estado}</td>
-            <td style="text-transform: capitalize;">{carreras[estudiante.carrera - 1]}</td>
-            <td />
-          </tr>
-        {/each}
-      </tbody>
-    </table>
-  {:else}
-    <h3 class="text-5xl font-extrabold text-[#db0081]">
-      No hay estudiantes registrados.
-    </h3>
-  {/if}
+    <section
+      class="flex flex-col justify-evenly w-full h-full font-bold self-center gap-y-5"
+    >
+      <h2 class="text-sky-600 !justify-self-start text-4xl text-center font-extrabold">
+        Buscar Estudiantes
+      </h2>
+      <div class="flex justify-around">
+        <label for="carrera" class="flex flex-col w-1/4">
+        Seleccione la carrera
+        <select
+          name="carrera"
+          id="carrera"
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+          bind:value="{carrera}"
+          on:change="{() =>
+            ($estudianteSearch.search = `${carrera} ${semestre}`)}"
+        >
+          <option value="disabled" disabled>Filtrar por carrera</option>
+          <option value="">Todas las carreras</option>
+          {#each carreras as carrera}
+            <option value="{carrera.toLowerCase()}">{carrera}</option>
+          {/each}
+        </select>
+      </label>
+      <label for="semestre" class="flex flex-col w-1/4">
+        Seleccione el semestre
+        <select
+          name="semestre"
+          id="semestre"
+          bind:value="{semestre}"
+          on:change="{() =>
+            ($estudianteSearch.search = `${carrera} ${semestre}`)}"
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+        >
+          <option value="disabled" disabled>Filtrar por semestre</option>
+          <option value="">Todos los semestres</option>
+          <option value="1to">1ro</option>
+          <option value="2to">2do</option>
+          <option value="3to">3ro</option>
+          <option value="4to">4to</option>
+          <option value="5to">5to</option>
+          <option value="6to">6to</option>
+        </select>
+      </label>
+      <label for="personalizado" class="flex flex-col w-1/4">
+        Búsqueda personalizada
+        <input
+          type="text"
+          bind:value="{search}"
+          on:change="{() => ($estudianteSearch.search = search)}"
+          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+          placeholder="Buscar estudiante..."
+        />
+      </label>
+      </div>
+      <a
+        href="/estudiantes/filtrado?s={$estudianteSearch.search}"
+        class="self-center bg-pink-600 text-center px-5 py-2 rounded-md text-light-50 font-bold w-[250px]"
+        >Ver estudiantes</a
+      >
+      <!-- <div class="flex flex-col self-center gap-y-5">
+        <h2 class="text-center text-sky-600 text-4xl font-extrabold">
+          Reporte de divisas
+        </h2>
+        <a
+        href="/reportes/billetes"
+        class="bg-pink-600 text-center px-5 py-2 rounded-md text-light-50 font-bold w-full"
+        >Generar reporte</a
+      >
+      </div> -->
+    </section>
+    <section class="flex flex-col w-1/4 self-center gap-y-5"></section>
+  </div>
 </section>
-<ModalLarge open={addStudent} headerText="Añadir estudiante" big>
-  <form method="post" use:enhance={handleSubmit}>
+<ModalLarge open="{addStudent}" headerText="Añadir estudiante" big>
+  <form method="post" use:enhance="{handleSubmit}">
     <label for="cedula" class="flex flex-col">
       Cédula de Identidad
       <div class="flex justify-start">
         <select
-          bind:value={documento}
+          bind:value="{documento}"
           name="documento"
           id="documento"
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[80px]"
@@ -187,16 +218,16 @@ $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
           required
           type="text"
           min="0"
-          on:invalid={() => {
-            let html = window.document.getElementById("cedula");
-            html.setCustomValidity("Por favor ingrese solo numeros");
-          }}
+          on:invalid="{() => {
+            let html = window.document.getElementById('cedula');
+            html.setCustomValidity('Por favor ingrese solo numeros');
+          }}"
           minlength="5"
-          maxlength={documento === "V" ? 8 : 13}
+          maxlength="{documento === 'V' ? 8 : 13}"
           pattern="\d+"
           name="cedula"
           id="cedula"
-          bind:value={cedulaInput}
+          bind:value="{cedulaInput}"
         />
       </div>
     </label>
@@ -208,12 +239,12 @@ $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
         type="text"
         name="nombre"
         minlength="6"
-        on:invalid={() => {
-          let html = window.document.getElementById("nombre");
+        on:invalid="{() => {
+          let html = window.document.getElementById('nombre');
           html.setCustomValidity(
-            "Por favor introduzca el nombre completo del estudiante"
+            'Por favor introduzca el nombre completo del estudiante'
           );
-        }}
+        }}"
         id="nombre"
       />
     </label>
@@ -231,7 +262,7 @@ $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
       Teléfono del Estudiante
       <div class="flex justify-start">
         <select
-          bind:value={prefijo}
+          bind:value="{prefijo}"
           name=""
           id="prefijo"
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[100px]"
@@ -250,7 +281,7 @@ $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
           maxlength="7"
           name=""
           id="telefonoinp"
-          bind:value={telefonoInput}
+          bind:value="{telefonoInput}"
         />
       </div>
     </label>
@@ -291,7 +322,7 @@ $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
       <label for="estado" class="flex flex-col w-2/6">
         Estado Del Estudiante
         <select
-          bind:value={estado}
+          bind:value="{estado}"
           name="estado"
           id="estado"
           class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
@@ -309,9 +340,9 @@ $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
       <button
         type="button"
         class="bg-blue-600 text-light-50 font-bold w-auto px-2 py-1"
-        on:click={() => {
+        on:click="{() => {
           addStudent = false;
-        }}>Cancelar</button
+        }}">Cancelar</button
       >
       <button type="reset" class="bg-red-300 font-bold w-auto px-2 py-1"
         >Resetear campos</button
@@ -326,25 +357,10 @@ $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
 </ModalLarge>
 
 <style lang="scss">
-  section {
+  .main {
     height: calc(100vh - 100px);
-  }
-
-  table {
-    font-size: 25px;
-    line-height: 1.5;
-  }
-
-  thead th {
-    text-align: left;
-  }
-
-  tbody tr:nth-child(odd) {
-    background-color: lighten($color: #db0081, $amount: 50%);
-  }
-
-  th,
-  td {
-    padding: 10px 15px;
+    background-image: url("$lib/images/pascalConFondo.png");
+    background-position: center;
+    background-size: cover;
   }
 </style>
