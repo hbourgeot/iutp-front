@@ -1038,7 +1038,7 @@
         type="button"
         on:click="{() => goto('/pagos')}"
         class="bg-blue-600 text-light-50 font-bold w-[140px] h-10 rounded-lg text-center px-2 py-1"
-        ><a href="/pagos" class="w-full h-full">Cancelar</a></button
+        ><a href="/pagos" class="w-full h-full">Volver atrás</a></button
       >
       <button
         type="submit"

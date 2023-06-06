@@ -1,6 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { enhance, type SubmitFunction } from "$app/forms";
+  import { goto } from "$app/navigation";
   import type { Estudiante } from "../../../../app";
   import type { ActionData, PageData } from "./$types";
 
@@ -99,7 +100,13 @@
     "Diciembre",
   ];
 
-  const handleEstudiante: SubmitFunction = ({ data }) => {
+  const handleEstudiante: SubmitFunction = ({ data, cancel }) => {
+    const clave = prompt("Ingrese la clave otorgada para poder registrar los cambios efectuados");
+    if(clave!=="12345"){
+      alert("Clave inválida, redirigiendo al inicio");
+      goto("/inicio");
+      return cancel();
+    }
     data.append("telefono", prefTelefono);
     return async ({ update }) => {
       await update();
@@ -131,6 +138,12 @@
   };
 
   const handlePago: SubmitFunction = ({ data }) => {
+    const clave = prompt("Ingrese la clave otorgada para poder registrar los cambios efectuados");
+    if(clave!=="12345"){
+      alert("Clave inválida, redirigiendo al inicio");
+      goto("/inicio");
+      return cancel();
+    }
     return async ({ update }) => {
       await update();
       const logs: any = browser
@@ -327,8 +340,8 @@
         <button
           type="submit"
           formaction="?/estudiante"
-          class="bg-rose-600 rounded-lg text-light-50 text-xl font-bold w-auto px-7 py-1"
-          >Editar</button
+          class="bg-rose-600 rounded-lg text-light-50 !text-lg font-bold w-auto px-10 py-1"
+          >Guardar cambios del estudiante</button
         >
       </div>
     </form>
@@ -802,8 +815,8 @@
         <button
           type="submit"
           formaction="?/pago"
-          class="bg-rose-600 text-light-50 font-bold w-auto px-2 py-1"
-          >Editar pago</button
+          class="bg-rose-600 rounded-lg text-light-50 !text-lg font-bold w-auto px-10 py-1"
+          >Guardar cambios del pago</button
         >
       </div>
     </form>

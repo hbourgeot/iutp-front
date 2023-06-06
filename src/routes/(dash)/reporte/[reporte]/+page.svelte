@@ -8,7 +8,7 @@
   
   export let data: PageData;
 
-  const totales = $page.url.searchParams.get("m");
+  const totales = data.param;
 
   let titles: string[] = ["Fecha", "Cédula", "Nombre", "Pago", "Monto", "Método"];
   let pdf = data.pdfData;

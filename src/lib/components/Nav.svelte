@@ -27,7 +27,7 @@ import pascalLogo from "$lib/images/pascalConFondo.png";
       if($page.url.pathname.includes("/pago/V-") || $page.url.pathname.includes("/pago/E-")){
         title = `Pago del Estudiante con cédula ${$page.url.pathname.replace("/", " ".toLowerCase().replace("Pagos ", ""))}`
       } else if($page.url.pathname.includes("/reporte/")){
-        title = `Reporte ${$page.url.pathname.includes("dia") ? 'del ' + $page.url.href.slice(-10) : $page.url.pathname.replace("/reporte/", "")}`
+        title = `Reporte ${$page.url.pathname.includes("dia") ? 'del ' + $page.url.href.slice(-10) : ""}${$page.url.pathname.includes("fecha") ? "por fechas" : ""}${$page.url.pathname.includes("monto") ? "de montos" : ""}`
       }
   }
 </script>
