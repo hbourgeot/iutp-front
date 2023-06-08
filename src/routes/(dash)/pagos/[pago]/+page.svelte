@@ -161,7 +161,7 @@
 </script>
 
 <section class="main w-full">
-  <div class="bg-light-50/92 overflow-y-auto p-7 gap-y-5 w-full h-full">
+  <div class="!bg-[#EEEEEEEE] overflow-y-auto p-7 gap-y-5 w-full h-full">
     <div class="flex w-full justify-between items-center p-8">
       <h2 class="text-5xl text-pink-500 font-bold">Pago</h2>
       <a

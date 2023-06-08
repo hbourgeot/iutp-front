@@ -117,7 +117,7 @@
 </script>
 
 <section class="main w-full">
-  <div class="bg-light-50/92 flex flex-col justify-start p-7 w-full h-full overflow-y-auto">
+  <div class="!bg-[#EEEEEEEE] flex flex-col justify-start p-7 w-full h-full overflow-y-auto">
   <div class="flex self-end justify-around items-center w-[auto]">
     <button
       type="button"

@@ -76,7 +76,7 @@
 </script>
 
 <section class="main w-full h-full">
-    <div class="bg-light-50/92 w-full h-full flex flex-col justify-center items-center">
+    <div class="!bg-[#EEEEEEEE] w-full h-full flex flex-col justify-center items-center">
     <form
   method="POST"
   use:enhance="{handleEstudiante}"

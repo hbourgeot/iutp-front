@@ -61,7 +61,7 @@
           <p class="text-light-50 align-text-top text-center h-[30px]">
             Fecha de Emisión
           </p>
-          <div class="p-1 bg-light-50 rounded-br-lg px-3 rounded-bl-lg">
+          <div class="p-1 !bg-[#EEEEEEEE] rounded-br-lg px-3 rounded-bl-lg">
             <span>{new Date().toLocaleString()}</span>
           </div>
         </section>

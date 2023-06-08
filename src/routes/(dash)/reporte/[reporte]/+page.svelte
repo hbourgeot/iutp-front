@@ -84,7 +84,7 @@
       >Volver atrás</a
     >
   </div>
-  <div class="w-[800px] bg-light-50">
+  <div class="w-[800px] !bg-[#EEEEEEEE]">
     <header class="py-5 flex justify-start items-center px-8">
       <img src="{pascalConFondo}" alt="" class="h-[fit-content] w-1/9" />
       <section class="text-center w-7/11">
@@ -106,7 +106,7 @@
         <p class="text-light-50 align-text-top text-center h-[30px]">
           Fecha del reporte
         </p>
-        <div class="p-1 bg-light-50 rounded-br-lg px-3 rounded-bl-lg">
+        <div class="p-1 !bg-[#EEEEEEEE] rounded-br-lg px-3 rounded-bl-lg">
           <span>{new Date().toLocaleString()}</span>
         </div>
       </section>

@@ -44,13 +44,13 @@
   let montoCuota3: string = "";
   let montoCuota4: string = "";
   let montoCuota5: string = "";
-  let metodoPreInscripcion: string = "dolares";
-  let metodoInscripcion: string = "dolares";
-  let metodoCuota1: string = "dolares";
-  let metodoCuota2: string = "dolares";
-  let metodoCuota3: string = "dolares";
-  let metodoCuota4: string = "dolares";
-  let metodoCuota5: string = "dolares";
+  let metodoPreInscripcion: string = "";
+  let metodoInscripcion: string = "";
+  let metodoCuota1: string = "";
+  let metodoCuota2: string = "";
+  let metodoCuota3: string = "";
+  let metodoCuota4: string = "";
+  let metodoCuota5: string = "";
   let montoDolaresPreInscripcion: number = 0;
   let montoDolaresInscripcion: number = 0;
   let montoDolaresCuota1: number = 0;
@@ -243,7 +243,7 @@
           bind:value="{cedula}"
           name="cedula"
           id="cedula"
-          class="bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+          class="!bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
         >
           {#if estudiantes.length > 0}
             {#each estudiantes as estudiante}
@@ -263,7 +263,7 @@
       Preinscripción
       <div class="flex flex-row-reverse w-full items-end gap-5">
         <input
-          class="border-0 w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
+          class="border-0 w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
           required
           type="date"
           max="{today}"
@@ -278,7 +278,7 @@
           bind:value="{preInscripcion}"
         />
         <section
-          class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
+          class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
         >
           <span class="text-xl px-3"
             >{#if metodoPreInscripcion === "dolares"}${:else}Bs.{/if}</span
@@ -301,9 +301,9 @@
             name="metodo_pre_inscripcion"
             id="prefijo"
             bind:value="{metodoPreInscripcion}"
-            class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+            class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
           >
-            <option value="disabled" disabled>Método de pago</option>
+            <option value="" disabled>Método de pago</option>
             <option value="transferencia">Transferencia</option>
             <option value="bolivares">Efectivo en Bolívares</option>
             <option value="dolares">Efectivo en Dólares</option>
@@ -315,7 +315,7 @@
           <select
             id="prefijo"
             bind:value="{montoDolaresPreInscripcion}"
-            class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
+            class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
           >
             <option value="{0}" disabled class="text-light-50/50"
               >Monto de billete</option
@@ -346,7 +346,7 @@
         >
           <input
             type="text"
-            class="border-0 w-[200px] w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
+            class="border-0 w-[200px] w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
             placeholder="Código de billete"
             bind:value="{billete.codigo}"
           />
@@ -371,7 +371,7 @@
       <label for="inscripcion" class="flex flex-col">
         <div class="flex flex-row-reverse w-full items-end gap-5">
           <input
-            class="border-0 w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
+            class="border-0 w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
             required
             type="date"
             min="{preInscripcion}"
@@ -387,7 +387,7 @@
             bind:value="{inscripcion}"
           />
           <section
-            class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
+            class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
           >
             <span class="text-xl px-3"
               >{#if metodoInscripcion === "dolares"}${:else}Bs.{/if}</span
@@ -410,9 +410,9 @@
               name="metodo_inscripcion"
               id="prefijo"
               bind:value="{metodoInscripcion}"
-              class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+              class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
             >
-              <option value="disabled" disabled>Método de pago</option>
+              <option value="" disabled>Método de pago</option>
               <option value="transferencia">Transferencia</option>
               <option value="bolivares">Efectivo en Bolívares</option>
               <option value="dolares">Efectivo en Dólares</option>
@@ -424,7 +424,7 @@
             <select
               id="prefijo"
               bind:value="{montoDolaresInscripcion}"
-              class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
+              class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
             >
               <option value="{0}" disabled class="text-light-50/50"
                 >Monto de billete</option
@@ -454,7 +454,7 @@
             >
               <input
                 type="text"
-                class="border-0 w-[200px] w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
+                class="border-0 w-[200px] w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
                 placeholder="Código de billete"
                 bind:value="{billete.codigo}"
               />
@@ -483,7 +483,7 @@
         <label for="cuota1" class="flex flex-col">
           <div class="flex flex-row-reverse w-full items-end gap-5">
             <input
-              class="border-0 w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
+              class="border-0 w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
               required
               type="date"
               on:invalid="{() => {
@@ -499,7 +499,7 @@
               bind:value="{cuota1}"
             />
             <section
-              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3"
                 >{#if metodoCuota1 === "dolares"}${:else}Bs.{/if}</span
@@ -522,9 +522,9 @@
                 name="metodo_cuota1"
                 id="prefijo"
                 bind:value="{metodoCuota1}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-                <option value="disabled" disabled>Método de pago</option>
+                <option value="" disabled>Método de pago</option>
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -536,7 +536,7 @@
               <select
                 id="prefijo"
                 bind:value="{montoDolaresCuota1}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
               >
                 <option value="{0}" disabled class="text-light-50/50"
                   >Monto de billete</option
@@ -566,7 +566,7 @@
               >
                 <input
                   type="text"
-                  class="border-0 w-[200px] w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
+                  class="border-0 w-[200px] w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
                   placeholder="Código de billete"
                   bind:value="{billete.codigo}"
                 />
@@ -596,7 +596,7 @@
         <label for="cuota2" class="flex flex-col">
           <div class="flex flex-row-reverse w-full items-end gap-5">
             <input
-              class="border-0 w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
+              class="border-0 w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
               required
               type="date"
               on:invalid="{() => {
@@ -612,7 +612,7 @@
               bind:value="{cuota2}"
             />
             <section
-              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3"
                 >{#if metodoCuota2 === "dolares"}${:else}Bs.{/if}</span
@@ -635,9 +635,9 @@
                 name="metodo_cuota2"
                 id="prefijo"
                 bind:value="{metodoCuota2}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-                <option value="disabled" disabled>Método de pago</option>
+                <option value="" disabled>Método de pago</option>
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -649,7 +649,7 @@
               <select
                 id="prefijo"
                 bind:value="{montoDolaresCuota2}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
               >
                 <option value="{0}" disabled class="text-light-50/50"
                   >Monto de billete</option
@@ -679,7 +679,7 @@
               >
                 <input
                   type="text"
-                  class="border-0 w-[200px] w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
+                  class="border-0 w-[200px] w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
                   placeholder="Código de billete"
                   bind:value="{billete.codigo}"
                 />
@@ -709,7 +709,7 @@
         <label for="cuota3" class="flex flex-col">
           <div class="flex flex-row-reverse w-full items-center gap-5">
             <input
-              class="border-0 w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
+              class="border-0 w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
               required
               type="date"
               min="{cuota2}"
@@ -725,7 +725,7 @@
               }}"
             />
             <section
-              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3"
                 >{#if metodoCuota3 === "dolares"}${:else}Bs.{/if}</span
@@ -748,9 +748,9 @@
                 name="metodo_cuota3"
                 id="prefijo"
                 bind:value="{metodoCuota3}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-                <option value="disabled" disabled>Método de pago</option>
+                <option value="" disabled>Método de pago</option>
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -762,7 +762,7 @@
               <select
                 id="prefijo"
                 bind:value="{montoDolaresCuota3}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
               >
                 <option value="{0}" disabled class="text-light-50/50"
                   >Monto de billete</option
@@ -792,7 +792,7 @@
               >
                 <input
                   type="text"
-                  class="border-0 w-[200px] w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
+                  class="border-0 w-[200px] w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
                   placeholder="Código de billete"
                   bind:value="{billete.codigo}"
                 />
@@ -822,7 +822,7 @@
         <label for="cuota4" class="flex flex-col">
           <div class="flex flex-row-reverse w-full gap-5">
             <input
-              class="border-0 w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
+              class="border-0 w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
               required
               type="date"
               min="{cuota3}"
@@ -838,7 +838,7 @@
               bind:value="{cuota4}"
             />
             <section
-              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3"
                 >{#if metodoCuota4 === "dolares"}${:else}Bs.{/if}</span
@@ -861,9 +861,9 @@
                 name="metodo_cuota4"
                 id="prefijo"
                 bind:value="{metodoCuota4}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-                <option value="disabled" disabled>Método de pago</option>
+                <option value="" disabled>Método de pago</option>
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -875,7 +875,7 @@
               <select
                 id="prefijo"
                 bind:value="{montoDolaresCuota4}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
               >
                 <option value="{0}" disabled class="text-light-50/50"
                   >Monto de billete</option
@@ -905,7 +905,7 @@
               >
                 <input
                   type="text"
-                  class="border-0 w-[200px] w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
+                  class="border-0 w-[200px] w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
                   placeholder="Código de billete"
                   bind:value="{billete.codigo}"
                 />
@@ -935,7 +935,7 @@
         <label for="cuota5" class="flex flex-col">
           <div class="flex flex-row-reverse w-full items-end gap-5">
             <input
-              class="border-0 w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
+              class="border-0 w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-pink-600 py-[9.7px] mt-1 mb-3"
               required
               type="date"
               min="{cuota4}"
@@ -951,7 +951,7 @@
               bind:value="{cuota5}"
             />
             <section
-              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
+              class="bg-transparent w-1/3 flex items-center h-[fit-content] py-[2.2px] !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 mb-3"
             >
               <span class="text-xl px-3"
                 >{#if metodoCuota5 === "dolares"}${:else}Bs.{/if}</span
@@ -974,9 +974,9 @@
                 name="metodo_cuota5"
                 id="prefijo"
                 bind:value="{metodoCuota5}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-full"
               >
-                <option value="disabled" disabled>Método de pago</option>
+                <option value="" disabled>Método de pago</option>
                 <option value="transferencia">Transferencia</option>
                 <option value="bolivares">Efectivo en Bolívares</option>
                 <option value="dolares">Efectivo en Dólares</option>
@@ -988,7 +988,7 @@
               <select
                 id="prefijo"
                 bind:value="{montoDolaresCuota5}"
-                class="bg-transparent bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
+                class="bg-transparent !bg-sky-600 text-light-50 font-semibold rounded-lg mt-1 px-3 py-[9.5px] w-[200px]"
               >
                 <option value="{0}" disabled class="text-light-50/50"
                   >Monto de billete</option
@@ -1018,7 +1018,7 @@
               >
                 <input
                   type="text"
-                  class="border-0 w-[200px] w-1/3 bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
+                  class="border-0 w-1/3 !bg-sky-600 text-light-50 font-semibold rounded-lg placeholder-light-50/50 py-[9.7px] mt-1 mb-3"
                   placeholder="Código de billete"
                   bind:value="{billete.codigo}"
                 />

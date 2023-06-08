@@ -18,6 +18,15 @@
     PopupSettings,
   } from "@skeletonlabs/skeleton";
 
+  // Your selected Skeleton theme:
+  import "@skeletonlabs/skeleton/themes/theme-skeleton.css";
+
+  // This contains the bulk of Skeletons required styles:
+  import "@skeletonlabs/skeleton/styles/skeleton.css";
+
+  // Finally, your application's global stylesheet (sometimes labeled 'app.css')
+  import "../../../app.postcss";
+
   export let data: PageData;
 
   storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
@@ -80,7 +89,7 @@
 
 <main id="pagos" class="w-full">
   <section
-    class="bg-light-50/90 h-full flex flex-col p-7 gap-y-10 w-full overflow-y-auto"
+    class="!bg-[#EEEEEEEE] h-full flex flex-col p-7 gap-y-10 w-full overflow-y-auto"
   >
     <div class="flex justify-end self-end items-center w-[650px]">
       <a
