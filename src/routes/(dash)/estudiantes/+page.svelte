@@ -112,8 +112,6 @@
       window.location.reload();
     };
   };
-
-  $: console.log($estudianteSearch.search, $estudianteSearch.filtered);
 </script>
 
 <section class="main w-full">
