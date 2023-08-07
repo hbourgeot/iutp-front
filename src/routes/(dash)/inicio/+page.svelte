@@ -27,6 +27,29 @@
     <h2 class="text-5xl font-bold text-pink-600 text-center">
       Bienvenido al Sistema Administrativo del IUT Pascal
     </h2>
+
+    <nav class="flex lg:w-full lg:flex-row flex-col justify-center gap-2 items-center text-white 
+      [&>a]:p-12
+      [&>a]:rounded-xl
+      [&>a]:bg-[#d82c90]
+    ">
+      <a
+        href="/estudiantes"
+        class="text-xl font-semibold w-full lg:w-1/6 h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-200"
+        >Estudiantes</a
+      >
+      <a
+        href="/pagos"
+        class="text-xl font-semibold w-full lg:w-1/6 h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-200"
+        >Pagos registrados</a
+      >
+      <a
+        href="/movimientos"
+        class="text-xl font-semibold w-full lg:w-1/6 h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-200"
+        >Movimientos</a
+      >
+    </nav>
+
     <div
       class="flex w-full flex-wrap items-center h-10/12 justify-center overflow-y-auto"
     >

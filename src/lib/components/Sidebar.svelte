@@ -1,4 +1,4 @@
-<nav class="flex justify-between  flex-col w-[250px] items-center text-white bg-[#0868b2]">
+<nav class="flex justify-between  flex-col w-[250px] items-center text-white hidden bg-[#0868b2]">
     <a
       href="/estudiantes"
       class="text-2xl font-semibold w-full h-full flex justify-center items-center hover:bg-[#db0081] transition-background duration-200"
