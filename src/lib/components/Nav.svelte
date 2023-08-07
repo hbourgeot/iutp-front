@@ -34,7 +34,7 @@ import pascalLogo from "$lib/images/pascalConFondo.png";
 </script>
 
 <header
-  class="flex justify-between h-20 items-center p-3 text-white bg-[#0868b2] sticky top-0"
+  class="flex justify-between h-20 items-center p-3 text-white bg-[#0868b2] sticky  top-0"
 >
   <h1 class="text-2xl w-1/9">
     <a href="/inicio" class="flex items-center font-bold gap-1">
@@ -43,12 +43,12 @@ import pascalLogo from "$lib/images/pascalConFondo.png";
         alt="Logo del Instituto Pascal"
         class="mr-3 w-12 rounded-full"
       />
-      IUT Pascal</a
+      </a
     >
   </h1>
 
   <h3 class="text-2xl -ml-25 capitalize">
-    {title}
+    IUT PASCAL
   </h3>
   <a
       href="/logout" title="Cerrar sesión"
