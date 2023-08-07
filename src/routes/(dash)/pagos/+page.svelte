@@ -101,7 +101,7 @@
           Seleccione el estudiante
 
           <input
-            class="input autocomplete bg-pink-600/50 placeholder-light-50/90 text-light-50"
+            class="input autocomplete rounded-sm placeholder-light-50/90 text-light-50 p-4"
             type="search"
             name="autocomplete-search"
             bind:value="{inputPopupDemo}"
@@ -111,7 +111,7 @@
           <div data-popup="popupAutocomplete">
             <Autocomplete
               bind:input="{inputPopupDemo}"
-              class="bg-sky-600 text-light-50 rounded-lg w-full py-2 w-1/4 px-11"
+              class="bg-sky-600 text-light-50  w-full py-2 w-1/4 px-11"
               options="{estudiantesComplete}"
               on:selection="{onStudentSelection}"
             />
@@ -143,7 +143,7 @@
             bind:value="{opcionReporte}"
             name="reporte"
             id="reporte"
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+            class="bg-transparent border border-gray-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
           >
             <option value="dia">Dia</option>
             <option value="fecha">Fechas específicas</option>
@@ -161,7 +161,7 @@
             bind:value="{filtroReporte}"
             name="filtro"
             id="filtro"
-            class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+            class="bg-transparent border border-gray-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
           >
             <option value="">Todos</option>
             <option value="transferencia">Transferencia</option>
