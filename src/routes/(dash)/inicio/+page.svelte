@@ -23,7 +23,7 @@
     <title>Bienvenido al Sistema Administrativo del IUT Pascal</title>
 </svelte:head>
 <section class="w-full overflow-y-auto">
-  <div class="overlay w-full py-5">
+  <div class="overlay flex justify-center items-center flex-col gap-20 w-full py-5">
     <h2 class="text-5xl font-bold text-pink-600 text-center">
       Bienvenido al Sistema Administrativo del IUT Pascal
     </h2>

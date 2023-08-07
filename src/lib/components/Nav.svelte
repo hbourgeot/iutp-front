@@ -1,5 +1,6 @@
 <script lang="ts">
   import {DoorExit} from "@steeze-ui/tabler-icons"
+
   import {Icon} from "@steeze-ui/svelte-icon"
 import pascalLogo from "$lib/images/pascalConFondo.png";
   import { page } from "$app/stores";
@@ -33,14 +34,14 @@ import pascalLogo from "$lib/images/pascalConFondo.png";
 </script>
 
 <header
-  class="flex justify-between h-20 items-center p-3 text-light-50 bg-[#0868b2] sticky top-0"
+  class="flex justify-between h-20 items-center p-3 text-white bg-[#0868b2] sticky top-0"
 >
   <h1 class="text-2xl w-1/9">
     <a href="/inicio" class="flex items-center font-bold gap-1">
       <img
         src={pascalLogo}
         alt="Logo del Instituto Pascal"
-        class="mr-3 w-2/7 rounded-full"
+        class="mr-3 w-12 rounded-full"
       />
       IUT Pascal</a
     >
