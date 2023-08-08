@@ -39,14 +39,8 @@
   });
 </script>
 <section class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto">
-    <div class="flex self-end justify-around items-center w-[auto]">
-    <a
-      href="/estudiantes"
-      class="rounded-lg bg-sky-600 text-white font-bold py-3 px-5"
-      on:click={() => ($estudianteSearch.search = "")}>Volver atrás</a
-    >
-  </div>
-    <table class="!text-lg">
+  <h1 class="text-4xl text-center">Lista de estudiantes</h1>
+    <table class="!text-lg table">
       <thead>
         <th>Cédula de Identidad</th>
         <th>Nombres y Apellidos</th>
@@ -58,13 +52,12 @@
       <tbody>
         {#each $estudianteSearch.filtered as estudiante}
           <tr>
-            <td><a href="/estudiantes/{estudiante.cedula}" class="text-sky-800 font-bold">{estudiante.cedula}</a></td>
-            <td style="text-transform: capitalize;">{estudiante.nombre}</td>
-            <td>{estudiante.telefono}</td>
-            <td>{estudiante.semestre}</td>
-            <td style="text-transform: capitalize;">{estudiante.estado}</td>
-            <td style="text-transform: capitalize;">{carreras[estudiante.carrera - 1]}</td>
-            <td />
+            <td class="!text-lg"><a href="/estudiantes/{estudiante.cedula}" class="text-sky-800 font-bold">{estudiante.cedula}</a></td>
+            <td class="!text-lg" style="text-transform: capitalize;">{estudiante.nombre}</td>
+            <td class="!text-lg">{estudiante.telefono}</td>
+            <td class="!text-lg">{estudiante.semestre}</td>
+            <td class="!text-lg" style="text-transform: capitalize;">{estudiante.estado}</td>
+            <td class="!text-lg" style="text-transform: capitalize;">{carreras[estudiante.carrera - 1]}</td>
           </tr>
         {/each}
       </tbody>
@@ -81,9 +74,6 @@
     text-align: left;
   }
 
-  tbody tr:nth-child(odd) {
-    background-color: lighten($color: #db0081, $amount: 50%);
-  }
 
   th,
   td {

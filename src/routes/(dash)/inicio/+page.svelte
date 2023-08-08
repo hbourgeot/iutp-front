@@ -22,9 +22,8 @@
 <svelte:head>
     <title>Bienvenido al Sistema Administrativo del IUT Pascal</title>
 </svelte:head>
-<section class="w-full  overflow-y-auto">
-  <div class="overlay flex justify-center items-center flex-col w-full py-5 ">
-    <div class='pt-[40px] text-center '>
+<section class="w-full  overflow-y-auto flex justify-center items-center flex-col py-5 ">
+    <div class='py-[20px] text-center '>
       <h2 class="text-5xl font-bold text-pink-600 font-sans text-center">
         Bienvenido
       </h2>
@@ -32,50 +31,6 @@
         Seccione un modulo de gestion
       </p>
     </div>
-
-    <div
-    class="flex w-full flex-wrap items-center px-4 h-10/12 justify-center overflow-y-auto [&>article]:max-w-[200px] lg:gap-20 lg:py-10"
-  >
-    <article class="w-1/3 flex justify-between items-center">
-      <Icon src="{UserCheck}" class="h-25 w-25 stroke-pink-600" />
-      <div class="w-full">
-        <h3 class="text-xl font-bold text-pink-600">{data.estudiantes}</h3>
-        <h3 class="text-xl">
-          {data.estudiantes > 1
-            ? "Estudiantes registrados"
-            : "Estudiante registrado"}
-        </h3>
-      </div>
-    </article>
-
-
-    <article class="w-1/3 flex justify-between items-center">
-      <Icon src="{Receipt}" class="h-25 w-25 stroke-pink-600" />
-      <div class="w-full">
-        <h3 class="text-xl font-bold text-pink-600">{data.pagos}</h3>
-        <h3 class="text-xl">
-          {data.pagos > 1 ? "Pagos registrados" : "Pago registrado"}
-        </h3>
-      </div>
-    </article>
-    <article class="w-1/3 flex justify-between items-center">
-      <Icon src="{CalendarTime}" class="h-25 w-25 stroke-pink-600" />
-      <div class="w-full">
-        <h3 class="text-xl font-bold text-pink-600">{data.pagosDelMes}</h3>
-        <h3 class="text-xl">
-          {data.pagos > 1
-            ? "Pagos registrados en " + months[new Date().getMonth()]
-            : "Pago registrado en" + months[new Date().getMonth()]}
-        </h3>
-      </div>
-    </article>
-  </div>
-
-
-
-
-
-
 
 
     <div class='card-container w-[90%] gap-10 flex flex-wrap flex-row justify-center lg:justify-start lg:w-[60%] lg:gap-10 lg:h-[70%] lg:justify-center
@@ -148,25 +103,11 @@
       </a>
     </div>
 
-
-
-
-  </div>
 </section>
 
 <style>
   section.w-full {
     height: calc(100vh - 80px);
-    width: 100%;
-    background-image: url("$lib/images/pascalConFondo.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center center;
-  }
-
-  .overlay{
-    background-color: rgba(255, 255, 255, 0.8);
-    height: 99%;
   }
 
   .card-container article {

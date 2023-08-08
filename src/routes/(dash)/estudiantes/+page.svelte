@@ -2,9 +2,9 @@
   import { createSearchStore, searchHandler } from "$lib/resources/store";
   import { onDestroy } from "svelte";
   import type { Estudiante } from "../../../app";
-  import type { SubmitFunction } from "$app/forms";
-  import type { ActionData, PageData } from "./$types";
+  import type { ActionData, PageData, SubmitFunction } from "./$types";
   import ModalLarge from "$lib/components/ModalLarge.svelte";
+  import {DatePicker} from "attractions";
   import { enhance } from "$app/forms";
   import { browser } from "$app/environment";
 
@@ -15,15 +15,7 @@
     alert(form.message);
   }
 
-  const carreras = [
-    "Informática",
-    "Tecnología de Alimentos",
-    "Comunicación y Electrónica",
-    "Diseño Gráfico",
-    "Contabilidad y Costos",
-    "Administración Bancaria y Financiera",
-    "Administración Empresarial",
-  ];
+  const carreras = data.carreras;
 
   let estado: string = "nuevo ingreso";
   let documento: string = "V";
@@ -44,10 +36,11 @@
       ""
     )} ${estudiante.correo} ${estudiante.estado} ${
       estudiante.telefono
-    } ${carreras[estudiante.carrera - 1].toLowerCase()} ${
+    } ${carreras.find((carrera: any) => carrera.id == estudiante.carrera)} ${
       estudiante.semestre
     }to ${estudiante.nombre.toLowerCase()}`,
   }));
+  $: console.log(estudiantesTerms);
 
   const estudianteSearch = createSearchStore(estudiantesTerms);
   $: if (telefonoInput.toString().length > 7) {
@@ -78,7 +71,7 @@
   ];
 
   let semestre = "";
-  let carrera = "";
+  let carreraSeleccionada = "";
   let search = "";
 
   const handleSubmit: SubmitFunction = ({ data, cancel }) => {
@@ -114,36 +107,41 @@
   };
 </script>
 
-<section class="main w-full">
-  <div class="!bg-[#EEEEEEEE] flex flex-col justify-start p-7 w-full h-full overflow-y-auto">
-  <div class="flex self-end justify-around items-center w-[auto]">
+<section
+  class="main w-full flex flex-col justify-evenly p-7 h-full overflow-y-auto"
+>
+  <div
+    class="flex absolute top-5 right-5 self-end justify-around items-center w-[auto]"
+  >
     <button
       type="button"
       class="rounded-lg bg-sky-600 text-white font-bold py-3 px-5 btn variant-filled"
       on:click="{() => (addStudent = true)}">Agregar Estudiante</button
     >
   </div>
-    <section
-      class="flex flex-col justify-evenly w-full h-full font-bold self-center gap-y-5"
+  <section
+    class="flex flex-col justify-evenly w-3/4 h-1/2 font-bold self-center gap-y-5"
+  >
+    <h2
+      class="text-sky-600 !justify-self-start text-5xl text-center font-extrabold"
     >
-      <h2 class="text-sky-600 !justify-self-start text-5xl text-center font-extrabold">
-        Estudiantes
-      </h2>
-      <div class="flex justify-around">
-        <label for="carrera" class="flex flex-col w-1/4 label">
+      Estudiantes
+    </h2>
+    <div class="flex justify-around">
+      <label for="carrera" class="flex flex-col w-1/4 label">
         Seleccione la carrera
         <select
           name="carrera"
           id="carrera"
           class="select font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
-          bind:value="{carrera}"
+          bind:value="{carreraSeleccionada}"
           on:change="{() =>
-            ($estudianteSearch.search = `${carrera} ${semestre}`)}"
+            ($estudianteSearch.search = `${carreraSeleccionada} ${semestre}`)}"
         >
           <option value="disabled" disabled>Filtrar por carrera</option>
           <option value="">Todas las carreras</option>
           {#each carreras as carrera}
-            <option value="{carrera.toLowerCase()}">{carrera}</option>
+            <option value="{carrera.id}">{carrera.nombre}</option>
           {/each}
         </select>
       </label>
@@ -154,7 +152,7 @@
           id="semestre"
           bind:value="{semestre}"
           on:change="{() =>
-            ($estudianteSearch.search = `${carrera} ${semestre}`)}"
+            ($estudianteSearch.search = `${carreraSeleccionada} ${semestre}`)}"
           class="select font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
         >
           <option value="disabled" disabled>Filtrar por semestre</option>
@@ -177,13 +175,13 @@
           placeholder="Buscar estudiante..."
         />
       </label>
-      </div>
-      <a
-        href="/estudiantes/filtrado?s={$estudianteSearch.search}"
-        class="self-center bg-pink-600 text-center px-5 py-2 rounded-md text-light-50 font-bold w-[250px] btn variant-filled"
-        >Ver estudiantes</a
-      >
-      <!-- <div class="flex flex-col self-center gap-y-5">
+    </div>
+    <a
+      href="/estudiantes/filtrado?s={$estudianteSearch.search}"
+      class="self-center bg-pink-600 text-center px-5 py-2 rounded-md text-light-50 font-bold w-[250px] btn variant-filled"
+      >Ver estudiantes</a
+    >
+    <!-- <div class="flex flex-col self-center gap-y-5">
         <h2 class="text-center text-sky-600 text-4xl font-extrabold">
           Reporte de divisas
         </h2>
@@ -193,52 +191,112 @@
         >Generar reporte</a
       >
       </div> -->
-    </section>
-    <section class="flex flex-col w-1/4 self-center gap-y-5"></section>
-  </div>
+  </section>
 </section>
 <ModalLarge open="{addStudent}" headerText="Añadir estudiante" big>
-  <form method="post" use:enhance="{handleSubmit}">
-    <label for="cedula" class="flex flex-col">
-      Cédula de Identidad
-      <div class="flex justify-start">
-        <select
-          bind:value="{documento}"
-          name="documento"
-          id="documento"
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[80px]"
-        >
-          <option value="V">V</option>
-          <option value="E">E</option>
-        </select>
+  <form method="post" use:enhance="{handleSubmit}" class="flex flex-col gap-1">
+    <div class="flex justify-between mb-3">
+      <label for="cedula" class="flex flex-col w-2/5">
+        Cédula de Identidad
+        <div class="flex justify-start input-group rounded-lg">
+          <select
+            bind:value="{documento}"
+            name="documento"
+            id="documento"
+            class="select text-blue-900 font-semibold rounded-lg px-5 w-[200px]"
+          >
+            <option value="V">Venezolano</option>
+            <option value="E">Extranjero</option>
+          </select>
+          <input
+            class="input (text) text-blue-900 font-semibold rounded-lg px-3"
+            required
+            type="text"
+            min="0"
+            on:invalid="{() => {
+              let html = window.document.getElementById('cedula');
+              //@ts-ignore
+              html.setCustomValidity('Por favor ingrese solo numeros');
+            }}"
+            minlength="5"
+            maxlength="{documento === 'V' ? 8 : 13}"
+            pattern="\d+"
+            name="cedula"
+            id="cedula"
+            bind:value="{cedulaInput}"
+          />
+        </div>
+      </label>
+      <label for="telefono" class="flex flex-col w-2/5">
+        Teléfono del Estudiante
+        <div class="flex justify-start input-group rounded-lg">
+          <select
+            bind:value="{prefijo}"
+            name=""
+            id="prefijo"
+            class="select text-blue-900 font-semibold rounded-lg w-[100px]"
+          >
+            <option value="0412">0412</option>
+            <option value="0414">0414</option>
+            <option value="0424">0424</option>
+            <option value="0416">0416</option>
+            <option value="0426">0426</option>
+          </select>
+          <input
+            class="input (number) text-blue-900 font-semibold rounded-lg"
+            required
+            type="number"
+            minlength="7"
+            maxlength="7"
+            name=""
+            id="telefonoinp"
+            bind:value="{telefonoInput}"
+          />
+        </div>
+      </label>
+    </div>
+    <div class="flex justify-between items-top">
+      <label for="edad" class="flex flex-col">
+        Edad
         <input
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+          class="input (number) text-blue-900 font-semibold mt-1 mb-3 rounded-lg px-5 py-2"
           required
-          type="text"
-          min="0"
-          on:invalid="{() => {
-            let html = window.document.getElementById('cedula');
-            html.setCustomValidity('Por favor ingrese solo numeros');
-          }}"
-          minlength="5"
-          maxlength="{documento === 'V' ? 8 : 13}"
-          pattern="\d+"
-          name="cedula"
-          id="cedula"
-          bind:value="{cedulaInput}"
+          type="number"
+          min="1"
+          max="100"
+          name="edad"
+          id="edad"
         />
-      </div>
-    </label>
+      </label>
+      <label for="sexo" class="flex flex-col w-3/6">
+        Sexo
+        <select
+          name="sexo"
+          id="sexo"
+          value="M"
+          class="select text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+        >
+          <option value="M">Masculino</option>
+          <option value="F">Femenino</option>
+        </select>
+      </label>
+      <label for="sexo" class="flex flex-col w-1/4">
+        Fecha de nacimiento
+        <DatePicker format="%d-%m-%Y" right={true} inputClass="!input !(text) !mt-1 !py-5 !w-[100%] !rounded-lg" disabledDates="{[{start: new Date()}]}">
+        </DatePicker>
+      </label>
+    </div>
     <label for="nombre" class="flex flex-col">
       Nombres y Apellidos
       <input
-        class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+        class="input (text) text-blue-900 font-semibold rounded-lg mt-1 mb-3 py-1 px-5"
         required
         type="text"
         name="nombre"
         minlength="6"
         on:invalid="{() => {
           let html = window.document.getElementById('nombre');
+          // @ts-ignore
           html.setCustomValidity(
             'Por favor introduzca el nombre completo del estudiante'
           );
@@ -246,42 +304,33 @@
         id="nombre"
       />
     </label>
+    <label for="direccion" class="flex flex-col">
+      Dirección
+      <input
+        class="input (text) text-blue-900 font-semibold rounded-lg mt-1 mb-3 py-1 px-5"
+        required
+        type="text"
+        name="direccion"
+        minlength="6"
+        on:invalid="{() => {
+          let html = window.document.getElementById('nombre');
+          // @ts-ignore
+          html.setCustomValidity(
+            'Por favor introduzca el nombre completo del estudiante'
+          );
+        }}"
+        id="direccion"
+      />
+    </label>
     <label for="email" class="flex flex-col">
       Correo Electrónico
       <input
-        class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+        class="input (text) text-blue-900 font-semibold rounded-lg mt-1 mb-3 py-1 px-5"
         required
         type="email"
         name="email"
         id="email"
       />
-    </label>
-    <label for="telefono" class="flex flex-col">
-      Teléfono del Estudiante
-      <div class="flex justify-start">
-        <select
-          bind:value="{prefijo}"
-          name=""
-          id="prefijo"
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-[100px]"
-        >
-          <option value="0412">0412</option>
-          <option value="0414">0414</option>
-          <option value="0424">0424</option>
-          <option value="0416">0416</option>
-          <option value="0426">0426</option>
-        </select>
-        <input
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
-          required
-          type="number"
-          minlength="7"
-          maxlength="7"
-          name=""
-          id="telefonoinp"
-          bind:value="{telefonoInput}"
-        />
-      </div>
     </label>
     <div class="flex justify-start gap-x-4 w-full">
       <label for="semestre" class="flex flex-col w-1/6">
@@ -290,7 +339,7 @@
           name="semestre"
           id="semestre"
           value="1"
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+          class="select text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
         >
           <option value="1">1ero</option>
           <option value="2">2do</option>
@@ -306,15 +355,13 @@
           value="1"
           name="carrera"
           id="carrera"
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
+          class="select text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
         >
-          <option value="1">Informatica</option>
-          <option value="2">Tecnología de Alimentos</option>
-          <option value="3">Comunicación y Electrónica</option>
-          <option value="4">Diseño Gráfico</option>
-          <option value="5">Contabilidad y Costos</option>
-          <option value="6">Administración Bancaria y Financiera</option>
-          <option value="7">Administración de Empresas</option>
+          {#each carreras as carrera}
+            <option value="{carrera.id}" class="capitalize"
+              >{carrera.nombre}</option
+            >
+          {/each}
         </select>
       </label>
       <label for="estado" class="flex flex-col w-2/6">
@@ -323,7 +370,7 @@
           bind:value="{estado}"
           name="estado"
           id="estado"
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
+          class="select text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3"
         >
           <option value="nuevo ingreso">Nuevo ingreso</option>
           <option value="regular">Regular</option>
@@ -337,17 +384,19 @@
     >
       <button
         type="button"
-        class="bg-blue-600 text-light-50 font-bold w-auto px-2 py-1"
+        class="btn variant-filled-secondary text-light-50 font-bold w-[160px] rounded-lg px-2 py-1"
         on:click="{() => {
           addStudent = false;
         }}">Cancelar</button
       >
-      <button type="reset" class="bg-red-300 font-bold w-auto px-2 py-1"
+      <button
+        type="reset"
+        class="btn variant-filled-tertiary font-bold w-[160px] rounded-lg px-2 py-1"
         >Resetear campos</button
       >
       <button
         type="submit"
-        class="bg-rose-600 text-light-50 font-bold w-auto px-2 py-1"
+        class="btn variant-filled-primary text-light-50 font-bold w-[160px] rounded-lg px-2 py-1"
         >Añadir</button
       >
     </div>
