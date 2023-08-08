@@ -4,7 +4,7 @@
   import type { Estudiante } from "../../../app";
   import type { ActionData, PageData, SubmitFunction } from "./$types";
   import ModalLarge from "$lib/components/ModalLarge.svelte";
-  import {DatePicker} from "attractions";
+  import { DatePicker } from "attractions";
   import { enhance } from "$app/forms";
   import { browser } from "$app/environment";
 
@@ -50,7 +50,6 @@
   const unsubscribe = estudianteSearch.subscribe((model) =>
     searchHandler(model)
   );
-
   onDestroy(() => {
     unsubscribe();
   });
@@ -282,8 +281,12 @@
       </label>
       <label for="sexo" class="flex flex-col w-1/4">
         Fecha de nacimiento
-        <DatePicker format="%d-%m-%Y" right={true} inputClass="!input !(text) !mt-1 !py-5 !w-[100%] !rounded-lg" disabledDates="{[{start: new Date()}]}">
-        </DatePicker>
+        <DatePicker
+          format="%d-%m-%Y"
+          right="{true}"
+          inputClass="!mt-1 !py-5 !w-[100%] !rounded-lg"
+          disabledDates="{[{ start: new Date() }]}"
+        />
       </label>
     </div>
     <label for="nombre" class="flex flex-col">
@@ -402,3 +405,16 @@
     </div>
   </form>
 </ModalLarge>
+
+<style lang="scss">
+
+  :global(.text-field > input){
+    background-color: #e3e4ff !important;
+    border: #9799fc solid 3px;
+  }
+
+  :global(.month-display, .text-field > input){
+    color: #3751a0;
+    font-weight: 600 !important;
+  }
+</style>

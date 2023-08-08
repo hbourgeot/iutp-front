@@ -55,3 +55,14 @@ export const getAccessToken = (event: RequestEvent) => {
     return access_token;
   }
 };
+
+export const logOut = async (
+  event: RequestEvent
+) => {
+  try {
+    const { cookies } = event;
+    cookies.delete("access_token", { path: '/' });
+  } catch (e) {
+    console.error(e);
+  }
+};

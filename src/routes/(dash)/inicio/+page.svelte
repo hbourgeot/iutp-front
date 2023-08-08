@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageData } from "./$types";
   import { Icon } from "@steeze-ui/svelte-icon";
-  import { UserCheck, Receipt, CalendarTime, User } from "@steeze-ui/tabler-icons";
+  import { UserCheck, Receipt, CalendarTime, User, Eye } from "@steeze-ui/tabler-icons";
 
   const months = [
     "Enero",
@@ -27,7 +27,7 @@
         Bienvenido
       </h2>
       <p class='pt-2 text-[16px]'>
-        Seccione un modulo de gestion
+        Seleccione un módulo de gestión
       </p>
     </div>
 
@@ -51,7 +51,7 @@
               Estudiantes
             </h2>
 
-            <p>Consulte informacion respecto a los estudiantes inscritos</p>
+            <p>Consulte la información de los estudiantes inscritos</p>
           </div>
         </article>
       </a>
@@ -61,7 +61,7 @@
         <article>
           <div class='w-full flex h-[40%] justify-around items-center'>
             <figure class='bg-blue-500 w-12 h-12 rounded-xl flex justify-center items-center'>
-              <Icon class='w-8 h-8 text-white' src={Receipt}/>
+              <Icon class='w-8 h-8 text-white' src={Eye}/>
             </figure>
 
             <div style="border: 1px solid #969EAF;" class='text-[#969EAF] h-[30px] flex items-center justify-center p-1 px-2 w-[100px] rounded-md text-center'  >
@@ -71,10 +71,10 @@
 
           <div class='w-full pl-4 mx-auto'>
             <h2 class='font-bold text-[#003352]'>
-              Modulo Movimientos
+              Movimientos
             </h2>
 
-            <p>Consulte informacion respecto a los movimientos</p>
+            <p>Consulte los movimientos realizados en el sistema</p>
           </div>
         </article>
       </a>
@@ -96,7 +96,7 @@
               Modulo Pagos
             </h2>
 
-            <p>Consulte informacion respecto a los pagos</p>
+            <p>Consulte los pagos efectuados</p>
           </div>
         </article>
       </a>
@@ -119,4 +119,9 @@
     border-radius: 5px;
 
   }
+
+  .card-container{
+    height: auto;
+  }
+
 </style>

@@ -4,7 +4,7 @@ import { logIn } from '$lib/server/auth';
 
 export const load: PageServerLoad = async ({locals:{user}}) => {
     if (user) {
-      throw redirect(300, "/inicio");
+      throw redirect(300, "/inicio")
     }
 
     return {}

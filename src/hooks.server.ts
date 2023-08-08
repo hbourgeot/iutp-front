@@ -9,6 +9,7 @@ const authHandler: Handle = async ({ event, resolve }) => {
   if (!event.url.pathname.includes("/logout")) {
     const accessToken = getAccessToken(event);
     const verifyToken = accessToken?.split(" ")[1] ?? "";
+    console.log(accessToken, "hi");
     if (accessToken) {
       try {
         const decodedToken = decode(verifyToken) as {

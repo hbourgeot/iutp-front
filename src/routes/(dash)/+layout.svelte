@@ -5,6 +5,7 @@
   import { AppBar } from "@skeletonlabs/skeleton";
   import { Icon } from "@steeze-ui/svelte-icon";
   import { ChevronRight } from "@steeze-ui/tabler-icons";
+  import '../../app.scss'
   import type { LayoutData } from "./$types";
   
   export let data: LayoutData;
