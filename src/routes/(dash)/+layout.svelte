@@ -5,7 +5,9 @@
   import { AppBar } from "@skeletonlabs/skeleton";
   import { Icon } from "@steeze-ui/svelte-icon";
   import { ChevronRight } from "@steeze-ui/tabler-icons";
-  $: $page.url.pathname;
+  import type { LayoutData } from "./$types";
+  
+  export let data: LayoutData;
 </script>
 
 <AppBar
@@ -54,9 +56,7 @@
       {/each}
     </ol>
   </svelte:fragment>
-  <a href="/" class="flex flex-center">
-    <img src="{pascalConFondo}" alt="" class="logo w-[60px] rounded-full" />
-  </a>
+  <p class="text-2xl">Hola, {data.user.nombre ?? "Administrador"}</p>
   <svelte:fragment slot="trail">
     <a href="/logout">
       <button

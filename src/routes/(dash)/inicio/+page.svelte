@@ -1,8 +1,7 @@
 <script lang="ts">
   import type { PageData } from "./$types";
   import { Icon } from "@steeze-ui/svelte-icon";
-  import { UserCheck, Receipt, CalendarTime } from "@steeze-ui/tabler-icons";
-  export let data: PageData;
+  import { UserCheck, Receipt, CalendarTime, User } from "@steeze-ui/tabler-icons";
 
   const months = [
     "Enero",
@@ -22,7 +21,7 @@
 <svelte:head>
     <title>Bienvenido al Sistema Administrativo del IUT Pascal</title>
 </svelte:head>
-<section class="w-full  overflow-y-auto flex justify-center items-center flex-col py-5 ">
+<section class="w-full h-screen overflow-y-auto flex justify-center items-center flex-col py-5 ">
     <div class='py-[20px] text-center '>
       <h2 class="text-5xl font-bold text-pink-600 font-sans text-center">
         Bienvenido
@@ -33,13 +32,13 @@
     </div>
 
 
-    <div class='card-container w-[90%] gap-10 flex flex-wrap flex-row justify-center lg:justify-start lg:w-[60%] lg:gap-10 lg:h-[70%] lg:justify-center
+    <div class='card-container w-[90%] gap-10 flex flex-wrap flex-row justify-center lg:w-[60%] h-fit lg:justify-center
     '>
       <a href="/estudiantes">
         <article>
           <div class='w-full flex h-[40%] justify-around items-center'>
             <figure class='bg-green-700 w-12 h-12 rounded-xl flex justify-center items-center'>
-              <Icon class='w-8 h-8 text-white' src={Receipt}/>
+              <Icon class='w-8 h-8 text-white' src={User}/>
             </figure>
 
             <div style="border: 1px solid #969EAF;" class='text-[#969EAF] h-[30px] flex items-center justify-center p-1 px-2 w-[100px] rounded-md text-center'  >
@@ -49,10 +48,10 @@
 
           <div class='w-full pl-4 mx-auto'>
             <h2 class='font-bold text-[#003352]'>
-              Modulo Estudiantes
+              Estudiantes
             </h2>
 
-            <p>Consulte informacion respecto a estudiantes</p>
+            <p>Consulte informacion respecto a los estudiantes inscritos</p>
           </div>
         </article>
       </a>

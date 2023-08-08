@@ -37,7 +37,7 @@
       for="username"
       class="text-xl flex justify-end items-center border-1 rounded-lg"
     >
-      <Icon src="{User}" class="h-15 w-18 p-4 border-r-1" />
+      <Icon src="{User}" class="h-14 w-14 p-1 border-r-1" />
       <input
         type="text"
         name="username"
@@ -51,7 +51,7 @@
       class="text-xl flex justify-end items-center
 		 border-1 rounded-lg"
     >
-      <Icon src="{Lock}" class="h-15 w-18 p-4 border-r-1" />
+      <Icon src="{Lock}" class="h-14 w-14 p-1 border-r-1" />
       <input
         type="password"
         name="password"
@@ -62,7 +62,7 @@
     </label>
     <button
       type="submit"
-      class="w-full bg-purple-700 p-4 rounded-lg text-light-100
+      class="w-full bg-purple-700 text-white p-4 rounded-lg text-light-100 btn variant-filled
 			text-xl">Iniciar sesion</button
     >
   </form>

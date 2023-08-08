@@ -46,6 +46,7 @@ interface Pago{
 
 interface Usuario {
 	user: string,
+	nombre: string
 }
 
 export {Estudiante, Pago, Usuario};
