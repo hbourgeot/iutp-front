@@ -410,7 +410,7 @@
 
   :global(.text-field > input){
     background-color: #e3e4ff !important;
-    border: #9799fc solid 3px;
+    border: #9799fc solid 3px !important;
   }
 
   :global(.month-display, .text-field > input){
