@@ -119,23 +119,23 @@
   <div class="flex self-end justify-around items-center w-[auto]">
     <button
       type="button"
-      class="rounded-lg bg-sky-600 text-white font-bold py-3 px-5"
+      class="rounded-lg bg-sky-600 text-white font-bold py-3 px-5 btn variant-filled"
       on:click="{() => (addStudent = true)}">Agregar Estudiante</button
     >
   </div>
     <section
       class="flex flex-col justify-evenly w-full h-full font-bold self-center gap-y-5"
     >
-      <h2 class="text-sky-600 !justify-self-start text-4xl text-center font-extrabold">
-        Buscar Estudiantes
+      <h2 class="text-sky-600 !justify-self-start text-5xl text-center font-extrabold">
+        Estudiantes
       </h2>
       <div class="flex justify-around">
-        <label for="carrera" class="flex flex-col w-1/4">
+        <label for="carrera" class="flex flex-col w-1/4 label">
         Seleccione la carrera
         <select
           name="carrera"
           id="carrera"
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+          class="select font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
           bind:value="{carrera}"
           on:change="{() =>
             ($estudianteSearch.search = `${carrera} ${semestre}`)}"
@@ -155,7 +155,7 @@
           bind:value="{semestre}"
           on:change="{() =>
             ($estudianteSearch.search = `${carrera} ${semestre}`)}"
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+          class="select font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
         >
           <option value="disabled" disabled>Filtrar por semestre</option>
           <option value="">Todos los semestres</option>
@@ -173,14 +173,14 @@
           type="text"
           bind:value="{search}"
           on:change="{() => ($estudianteSearch.search = search)}"
-          class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+          class="input (text) font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
           placeholder="Buscar estudiante..."
         />
       </label>
       </div>
       <a
         href="/estudiantes/filtrado?s={$estudianteSearch.search}"
-        class="self-center bg-pink-600 text-center px-5 py-2 rounded-md text-light-50 font-bold w-[250px]"
+        class="self-center bg-pink-600 text-center px-5 py-2 rounded-md text-light-50 font-bold w-[250px] btn variant-filled"
         >Ver estudiantes</a
       >
       <!-- <div class="flex flex-col self-center gap-y-5">
@@ -353,12 +353,3 @@
     </div>
   </form>
 </ModalLarge>
-
-<style lang="scss">
-  .main {
-    height: calc(100vh - 100px);
-    background-image: url("$lib/images/pascalConFondo.png");
-    background-position: center;
-    background-size: cover;
-  }
-</style>

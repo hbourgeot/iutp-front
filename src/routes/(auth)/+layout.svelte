@@ -1,5 +1,4 @@
 <script lang="ts">
-	import 'virtual:windi.css'
 </script>
 
 <svelte:head>
@@ -12,16 +11,6 @@
 </main>
 
 <style lang="scss">
-	@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&family=PT+Serif:wght@400;700&display=swap');
-
-
-	:global(body) {
-		font-family: 'Hind Siliguri', sans-serif;
-
-	}
-	:global(h1, h2, h3, h4, h5, h6){
-		font-family: 'PT Serif', serif;
-	}
 
 	main{
 		background-image: url("$lib/images/layered-waves-haikei.svg");

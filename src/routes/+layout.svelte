@@ -1,6 +1,5 @@
 <script lang="ts">
-  import "../app.postcss";
-  import "@skeletonlabs/skeleton/themes/theme-skeleton.css";
+  import "@skeletonlabs/skeleton/themes/theme-modern.css";
 
   // This contains the bulk of Skeletons required styles:
   import "@skeletonlabs/skeleton/styles/skeleton.css";
