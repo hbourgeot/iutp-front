@@ -27,9 +27,14 @@ export const load: PageServerLoad = async ({ locals: { client } }) => {
 export const actions: Actions = {
   default: async ({ locals: { client }, request }) => {
     let obj = Object.fromEntries(await request.formData()) as unknown as any;
+    obj = {
+      ...obj,
+      fullname: obj.nombre,
+      password: obj.cedula.replace(/^(V-|E-)/g, "")
+    }
     const { ok, data } = await client.POST("/api/students/add", obj);
     if (!ok) {
-      return fail(400, { message: "Error al crear el estudiante" });
+      return fail(400, { message: data.message });
     }
   },
 };

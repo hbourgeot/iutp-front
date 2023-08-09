@@ -7,6 +7,7 @@
   import { DatePicker } from "attractions";
   import { enhance } from "$app/forms";
   import { browser } from "$app/environment";
+  import moment from "moment"
 
   export let data: PageData;
   export let form: ActionData;
@@ -27,6 +28,7 @@
   let telefono: string = "";
   $: cedula = `${documento}-${cedulaInput}`;
   $: telefono = `${prefijo}-${telefonoInput}`;
+
   let estudiantes: Estudiante[] = data.estudiantes;
   $: estudiantes = data.estudiantes;
   let estudiantesTerms = estudiantes.map((estudiante) => ({
@@ -36,11 +38,10 @@
       ""
     )} ${estudiante.correo} ${estudiante.estado} ${
       estudiante.telefono
-    } ${carreras.find((carrera: any) => carrera.id == estudiante.carrera)} ${
+    } ${carreras.find((carrera: any) => carrera.id == estudiante.carrera)?.nombre.toLowerCase()} ${
       estudiante.semestre
     }to ${estudiante.nombre.toLowerCase()}`,
   }));
-  $: console.log(estudiantesTerms);
 
   const estudianteSearch = createSearchStore(estudiantesTerms);
   $: if (telefonoInput.toString().length > 7) {
@@ -70,16 +71,21 @@
   ];
 
   let semestre = "";
+  let edad = 0;
   let carreraSeleccionada = "";
   let search = "";
+  let fecha: any = null;
 
-  const handleSubmit: SubmitFunction = ({ data, cancel }) => {
+  $:console.log(moment(fecha, "DD-MM-YYYY").format("DD-MM-YYYY"));
+
+  const handleSubmit: SubmitFunction = ({ formData, cancel }) => {
     if (estudiantes.find((estudiante) => estudiante.cedula === cedula)) {
       alert("Ya existe un estudiante con esa cédula, introduzca otra");
       return cancel();
     }
-    data.append("cedula", cedula);
-    data.append("telefono", telefono);
+    formData.append("cedula", cedula);
+    formData.append("telefono", telefono);
+    formData.append('fecha_nac', moment(fecha, "DD-MM-YYYY").format("DD-MM-YYYY"))
 
     return async ({ update }) => {
       await update();
@@ -104,6 +110,7 @@
       window.location.reload();
     };
   };
+
 </script>
 
 <section
@@ -202,15 +209,15 @@
             bind:value="{documento}"
             name="documento"
             id="documento"
-            class="select text-blue-900 font-semibold rounded-lg px-5 w-[200px]"
+            class="select text-blue-900 font-semibold rounded-lg px-5 w-auto"
           >
-            <option value="V">Venezolano</option>
-            <option value="E">Extranjero</option>
+            <option value="V">V</option>
+            <option value="E">E</option>
           </select>
           <input
             class="input (text) text-blue-900 font-semibold rounded-lg px-3"
             required
-            type="text"
+            type="number"
             min="0"
             on:invalid="{() => {
               let html = window.document.getElementById('cedula');
@@ -218,15 +225,51 @@
               html.setCustomValidity('Por favor ingrese solo numeros');
             }}"
             minlength="5"
-            maxlength="{documento === 'V' ? 8 : 13}"
-            pattern="\d+"
             name="cedula"
             id="cedula"
             bind:value="{cedulaInput}"
           />
         </div>
       </label>
-      <label for="telefono" class="flex flex-col w-2/5">
+      <label for="" class="flex flex-col w-2/4">
+        Fecha de nacimiento
+        <DatePicker
+          format="%d-%m-%Y"
+          right="{true}"
+          inputClass="!rounded-lg"
+          bind:value={fecha}
+          disabledDates="{[{ start: new Date() }]}"
+        />
+      </label>
+    </div>
+    <div class="flex justify-between items-top">
+      <label for="edad" class="flex flex-col">
+        Edad
+        <input
+          class="input (number) text-blue-900 font-semibold rounded-lg px-5 py-1"
+          required
+          type="number"
+          min="1"
+          bind:value={edad}
+          max="100"
+          name="edad"
+          id="edad"
+        />
+      </label>
+      <label for="sexo" class="flex flex-col w-1/3">
+        Sexo
+        <select
+          name="sexo"
+          id="sexo"
+          value="M"
+          class="select text-blue-900 font-semibold rounded-lg px-5 w-full"
+        >
+          <option value="M">Masculino</option>
+          <option value="F">Femenino</option>
+        </select>
+      </label>
+      
+       <label for="telefono" class="flex flex-col w-2/5">
         Teléfono del Estudiante
         <div class="flex justify-start input-group rounded-lg">
           <select
@@ -254,41 +297,6 @@
         </div>
       </label>
     </div>
-    <div class="flex justify-between items-top">
-      <label for="edad" class="flex flex-col">
-        Edad
-        <input
-          class="input (number) text-blue-900 font-semibold mt-1 mb-3 rounded-lg px-5 py-2"
-          required
-          type="number"
-          min="1"
-          max="100"
-          name="edad"
-          id="edad"
-        />
-      </label>
-      <label for="sexo" class="flex flex-col w-3/6">
-        Sexo
-        <select
-          name="sexo"
-          id="sexo"
-          value="M"
-          class="select text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
-        >
-          <option value="M">Masculino</option>
-          <option value="F">Femenino</option>
-        </select>
-      </label>
-      <label for="sexo" class="flex flex-col w-1/4">
-        Fecha de nacimiento
-        <DatePicker
-          format="%d-%m-%Y"
-          right="{true}"
-          inputClass="!mt-1 !py-5 !w-[100%] !rounded-lg"
-          disabledDates="{[{ start: new Date() }]}"
-        />
-      </label>
-    </div>
     <label for="nombre" class="flex flex-col">
       Nombres y Apellidos
       <input
@@ -297,13 +305,6 @@
         type="text"
         name="nombre"
         minlength="6"
-        on:invalid="{() => {
-          let html = window.document.getElementById('nombre');
-          // @ts-ignore
-          html.setCustomValidity(
-            'Por favor introduzca el nombre completo del estudiante'
-          );
-        }}"
         id="nombre"
       />
     </label>
@@ -315,13 +316,6 @@
         type="text"
         name="direccion"
         minlength="6"
-        on:invalid="{() => {
-          let html = window.document.getElementById('nombre');
-          // @ts-ignore
-          html.setCustomValidity(
-            'Por favor introduzca el nombre completo del estudiante'
-          );
-        }}"
         id="direccion"
       />
     </label>
@@ -331,7 +325,7 @@
         class="input (text) text-blue-900 font-semibold rounded-lg mt-1 mb-3 py-1 px-5"
         required
         type="email"
-        name="email"
+        name="correo"
         id="email"
       />
     </label>
@@ -411,10 +405,10 @@
   :global(.text-field > input){
     background-color: #e3e4ff !important;
     border: #9799fc solid 3px !important;
+    color: #3751a0;
   }
 
-  :global(.month-display, .text-field > input){
-    color: #3751a0;
-    font-weight: 600 !important;
+  :global(.date-picker,.dropdown-shell,.handle,.text-field){
+    width: 100% !important;
   }
 </style>

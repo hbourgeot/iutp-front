@@ -3,35 +3,38 @@ import type { Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import type { Usuario } from "./app";
 import { getAccessToken, getUser } from "$lib/server/auth";
-import { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 const authHandler: Handle = async ({ event, resolve }) => {
-  if (!event.url.pathname.includes("/logout")) {
-    const accessToken = getAccessToken(event);
-    const verifyToken = accessToken?.split(" ")[1] ?? "";
-    console.log(accessToken, "hi");
-    if (accessToken) {
-      try {
-        const decodedToken = decode(verifyToken) as {
-          exp: number;
-          rol: string;
-        };
-        const currentTime = Math.floor(Date.now() / 1000);
-        if (currentTime <= decodedToken.exp) {
-          event.locals.user = (await getUser(
-            accessToken
-          )) as unknown as Usuario;
-        } else {
-          return new Response(null, {
-            status: 302,
-            headers: {
-              Location: "/login",
-            },
-          });
-        }
-      } catch (e) {
-        console.log(e);
+  const accessToken = getAccessToken(event);
+  const verifyToken = accessToken?.split(" ")[1] ?? "";
+  try {
+    const decodedToken = jwt.decode(verifyToken);
+    const currentTime = Math.floor(Date.now() / 1000);
+    //@ts-ignore
+    if (currentTime <= decodedToken.exp) {
+      event.locals.user = (await getUser(
+        accessToken as unknown as string
+      )) as unknown as Usuario;
+    } else {
+      if (!event.url.pathname.includes("/login")) {
+        return new Response(null, {
+          status: 302,
+          headers: {
+            Location: "/login",
+          },
+        });
       }
+    }
+  } catch (e) {
+    console.log(e);
+    if (!event.url.pathname.includes("/login")) {
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: "/login",
+        },
+      });
     }
   }
   return await resolve(event);
@@ -54,4 +57,4 @@ const clientHandler: Handle = async ({ event, resolve }) => {
   return await resolve(event);
 };
 
-export const handle = sequence(authHandler,clientHandler);
+export const handle = sequence(authHandler, clientHandler);
