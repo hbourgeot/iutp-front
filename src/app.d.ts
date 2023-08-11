@@ -14,14 +14,34 @@ declare global {
 
 	
 }
-interface Estudiante{
-	cedula: string;
-	correo: string;
-	nombre: string;
-	semestre: number | string;
-	telefono: string;
-	estado: string;
-	carrera: number;
+
+
+export interface RootObject {
+  data: Data;
+  ok: boolean;
+  status: number;
+}
+
+export interface Data {
+  estudiante: Estudiante;
+  metodo: Metodo;
+  monto: Monto;
+  pago: Pago;
+}
+
+export interface Estudiante {
+  carrera: string;
+  cedula: string;
+  correo: string;
+  direccion: string;
+  edad: number;
+  estado: string;
+  fecha_nac: string;
+  nombre: string;
+  promedio: number;
+  semestre: number;
+  sexo: string;
+  telefono: string;
 }
 
 interface Pago{

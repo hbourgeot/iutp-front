@@ -37,7 +37,7 @@
       <a href="/estudiantes">
         <article>
           <div class='w-full flex h-[40%] justify-around items-center'>
-            <figure class='bg-green-700 w-12 h-12 rounded-xl flex justify-center items-center'>
+            <figure class='bg-[#8c51b7] w-12 h-12 rounded-xl flex justify-center items-center'>
               <Icon class='w-8 h-8 text-white' src={User}/>
             </figure>
 
@@ -60,7 +60,7 @@
       <a href="/movimientos">
         <article>
           <div class='w-full flex h-[40%] justify-around items-center'>
-            <figure class='bg-blue-500 w-12 h-12 rounded-xl flex justify-center items-center'>
+            <figure class='bg-[#ba38a4] w-12 h-12 rounded-xl flex justify-center items-center'>
               <Icon class='w-8 h-8 text-white' src={Eye}/>
             </figure>
 
@@ -82,7 +82,7 @@
       <a href="/pagos">
         <article>
           <div class='w-full flex h-[40%] justify-around items-center'>
-            <figure class='bg-yellow-500 w-12 h-12 rounded-xl flex justify-center items-center'>
+            <figure class='bg-[#dc0183] w-12 h-12 rounded-xl flex justify-center items-center'>
               <Icon class='w-8 h-8 text-white' src={Receipt}/>
             </figure>
 
@@ -93,10 +93,10 @@
 
           <div class='w-full pl-4 mx-auto'>
             <h2 class='font-bold text-[#003352]'>
-              Modulo Pagos
+              Pagos
             </h2>
 
-            <p>Consulte los pagos efectuados</p>
+            <p>Consulte los pagos efectuados por estudiantes</p>
           </div>
         </article>
       </a>

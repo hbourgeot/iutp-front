@@ -2,9 +2,10 @@
   import { page } from "$app/stores";
   import pascalConFondo from "$lib/images/pascal-fondo.png";
 
-  import { AppBar } from "@skeletonlabs/skeleton";
+  import { AppBar, Modal } from "@skeletonlabs/skeleton";
   import { Icon } from "@steeze-ui/svelte-icon";
   import { ChevronRight } from "@steeze-ui/tabler-icons";
+  import {Toast} from "@skeletonlabs/skeleton";
   import '../../app.scss'
   import type { LayoutData } from "./$types";
   
@@ -71,6 +72,8 @@
 <main class="w-full relative">
   <slot />
 </main>
+<Toast position="t" rounded="rounded-lg" color="text-white" background="bg-pink-500"/>
+<Modal/>
 <style>
   main{
     height: calc(100vh - 76px);

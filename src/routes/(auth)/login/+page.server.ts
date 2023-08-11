@@ -18,6 +18,8 @@ export const actions: Actions = {
         const { ok, data } = await logIn(event, { username, password });
         if (!ok) {
           return fail(400, { message: data.message });
-        }
+    }
+
+    throw redirect(300, "/inicio")
     }
 }
