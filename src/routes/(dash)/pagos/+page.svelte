@@ -80,10 +80,7 @@
   }
 </script>
 
-<main id="pagos" class="w-full">
-  <section
-    class="!bg-[#EEEEEEEE] h-full flex flex-col p-7 gap-y-10 w-full overflow-y-auto"
-  >
+<main id="pagos" class="w-full h-full flex flex-col p-7 gap-y-10 overflow-y-auto">
     <div class="flex justify-end self-end items-center w-[650px]">
       <a
         class="rounded-lg bg-sky-600 text-white font-bold py-3 px-5"
@@ -101,7 +98,7 @@
           Seleccione el estudiante
 
           <input
-            class="input autocomplete rounded-sm placeholder-light-50/90 text-light-50 p-4"
+            class="input (text) autocomplete rounded-lg placeholder-light-50/90 text-light-50 px-4 py-2"
             type="search"
             name="autocomplete-search"
             bind:value="{inputPopupDemo}"
@@ -111,7 +108,7 @@
           <div data-popup="popupAutocomplete">
             <Autocomplete
               bind:input="{inputPopupDemo}"
-              class="bg-sky-600 text-light-50  w-full py-2 w-1/4 px-11"
+              class="bg-sky-600 text-white py-2 w-full px-11 rounded-lg"
               options="{estudiantesComplete}"
               on:selection="{onStudentSelection}"
             />
@@ -119,7 +116,7 @@
         </label>
         <a
           href="/pagos/{verEstudiante}"
-          class="bg-pink-600 text-center px-5 py-2 rounded-md text-light-50 font-bold w-full"
+          class="bg-pink-600 text-center px-5 py-2 rounded-md text-white btn variant-filled font-bold w-full"
           >Ver pago</a
         >
         <!-- <div class="flex flex-col self-center gap-y-5">
@@ -143,7 +140,7 @@
             bind:value="{opcionReporte}"
             name="reporte"
             id="reporte"
-            class="bg-transparent border border-gray-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+            class="select text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-2 w-full"
           >
             <option value="dia">Dia</option>
             <option value="fecha">Fechas específicas</option>
@@ -161,7 +158,7 @@
             bind:value="{filtroReporte}"
             name="filtro"
             id="filtro"
-            class="bg-transparent border border-gray-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-3 w-full"
+            class="select text-blue-900 font-semibold rounded-lg mt-1 mb-3 px-5 py-2 w-full"
           >
             <option value="">Todos</option>
             <option value="transferencia">Transferencia</option>
@@ -173,7 +170,7 @@
           <label for="report-date" class="w-full"
             >Fecha de reporte
             <input
-              class="bg-transparent border-dashed border-2 border-pink-500 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
+              class="input (date) px-5 py-2 text-blue-900 font-semibold rounded-lg mt-1 mb-3"
               required
               type="date"
               max="{today}"
@@ -208,7 +205,7 @@
               href="/reporte/dia?d={reportDay}{filtroReporte !== ''
                 ? `&f=${filtroReporte}`
                 : ''}"
-              class="bg-pink-600 px-5 py-2 rounded-md text-light-50 font-bold w-full"
+              class="bg-pink-600 px-5 text-white btn variant-filled py-2 rounded-lg font-bold w-full"
               >Generar reporte</a
             >
           {:else if opcionReporte == "fecha"}
@@ -218,7 +215,7 @@
               )}&ff={formatDate(selected?.to)}{filtroReporte !== ''
                 ? `&f=${filtroReporte}`
                 : ''}"
-              class="bg-pink-600 px-5 py-2 rounded-md text-light-50 font-bold w-full"
+              class="bg-pink-600 px-5 text-white btn variant-filled py-2 rounded-lg font-bold w-full"
               >Generar reporte</a
             >
           {:else}
@@ -226,22 +223,18 @@
               href="/reporte/monto?fi={formatDate(
                 selected?.from
               )}&ff={formatDate(selected?.to)}"
-              class="bg-pink-600 px-5 py-2 rounded-md text-light-50 font-bold w-full"
+              class="bg-pink-600 px-5 text-white btn variant-filled py-2 rounded-lg font-bold w-full"
               >Generar reporte</a
             >
           {/if}
         </footer>
       </section>
     </div>
-  </section>
 </main>
 
 <style lang="scss">
   #pagos {
     height: calc(100vh - 100px);
-    background-image: url("$lib/images/pascalConFondo.png");
-    background-position: center;
-    background-size: cover;
   }
 
   :global(input[type="checkbox"]) {

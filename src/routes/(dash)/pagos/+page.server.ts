@@ -11,7 +11,7 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
   );
   const currency = await response.json();
   const bcv = currency.sources.BCV.quote;
-  estudiantes.map((estudiante: any) => {
+  /*estudiantes.map((estudiante: any) => {
     let pago = data.pagos.filter((pago: any) => {
       if (pago.cedula_estudiante === estudiante.cedula) return pago;
     });
@@ -19,7 +19,7 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
     if (pago[0]) {
       estudiantesConPagos.push(estudiante);
     }
-  });
+  });*/
 
   if (!ok) {
     if (!okey) {
@@ -31,7 +31,5 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
     };
   }
 
-  return {
-    estudiantes: estudiantesConPagos, tasa: bcv
-  };
+  return { pagos: [] };
 };
