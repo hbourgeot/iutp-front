@@ -1,33 +1,21 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import type { PageData } from "./$types";
-  export let data: PageData;
-  let bcv = parseFloat(data.bcv);
   import pascalConFondo from "$lib/images/pascalConFondo.png";
   import {
     moneyBsConverter,
     moneyUsdConverter,
   } from "$lib/resources/moneyConverter";
-  let descripciones: string[] = $page.url.searchParams.getAll("d");
-  let metodos: string[] = $page.url.searchParams.getAll("m");
-  $: console.log(conceptos);
-  let montos: number[] = $page.url.searchParams
-    .getAll("t")
-    .map((monto) => parseFloat(monto));
-  let conceptos: { descripcion: string; monto: number; metodo: string }[] = [];
+  
+  export let data: PageData;
+  let bcv = parseFloat(data.bcv);
 
-  for (let i = 0; i < descripciones.length; i++) {
-    conceptos.push({
-      descripcion: descripciones[i],
-      monto: montos[i],
-      metodo: metodos[i],
-    });
-  }
+  //@ts-ignore
+  let concepto: { descripcion: string; monto: number; metodo: string } = {descripcion: data.metodoPago?.descripcion, monto: parseFloat(data.monto?.monto)};
 </script>
 
 <div class="overflow">
-  {#each conceptos as concepto}
-    <section class="w-[750px] m-5 flex flex-col">
+    <section class="w-[750px] bg-white m-5 flex flex-col">
       <div class="absolute right-10 top-5 flex justify-between gap-3">
         <button
           type="button"
@@ -41,7 +29,7 @@
         >
       </div>
       <header class="py-5 flex justify-start items-center px-8">
-        <img src="{pascalConFondo}" alt="" class="h-[fit-content] w-1/9" />
+        <img src="{pascalConFondo}" alt="" class="h-[fit-content] w-[200px]" />
         <section class="text-center w-7/11">
           <h2 class="text-2xl font-medium">S.C. IUTEPAS</h2>
           <p class="text-sm">
@@ -70,11 +58,11 @@
         <div class="flex flex-col w-full">
           <h2 class="self-start text-xl capitalize">
             <span class="font-bold">Razón Social:</span>
-            {$page.url.searchParams.get("e")}
+            {data.nombreEstudiante}
           </h2>
           <h2 class="self-start text-xl">
             <span class="font-bold">C.I. o RIF:</span>
-            {$page.url.searchParams.get("ci")}
+            {data.estudiante}
           </h2>
           <div
             class="w-11/12 flex justify-between font-bold border-t border-b mt-10 border-dark-200"
@@ -116,7 +104,6 @@
         </div>
       </article>
     </section>
-  {/each}
 </div>
 
 <style>
@@ -125,8 +112,12 @@
       display: none !important;
     }
     div.overflow {
-      height: fit-content !important;
+      height: 100vh;
       overflow: hidden;
+    }
+
+    :global(.app-bar){
+      display: none !important;
     }
   }
   div.overflow {
