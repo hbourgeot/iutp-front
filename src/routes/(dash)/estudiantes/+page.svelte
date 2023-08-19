@@ -76,8 +76,6 @@
   let search = "";
   let fecha: any = null;
 
-  $:console.log(moment(fecha, "DD-MM-YYYY").format("DD-MM-YYYY"));
-
   const handleSubmit: SubmitFunction = ({ formData, cancel }) => {
     if (estudiantes.find((estudiante) => estudiante.cedula === cedula)) {
       alert("Ya existe un estudiante con esa cédula, introduzca otra");
@@ -112,6 +110,10 @@
   };
 
 </script>
+
+<svelte:head>
+  <title>Estudiantes - Administración IUTEPAS</title>
+</svelte:head>
 
 <section
   class="main w-full flex flex-col justify-evenly p-7 h-full overflow-y-auto"

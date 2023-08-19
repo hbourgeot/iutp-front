@@ -1,14 +1,16 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import type { Estudiante } from "../../../../app";
+import { systemLogger } from "$lib/server/logger";
 
-export const load = (async ({locals:{client}, params}) => {
-    const { ok, data } = await client.GET(`/api/students/${params.estudiante}`);
-    if (ok && !data.estudiante) {
-      throw redirect(302, `/pagos?regPago=${params.estudiante}`);
-  }
+export const load = (async ({ locals: { client, user }, params }) => {
+  const { ok, data } = await client.GET(`/api/students/${params.estudiante}`);
   
   const { ok: isOk, data: carreraData } = await client.GET("/api/carreras");
+  if (!ok && !isOk) {
+    return {};
+  }
+  systemLogger.info(user.nombre + " ha entrado a ver los datos del estudiante " + data.nombre.toUpperCase())
 
   const carreras: {
     id: string;
@@ -22,26 +24,25 @@ export const load = (async ({locals:{client}, params}) => {
           (t: { id: string; nombre: string }) => t.id === carrera.id
         )
     );
-  
+
   console.log(data);
-  
-    return {
-      estudiante: data.estudiante,
-      pago: data.pago,
-      monto: data.monto,
-      metodo: data.metodo,
-      carreras
-    };
+
+  return {
+    estudiante: data,
+    carreras,
+  };
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-  default: async ({ locals: { client }, request, params }) => {
-    let obj: Estudiante | any = Object.fromEntries(await request.formData()) as unknown as any;
+  default: async ({ locals: { client, user }, request, params }) => {
+    let obj: Estudiante | any = Object.fromEntries(
+      await request.formData()
+    ) as unknown as any;
 
     obj = {
       ...obj,
-      fullname: obj.nombre
-    }
+      fullname: obj.nombre,
+    };
     const { ok, data } = await client.PUT(
       `/api/students/update/${params.estudiante}`,
       obj
@@ -53,6 +54,8 @@ export const actions: Actions = {
       });
     }
 
-    return {message: "El estudiante ha sido editado exitosamente", ok: true}
+    systemLogger.warn(user.nombre + " ha editado algunos datos del estudiante " + obj.fullname.toUpperCase())
+
+    return { message: "El estudiante ha sido editado exitosamente", ok: true };
   },
 };

@@ -4,7 +4,7 @@
 
   import { AppBar, Modal } from "@skeletonlabs/skeleton";
   import { Icon } from "@steeze-ui/svelte-icon";
-  import { ChevronRight } from "@steeze-ui/tabler-icons";
+  import { ChevronRight, Logout } from "@steeze-ui/tabler-icons";
   import {Toast} from "@skeletonlabs/skeleton";
   import '../../app.scss'
   import type { LayoutData } from "./$types";
@@ -63,8 +63,8 @@
     <a href="/logout">
       <button
         type="submit"
-        class="bg-pink-600 text-gray-200 px-3 py-1 rounded-xl ml-4 h-[50px] text-light-50"
-        >Cerrar sesión</button
+        class="btn variant-filled-primary px-3 py-1 rounded-xl ml-4 h-[50px] text-light-50 flex gap-x-3 self-center"
+        ><Icon src={Logout} class="h-5 w-5"/> Salir</button
       >
     </a>
   </svelte:fragment>

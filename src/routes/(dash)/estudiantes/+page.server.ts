@@ -1,14 +1,15 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
+import { systemLogger } from "$lib/server/logger";
 
-export const load: PageServerLoad = async ({ locals: { client } }) => {
-  
+export const load: PageServerLoad = async ({ locals: { client, user } }) => {
   const { ok, data: estudiantes } = await client.GET("/api/students");
-  if (!ok) {
+  const { ok: isOk, data } = await client.GET("/api/carreras");
+  if (!ok || !isOk) {
     return { estudiantes: [], carreras: [] };
   }
 
-  const { ok: isOk, data } = await client.GET("/api/carreras");
+  systemLogger.info(user.nombre + " ha entrado al módulo de los estudiantes")
 
   const carreras: {
     id: string;
@@ -25,7 +26,7 @@ export const load: PageServerLoad = async ({ locals: { client } }) => {
 };
 
 export const actions: Actions = {
-  default: async ({ locals: { client }, request }) => {
+  default: async ({ locals: { client, user }, request }) => {
     let obj = Object.fromEntries(await request.formData()) as unknown as any;
     obj = {
       ...obj,
@@ -33,6 +34,7 @@ export const actions: Actions = {
       password: obj.cedula.replace(/^(V-|E-)/g, "")
     }
     const { ok, data } = await client.POST("/api/students/add", obj);
+    systemLogger.warn(user.nombre + " ha registrado al estudiante " + obj.nombre.toUpperCase())
     if (!ok) {
       return fail(400, { message: data.message });
     }

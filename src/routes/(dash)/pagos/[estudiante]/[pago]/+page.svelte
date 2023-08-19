@@ -11,7 +11,9 @@
   let billetes = data.billetes;
   let pago = data.pago;
 </script>
-
+<svelte:head>
+  <title>Detalles - Administración IUTEPAS</title>
+</svelte:head>
 <section class="bg-white w-1/2 mx-auto p-8 pt-10 rounded-lg shadow-md">
   <h1 class="text-2xl font-bold mb-4 text-surface-500">Información del Pago</h1>
   <div class="grid grid-cols-2 gap-4">

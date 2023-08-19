@@ -122,31 +122,14 @@
 
     return async ({ update }) => {
       await update();
-      let estudiante = "";
-      const logs: any = browser
-        ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
-        : [];
-      logs.push(
-        `${new Date().getDate()} de ${
-          months[new Date().getMonth()]
-        } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${
-          new Date().getMinutes() > 9
-            ? new Date().getMinutes()
-            : "0" + new Date().getMinutes()
-        }:${
-          new Date().getSeconds() > 9
-            ? new Date().getSeconds()
-            : "0" + new Date().getSeconds()
-        } >>> se ha registrado un pago correspondiente al estudiante con la cédula`
-      );
-      localStorage.setItem("log", JSON.stringify(logs));
     };
   };
 
-  let selectedCedula = "";
   let selectedMetodo = "";
 </script>
-
+<svelte:head>
+  <title>Registrar Pago - Administración IUTEPAS</title>
+</svelte:head>
 <main class="w-full">
   <div class="mx-auto lg:w-1/3 md:w-2/3 w-full p-4">
     <h1 class="text-2xl font-semibold mb-4">Formulario de Pago</h1>

@@ -9,15 +9,19 @@
     export let data: PageData;
 
     let estudiantes: Estudiante[] = data.estudiantes;
-    const carreras = ["Informática", "Tecnología de Alimentos", "Comunicación y Electrónica", "Diseño Gráfico", "Contabilidad y Costos", "Administración Bancaria y Financiera", "Administración Empresarial"]
+    const carreras = data.carreras
   $: estudiantes = data.estudiantes;
     let estudiantesTerms = estudiantes.map((estudiante) => ({
     ...estudiante,
+    carrera: carreras.find((carrera: any) => carrera.id == estudiante.carrera)?.nombre,
     searchTerms: `${estudiante.cedula} ${estudiante.cedula.replace(
       "V-" || "E-",
       ""
     )} ${estudiante.correo} ${estudiante.estado} ${
-      estudiante.telefono} ${carreras[estudiante.carrera - 1].toLowerCase()} ${estudiante.semestre}to ${estudiante.nombre.toLowerCase()}`,
+      estudiante.telefono
+    } ${carreras.find((carrera: any) => carrera.id == estudiante.carrera)?.nombre.toLowerCase()} ${
+      estudiante.semestre
+    }to ${estudiante.nombre.toLowerCase()}`,
   }));
 
   const estudianteSearch = createSearchStore(estudiantesTerms);
@@ -38,6 +42,9 @@
     unsubscribe();
   });
 </script>
+<svelte:head>
+  <title>Filtrado de estudiantes - Administración IUTEPAS</title>
+</svelte:head>
 <section class="flex flex-col p-7 gap-y-10 w-full overflow-y-auto">
   <h1 class="text-4xl text-center">Lista de estudiantes</h1>
     <table class="!text-lg table">
@@ -57,7 +64,7 @@
             <td class="!text-lg">{estudiante.telefono}</td>
             <td class="!text-lg">{estudiante.semestre}</td>
             <td class="!text-lg" style="text-transform: capitalize;">{estudiante.estado}</td>
-            <td class="!text-lg" style="text-transform: capitalize;">{carreras[estudiante.carrera - 1]}</td>
+            <td class="!text-lg" style="text-transform: capitalize;">{estudiante.carrera}</td>
           </tr>
         {/each}
       </tbody>

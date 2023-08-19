@@ -18,7 +18,6 @@
 
 <svelte:head>
   <title>Inicio de Sesion</title>
-  <meta name="description" content="Svelte demo app" />
 </svelte:head>
 <svelte:window bind:innerHeight="{y}" />
 <section

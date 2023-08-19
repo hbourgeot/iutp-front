@@ -13,7 +13,9 @@
   //@ts-ignore
   let concepto: { descripcion: string; monto: number; metodo: string } = {descripcion: data.metodoPago?.descripcion, monto: parseFloat(data.monto?.monto), metodo: data.metodoPago?.nombre};
 </script>
-
+<svelte:head>
+  <title>Factura N° {data.nroFactura} - Administración IUTEPAS</title>
+</svelte:head>
 <div class="overflow">
     <section class="w-[750px] bg-white m-5 flex flex-col">
       <div class="absolute right-10 top-5 flex justify-between gap-3">

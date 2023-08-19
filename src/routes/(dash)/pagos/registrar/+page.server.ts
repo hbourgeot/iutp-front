@@ -1,8 +1,9 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Estudiante } from "../../../../app";
 import type { Actions, PageServerLoad } from "./$types";
+import { systemLogger } from "$lib/server/logger";
 
-export const load = (async ({ locals: { client } }) => {
+export const load = (async ({ locals: { client,user } }) => {
   const { ok: okey, data: estudiantes } = await client.GET("/api/students");
   if (!okey) {
     return { estudiantes: [] };
@@ -15,14 +16,15 @@ export const load = (async ({ locals: { client } }) => {
   const currency = await response.json();
   const bcv = currency.sources.BCV.quote;
 
+  systemLogger.warn("Atención, " + user.nombre + " puede que registre un pago");
+
   return { estudiantes: estudiantesCedula, tasa: parseFloat(bcv) };
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-  default: async ({ locals: { client }, request }) => {
+  default: async ({ locals: { client, user }, request }) => {
     const form = await request.formData();
     let payload = Object.fromEntries(form);
-    console.log(payload);
     
     const { ok, data } = await client.POST("/api/pagos/add", payload)
     if (!ok) {
@@ -42,6 +44,8 @@ export const actions: Actions = {
         }
       }
     }
+
+    systemLogger.warn(user.nombre + " ha registrado un pago del estudiante de C.I. N° " + payload.cedula_estudiante + " por concepto '" + payload.descripcion + "'")
 
     throw redirect(302, `/factura/${data.pagoId}`)
   },

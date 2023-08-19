@@ -3,14 +3,24 @@
   import pascalConFondo from "$lib/images/pascalConFondo.png";
   import { page } from "$app/stores";
   import { browser } from "$app/environment";
-  import { moneyBsConverter, moneyUsdConverter } from "$lib/resources/moneyConverter";
+  import {
+    moneyBsConverter,
+    moneyUsdConverter,
+  } from "$lib/resources/moneyConverter";
   import { goto } from "$app/navigation";
-  
+
   export let data: PageData;
 
   const totales = data.param;
 
-  let titles: string[] = ["Fecha", "Cédula", "Nombre", "Pago", "Monto", "Método"];
+  let titles: string[] = [
+    "Fecha",
+    "Cédula",
+    "Nombre",
+    "Pago",
+    "Monto",
+    "Método",
+  ];
   let pdf = data.pdfData;
   let total: number = 0;
   let transferencias: number = 0;
@@ -23,70 +33,34 @@
     } else{
       total = pdf.map((df) => df.montoNum).reduce((a, b) => a + b);
       if(totales === "monto"){
-        transferencias = pdf.map(pd => pd.metodo === "transferencia" ? pd.montoNum : 0).reduce((a, b) => a + b)
-        bolivares = pdf.map(pd => pd.metodo === "bolivares" ? pd.montoNum : 0).reduce((a, b) => a + b)
-        dolares = pdf.map(pd => pd.metodo === "dolares" ? pd.montoNum : 0).reduce((a, b) => a + b)
+        transferencias = pdf.map(pd => pd.metodo === "Transferencia" ? pd.montoNum : 0).reduce((a, b) => a + b)
+        bolivares = pdf.map(pd => pd.metodo === "Punto" ? pd.montoNum : 0).reduce((a, b) => a + b)
+        dolares = pdf.map(pd => pd.metodo === "Efectivo" ? pd.montoNum : 0).reduce((a, b) => a + b)
       }
     }
   }
-
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
 
   const day = new Date($page.url.searchParams.get("d") as unknown as string);
   day.setHours(24);
 
   const print = () => {
-    const logs: any = browser
-      ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
-      : [];
-    logs.push(
-      `${new Date().getDate()} de ${
-        months[new Date().getMonth()]
-      } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${
-        new Date().getMinutes() > 9
-          ? new Date().getMinutes()
-          : "0" + new Date().getMinutes()
-      }:${
-        new Date().getSeconds() > 9
-          ? new Date().getSeconds()
-          : "0" + new Date().getSeconds()
-      } >>> se ha generado un reporte `
-    );
-    localStorage.setItem("log", JSON.stringify(logs));
     window.print();
   };
 </script>
-
-
+<svelte:head>
+  <title>Reportes - Administración IUTEPAS</title>
+</svelte:head>
 <section id="pdf">
   <div class="absolute right-10 top-5 flex justify-between gap-3">
     <button
       type="button"
-      class="bg-pink-600 px-5 py-2 text-lg text-light-200 font-extrabold save"
+      class="btn variant-filled-primary rounded-lg px-5 py-2 text-lg font-extrabold save"
       on:click="{() => print()}">Imprimir reporte</button
     >
-    <a
-      href="/pagos"
-      class="bg-sky-600 px-5 py-2 text-lg text-light-200 font-extrabold save"
-      >Volver atrás</a
-    >
   </div>
-  <div class="w-[800px] !bg-[#EEEEEEEE]">
+  <div class="w-[820px] !bg-[#FFF]">
     <header class="py-5 flex justify-start items-center px-8">
-      <img src="{pascalConFondo}" alt="" class="h-[fit-content] w-1/9" />
+      <img src="{pascalConFondo}" alt="" class="h-[fit-content] w-[200px]" />
       <section class="text-center w-7/11">
         <h2 class="text-2xl">S.C. IUTEPAS</h2>
         <p class="text-sm">
@@ -113,49 +87,80 @@
     </header>
     <main class="py-5 px-10 w-full mx-auto">
       {#if totales === "monto"}
-      <h2 class="text-2xl font-bold">Total de pagos: </h2>
-      <p class="flex justify-between my-3 text-lg w-11/12 font-semibold capitalize"
-        >transferencias: <span class="text-pink-600 font-bold text-2xl">{moneyBsConverter(transferencias)}</span>  </p
-      >
-      <p class="flex justify-between my-3 text-lg w-11/12 font-semibold capitalize"
-        >pagos con bolivares en efectivo: <span class="text-pink-600 font-bold text-2xl">{moneyBsConverter(bolivares)}</span> </p
-      >
-      <p class="flex justify-between my-3 text-lg w-11/12 font-semibold capitalize"
-        >pagos con dólares en efectivo (a tasa de BCV: {moneyBsConverter(+data.bcv)}): <span class="text-pink-600 font-bold text-2xl">{moneyBsConverter(dolares)}</span> </p
-      >
-      <hr class="border-sky-700 w-20/21 my-2" />
-      <p class="flex justify-between my-3 text-4xl w-11/12 font-bold capitalize"
-        >Total: <span class="text-pink-600">{moneyBsConverter(transferencias + bolivares + dolares)}</span> </p
-      >
+        <h2 class="text-2xl font-bold">Total de pagos:</h2>
+        <p
+          class="flex justify-between my-3 text-lg w-11/12 font-semibold"
+        >
+          Por transferencias: <span class="text-pink-600 font-bold text-2xl"
+            >{moneyBsConverter(transferencias)}</span
+          >
+        </p>
+        <p
+          class="flex justify-between my-3 text-lg w-11/12 font-semibold"
+        >
+          Por punto: <span
+            class="text-pink-600 font-bold text-2xl"
+            >{moneyBsConverter(bolivares)}</span
+          >
+        </p>
+        <p
+          class="flex justify-between my-3 text-lg w-11/12 font-semibold"
+        >
+          Con divisas en efectivo (a tasa del BCV del día: {moneyBsConverter(
+            +data.bcv
+          )}):
+          <span class="text-pink-600 font-bold text-2xl"
+            >{moneyBsConverter(dolares)}</span
+          >
+        </p>
+        <hr class="border-sky-700 w-20/21 my-2" />
+        <p
+          class="flex justify-between my-3 text-4xl w-11/12 font-bold capitalize"
+        >
+          Total: <span class="text-pink-600"
+            >{moneyBsConverter(transferencias + bolivares + dolares)}</span
+          >
+        </p>
       {:else}
-      <h2 class="text-2xl font-bold">
-        Reporte de pagos {#if data.filtro == "bolivares"}hechos con bolívares en efectivo{:else if data.filtro == "dolares"}hechos con dólares en efectivo{:else if data.filtro == "transferencia"}por transferencia{/if} {#if data.param == "dia"}del {`${day.getDate()}/${
-            day.getMonth() + 1
-          }/${day.getFullYear()}`}
-        {:else if data.param == "semanal"}de los últimos siete días{:else if data.param == "mensual"}de {months[new Date().getMonth()]}{/if}
-      </h2>
-      <table class="my-5 w-23/24">
-        <thead>
-          {#each titles as title}
-            <th class="text-xl font-semibold">{title}</th>
+        <h2 class="text-2xl font-bold">
+          Reporte de pagos {#if data.filtro == "Punto"}hechos por punto{:else if data.filtro == "Efectivo"}hechos
+            con dólares en efectivo{:else if data.filtro == "Transferencia"}por
+            transferencia{/if}
+          {#if data.param == "dia"}del {`${day.getDate()}/${
+              day.getMonth() + 1
+            }/${day.getFullYear()}`}
+          {/if}
+        </h2>
+        <table class="my-5 w-full">
+          <thead>
+            {#each titles as title}
+              <th class="text-xl font-semibold">{title}</th>
+            {/each}
+          </thead>
+          {#each pdf as row}
+            <tr>
+              <td>{row.fecha}</td>
+              <td>{row.cedula}</td>
+              <td class="capitalize">{row.nombre}</td>
+              <td class="capitalize">{row.pago.replace("_", " ")}</td>
+              <td>
+                {#if row.metodo != "Efectivo"}
+                  {moneyBsConverter(parseFloat(row.monto))}
+                {:else}
+                  {moneyUsdConverter(parseFloat(row.monto))}
+                {/if}
+              </td>
+              <td class="capitalize">{row.metodo}</td>
+            </tr>
           {/each}
-        </thead>
-        {#each pdf as row}
-          <tr>
-            <td>{row.fecha}</td>
-            <td>{row.cedula}</td>
-            <td class="capitalize">{row.nombre}</td>
-            <td class="capitalize">{row.pago}</td>
-            <td>{row.monto}</td>
-            <td class="capitalize">{row.metodo}</td>
-          </tr>
-        {/each}
-      </table>
-      {#if data.filtro !== "nada"}
-      <span class="text-xl font-semibold"
-        >Monto total: {#if data.filtro != "dolares"} {moneyBsConverter(total)} {:else}{moneyUsdConverter(total)}{/if} </span
-      >
-      {/if}
+        </table>
+        {#if data.filtro !== "nada"}
+          <span class="text-xl font-semibold"
+            >Monto total: {#if data.filtro != "Efectivo"}
+              {moneyBsConverter(total)}
+            {:else}{moneyUsdConverter(total)}{/if}
+          </span>
+        {/if}
       {/if}
     </main>
   </div>
@@ -188,6 +193,10 @@
     #pdf {
       overflow-y: hidden;
       height: fit-content;
+    }
+
+    :global(.app-bar){
+      display: none !important;
     }
   }
 </style>

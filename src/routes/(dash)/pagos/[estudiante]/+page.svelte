@@ -11,6 +11,9 @@
   let estudiante: Estudiante = data.estudiante;
 
 </script>
+<svelte:head>
+  <title>Pagos de un estudiante - Administración IUTEPAS</title>
+</svelte:head>
 <main class="w-full p-5">
   <h1 class="text-4xl font-bold text-center">Pagos de <span class="text-secondary-500 capitalize">{estudiante.nombre}</span></h1>
   <table class="container table mx-auto my-5 !text-xl text-left">

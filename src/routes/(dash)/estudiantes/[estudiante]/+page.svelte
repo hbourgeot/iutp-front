@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { browser } from "$app/environment";
   import { enhance } from "$app/forms";
   import { triggerToast } from "$lib/utils/toast";
   import moment from "moment";
-  import type { Estudiante } from "../../../../app";
   import type { ActionData, PageData } from "./$types";
   import { DatePicker } from "attractions";
   import type { SubmitFunction } from "@sveltejs/kit";
@@ -25,10 +23,9 @@
   let correo = data.estudiante.correo;
   let estado = data.estudiante.estado;
   let carrera = data.estudiante.carrera;
-  const carreras = data.carreras;
+  const carreras = data.carreras as {id: string, nombre: string}[];
 
   let telefonoInput = "";
-  const viejosDatos: Estudiante = data.estudiante;
   let prefijo: string = data.estudiante.telefono.slice(0, 4);
   let telefono: string = data.estudiante.telefono.slice(5);
   let semestre = data.estudiante.semestre.toString();
@@ -42,21 +39,6 @@
     telefono = telefono.slice(0, 6);
   }
   $: telefonoInput = `${prefijo}-${telefono}`;
-
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
 
   const handleEstudiante: SubmitFunction = async({ formData, cancel }) => {
     const clave: string | boolean = await new Promise<string | boolean>((resolve) => {
@@ -91,40 +73,19 @@
     );
     return async ({ update }) => {
       await update();
-      const logs: any = browser
-        ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
-        : [];
-      logs.push(
-        `${new Date().getDate()} de ${
-          months[new Date().getMonth()]
-        } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${
-          new Date().getMinutes() > 9
-            ? new Date().getMinutes()
-            : "0" + new Date().getMinutes()
-        }:${
-          new Date().getSeconds() > 9
-            ? new Date().getSeconds()
-            : "0" + new Date().getSeconds()
-        } >>> se ha modificado al estudiante con la cédula ${cedula}, campos modificados: ${
-          viejosDatos.correo !== correo ? "correo," : ""
-        } ${viejosDatos.nombre !== nombre ? "nombre," : ""} ${
-          viejosDatos.semestre !== semestre ? "semestre," : ""
-        } ${viejosDatos.estado !== estado ? "estado" : ""} ${
-          viejosDatos.telefono !== telefono ? "y telefono" : ""
-        }`
-      );
-      localStorage.setItem("log", JSON.stringify(logs));
     };
   };
 </script>
-
+<svelte:head>
+  <title>Ver un estudiante - Administración IUTEPAS</title>
+</svelte:head>
 <section class="main w-full h-full flex flex-col justify-center items-center">
   <form
     method="POST"
     use:enhance="{handleEstudiante}"
     class="flex p-4 flex-col gap-y-3 w-1/2 h-[fit-content] bg-white rounded-lg"
   >
-    <h3 class="text-4xl my-3 font-bold text-pink-500 text-center my-8">
+    <h3 class="text-4xl font-bold text-pink-500 text-center my-8">
       Datos del estudiante
     </h3>
     <div class="flex justify-between mb-3">

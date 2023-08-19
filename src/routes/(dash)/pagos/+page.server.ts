@@ -1,8 +1,9 @@
 import { fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
 import type { Estudiante, Pago } from "../../../app";
+import { systemLogger } from "$lib/server/logger";
 
-export const load: PageServerLoad = async ({ locals: { client }, url }) => {
+export const load: PageServerLoad = async ({ locals: { client, user } }) => {
   const { ok, data } = await client.GET("/api/pagos");
   const { ok: okey, data: estudiantes } = await client.GET("/api/students");
   
@@ -23,6 +24,8 @@ export const load: PageServerLoad = async ({ locals: { client }, url }) => {
   if (!ok || !okey) {
     return {};
   }
+
+  systemLogger.info(user.nombre + " ha entrado al módulo de los pagos")
 
   return { estudiantes: estudiantesOptions };
 };

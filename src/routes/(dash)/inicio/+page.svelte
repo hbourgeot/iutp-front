@@ -19,7 +19,7 @@
   ];
 </script>
 <svelte:head>
-    <title>Bienvenido al Sistema Administrativo del IUT Pascal</title>
+    <title>Inicio - Administración IUTEPAS</title>
 </svelte:head>
 <section class="w-full h-screen overflow-y-auto flex justify-center items-center flex-col py-5 ">
     <div class='py-[20px] text-center '>

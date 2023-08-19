@@ -1,6 +1,7 @@
+import { systemLogger } from "$lib/server/logger";
 import type { PageServerLoad } from "./$types";
 
-export const load = (async ({ fetch, locals: { client }, params }) => {
+export const load = (async ({ fetch, locals: { client, user }, params }) => {
   const response = await fetch(
     "https://api.exchangedyn.com/markets/quotes/usdves/bcv"
   );
@@ -38,6 +39,9 @@ export const load = (async ({ fetch, locals: { client }, params }) => {
     return {};
   }
   let { nroFactura } = dataFa;
+  nroFactura = nroFactura.toString().padStart(4, "0");
+
+  systemLogger.info(user.nombre + " ha generado la factura nro. " + nroFactura)
   return {
     bcv: bcv,
     estudiante,
@@ -45,6 +49,6 @@ export const load = (async ({ fetch, locals: { client }, params }) => {
     metodoPago,
     monto,
     nombreEstudiante: nombre,
-    nroFactura: nroFactura.toString().padStart(4, '0'),
+    nroFactura: nroFactura,
   };
 }) satisfies PageServerLoad;
