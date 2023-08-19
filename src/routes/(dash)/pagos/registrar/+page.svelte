@@ -206,7 +206,7 @@
       </div>
       <div>
         <!-- Campo: Método de Pago (Radio Buttons) -->
-        <label class="label text-gray-700 font-bold">Método de Pago</label>
+        <label for="" class="label text-gray-700 font-bold">Método de Pago</label>
         <RadioGroup
           name="metodo_pago"
           active="variant-filled-primary"
