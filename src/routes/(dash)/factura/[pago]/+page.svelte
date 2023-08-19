@@ -11,7 +11,7 @@
   let bcv = parseFloat(data.bcv);
 
   //@ts-ignore
-  let concepto: { descripcion: string; monto: number; metodo: string } = {descripcion: data.metodoPago?.descripcion, monto: parseFloat(data.monto?.monto)};
+  let concepto: { descripcion: string; monto: number; metodo: string } = {descripcion: data.metodoPago?.descripcion, monto: parseFloat(data.monto?.monto), metodo: data.metodoPago?.nombre};
 </script>
 
 <div class="overflow">
@@ -19,13 +19,8 @@
       <div class="absolute right-10 top-5 flex justify-between gap-3">
         <button
           type="button"
-          class="bg-pink-600 px-5 py-2 text-lg text-light-200 font-extrabold save"
-          on:click="{() => print()}">Imprimir reporte</button
-        >
-        <a
-          href="/pagos"
-          class="bg-sky-600 px-5 py-2 text-lg text-light-200 font-extrabold save"
-          >Volver atrás</a
+          class="btn variant-filled-primary bg-sky-600 rounded-lg px-5 py-2 text-lg text-light-200 font-extrabold save"
+          on:click="{() => print()}">Imprimir factura</button
         >
       </div>
       <header class="py-5 flex justify-start items-center px-8">
@@ -55,6 +50,9 @@
         </section>
       </header>
       <article class="pl-12 w-full h-full justify-between flex flex-col mt-5">
+        <div class="w-full flex justify-end pr-10 text-4xl fact">
+          <span class="text-red-500 uppercase font-black">N° {data.nroFactura}</span>
+        </div>
         <div class="flex flex-col w-full">
           <h2 class="self-start text-xl capitalize">
             <span class="font-bold">Razón Social:</span>
@@ -83,10 +81,10 @@
         >
           <div class="block">
             <p class="text-xl">
-              Pagada: {#if concepto.metodo === "transferencia"}T:{+concepto.monto.toFixed(
+              Pagado: {#if concepto.metodo === "Transferencia"}T:{+concepto.monto.toFixed(
                   2
-                )} Bs{:else if concepto.metodo === "bolivares"}EB:
-                {+concepto.monto.toFixed(2)} Bs{:else if concepto.metodo === "dolares"}ED:{moneyUsdConverter(
+                )} Bs{:else if concepto.metodo === "Punto"}P:
+                {+concepto.monto.toFixed(2)} Bs{:else if concepto.metodo === "Efectivo"}ED:{moneyUsdConverter(
                   +concepto.monto / bcv
                 )}{/if}
             </p>
@@ -107,6 +105,7 @@
 </div>
 
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Saira+Extra+Condensed:wght@300&display=swap');
   @media print {
     .save {
       display: none !important;
@@ -127,5 +126,9 @@
     display: flex;
     flex-direction: column;
     gap: 340px;
+  }
+
+  .fact{
+    font-family: 'Saira Extra Condensed', sans-serif;
   }
 </style>

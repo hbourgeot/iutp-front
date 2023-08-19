@@ -3,33 +3,26 @@ import type { Actions, PageServerLoad } from "./$types";
 import type { Estudiante, Pago } from "../../../app";
 
 export const load: PageServerLoad = async ({ locals: { client }, url }) => {
-  const { ok, data } = await client.GET("/api/admin");
+  const { ok, data } = await client.GET("/api/pagos");
   const { ok: okey, data: estudiantes } = await client.GET("/api/students");
-  let estudiantesConPagos: Estudiante[] = [];
+  
   const response = await fetch(
     "https://api.exchangedyn.com/markets/quotes/usdves/bcv"
   );
+
+  let cedulas: string[] = Array.from(
+    new Set(data.map((dat: any) => dat.estudiante))
+  );
   const currency = await response.json();
   const bcv = currency.sources.BCV.quote;
-  /*estudiantes.map((estudiante: any) => {
-    let pago = data.pagos.filter((pago: any) => {
-      if (pago.cedula_estudiante === estudiante.cedula) return pago;
-    });
-
-    if (pago[0]) {
-      estudiantesConPagos.push(estudiante);
-    }
-  });*/
-
-  if (!ok) {
-    if (!okey) {
-      return { pagos: [] };
-    }
-
-    return {
-      pagos: []
-    };
+  let estudiantesOptions: Estudiante[] = []
+  for (const cedula of cedulas) {
+    estudiantesOptions.push(estudiantes.find((estudiante: Estudiante) => estudiante.cedula == cedula))
   }
 
-  return { pagos: [] };
+  if (!ok || !okey) {
+    return {};
+  }
+
+  return { estudiantes: estudiantesOptions };
 };

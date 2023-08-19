@@ -3,7 +3,7 @@
   import type { Estudiante, Pago } from "../../../app";
   import type { PageData } from "./$types";
   import DatePicker from "@beyonk/svelte-datepicker/src/components/DatePicker.svelte";
-  import { Autocomplete, popup } from "@skeletonlabs/skeleton";
+  import { Autocomplete, popup, SlideToggle } from "@skeletonlabs/skeleton";
   import {
     computePosition,
     autoUpdate,
@@ -65,6 +65,7 @@
   };
 
   let inputPopupDemo: string = "";
+  let checked: boolean = false;
 
   function formatDate(date = new Date()) {
     const year = date.toLocaleString("default", { year: "numeric" });
@@ -114,8 +115,9 @@
             />
           </div>
         </label>
+        <SlideToggle name="slider-label" active="bg-primary-500" background="bg-primary-700" bind:checked>{checked ? "Historial de pagos registrados" : "Pagos del ciclo actual"}</SlideToggle>
         <a
-          href="/pagos/{verEstudiante}"
+          href="/pagos/{verEstudiante}?tipo={checked ? 'todos':'ciclo'}"
           class="bg-pink-600 text-center px-5 py-2 rounded-md text-white btn variant-filled font-bold w-full"
           >Ver pago</a
         >
