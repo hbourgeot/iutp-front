@@ -1,4 +1,3 @@
-import { logStore } from '$lib/resources/store';
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { logOut } from '$lib/server/auth';

@@ -1,4 +1,3 @@
-import { logStore } from '$lib/resources/store';
 import { redirect } from '@sveltejs/kit';
 import type { LayoutServerLoad } from './$types';
 import { get } from 'svelte/store';

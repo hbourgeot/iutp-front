@@ -241,7 +241,7 @@
             : "(Bs.)"}</label
         >
         <input
-          class="input (number) rounded w-full py-2 px-3 rounded-lg"
+          class="input (number) w-full py-2 px-3 rounded-lg"
           id="monto"
           name="monto"
           min="1"
