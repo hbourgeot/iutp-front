@@ -63,7 +63,7 @@
     <a href="/logout">
       <button
         type="submit"
-        class="btn variant-filled-primary px-3 py-1 rounded-xl ml-4 h-[50px] text-light-50 flex gap-x-3 self-center"
+        class="btn variant-filled-primary bg-pink-600 px-3 py-1 rounded-xl ml-4 h-[50px] text-light-50 flex gap-x-3 self-center"
         ><Icon src={Logout} class="h-5 w-5"/> Salir</button
       >
     </a>

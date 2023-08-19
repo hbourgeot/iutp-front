@@ -54,7 +54,7 @@
   <div class="absolute right-10 top-5 flex justify-between gap-3">
     <button
       type="button"
-      class="btn variant-filled-primary rounded-lg px-5 py-2 text-lg font-extrabold save"
+      class="btn variant-filled-primary bg-pink-600 rounded-lg px-5 py-2 text-lg font-extrabold save"
       on:click="{() => print()}">Imprimir reporte</button
     >
   </div>

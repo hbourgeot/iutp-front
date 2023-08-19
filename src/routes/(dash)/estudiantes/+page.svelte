@@ -383,19 +383,14 @@
     >
       <button
         type="button"
-        class="btn variant-filled-secondary text-light-50 font-bold w-[160px] rounded-lg px-2 py-1"
+        class="btn variant-filled-secondary bg-sky-600 text-white text-light-50 font-bold w-[160px] rounded-lg px-2 py-1"
         on:click="{() => {
           addStudent = false;
         }}">Cancelar</button
       >
       <button
-        type="reset"
-        class="btn variant-filled-tertiary font-bold w-[160px] rounded-lg px-2 py-1"
-        >Resetear campos</button
-      >
-      <button
         type="submit"
-        class="btn variant-filled-primary text-light-50 font-bold w-[160px] rounded-lg px-2 py-1"
+        class="btn variant-filled-primary bg-pink-600 text-white font-bold w-[160px] rounded-lg px-2 py-1"
         >Añadir</button
       >
     </div>

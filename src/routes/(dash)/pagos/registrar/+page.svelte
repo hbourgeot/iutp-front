@@ -284,7 +284,7 @@
             </select>
           </div>
           <button type="button"
-            class="btn variant-filled-primary w-fit h-fit"
+            class="btn variant-filled-primary bg-pink-600 w-fit h-fit"
             on:click="{addBillete}">Añadir billete</button
           >
         </div>
@@ -325,7 +325,7 @@
       <!-- Botón Enviar -->
       <div class="flex items-center justify-between">
         <button
-          class="btn variant-filled-primary font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          class="btn variant-filled-primary bg-pink-500 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           type="submit"
         >
           Realizar Pago
