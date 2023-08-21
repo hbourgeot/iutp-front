@@ -50,8 +50,7 @@
         </DatePicker>
       </div>
     </div>
-    <button type="button" class="btn variant-filled bg-sky-500 p-4 h-fit" on:click="{() => {fecha = null; logs = data.logs; tipo=""}}">Resetear campos</button>
-    <button class="btn variant-filled bg-[#db0081] h-fit p-4">Descargar movimientos</button>
+    <button type="button" class="btn variant-filled bg-sky-500 p-4 h-fit font-bold" on:click="{() => {fecha = null; logs = data.logs; tipo=""}}">Resetear campos</button>
   </div>
 
   <div class="p-5 font-mono bg-gray-200 w-full overflow-y-auto h-[68.5vh]">
