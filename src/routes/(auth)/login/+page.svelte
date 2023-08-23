@@ -7,11 +7,12 @@
   export let form: ActionData;
   $: if (browser) {
     if (form?.message) {
-      window.alert(form.message);
+      triggerToast(form.message, 3000);
     }
   }
   import { enhance } from "$app/forms";
   import { browser } from "$app/environment";
+  import { triggerToast } from "$lib/utils/toast";
 
   let y: number;
 </script>

@@ -8,6 +8,7 @@
     moneyUsdConverter,
   } from "$lib/resources/moneyConverter";
   import { goto } from "$app/navigation";
+  import { triggerToast } from "$lib/utils/toast";
 
   export let data: PageData;
 
@@ -29,7 +30,7 @@
   if (browser) {
     if (!pdf.length) {
       goto("/pagos");
-      window.alert("No hay pagos que cumplan con la condición de búsqueda.");
+      triggerToast("No hay pagos que cumplan con la condición de búsqueda.", 3000);
     } else{
       total = pdf.map((df) => df.montoNum).reduce((a, b) => a + b);
       if(totales === "monto"){

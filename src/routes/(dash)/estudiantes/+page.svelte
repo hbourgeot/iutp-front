@@ -8,12 +8,13 @@
   import { enhance } from "$app/forms";
   import { browser } from "$app/environment";
   import moment from "moment"
+  import { triggerToast } from "$lib/utils/toast";
 
   export let data: PageData;
   export let form: ActionData;
 
   $: if (form?.message) {
-    alert(form.message);
+    triggerToast(form.message, 3000);
   }
 
   const carreras = data.carreras;
@@ -78,7 +79,7 @@
 
   const handleSubmit: SubmitFunction = ({ formData, cancel }) => {
     if (estudiantes.find((estudiante) => estudiante.cedula === cedula)) {
-      alert("Ya existe un estudiante con esa cédula, introduzca otra");
+      triggerToast("Ya existe un estudiante con esa cédula, introduzca otra", 3000);
       return cancel();
     }
     formData.append("cedula", cedula);

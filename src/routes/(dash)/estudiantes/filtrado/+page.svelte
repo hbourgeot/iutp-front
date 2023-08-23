@@ -5,6 +5,7 @@
     import type { PageData } from './$types';
   import { goto } from '$app/navigation';
   import { browser } from '$app/environment';
+  import { triggerToast } from '$lib/utils/toast';
     
     export let data: PageData;
 
@@ -33,7 +34,7 @@
   $: $estudianteSearch.search = data.query?.trim() as unknown as string;
   $: if(!$estudianteSearch.filtered.length){
     if(browser){
-        window.alert("No hay estudiantes que coincidan con esos términos de búsqueda")
+        triggerToast("No hay estudiantes que coincidan con esos términos de búsqueda", 3000)
         goto("/estudiantes")
     }
   }

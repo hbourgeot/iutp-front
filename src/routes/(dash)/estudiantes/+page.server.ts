@@ -38,5 +38,7 @@ export const actions: Actions = {
     if (!ok) {
       return fail(400, { message: data.message });
     }
+
+    return {message: "Estudiante creado exitosamente!"}
   },
 };

@@ -7,25 +7,24 @@ export const load: PageServerLoad = async ({ locals: { client, user } }) => {
   const { ok, data } = await client.GET("/api/pagos");
   const { ok: okey, data: estudiantes } = await client.GET("/api/students");
   
-  const response = await fetch(
-    "https://api.exchangedyn.com/markets/quotes/usdves/bcv"
-  );
+  if (!ok || !okey) {
+    return {};
+  }
 
   let cedulas: string[] = Array.from(
     new Set(data.map((dat: any) => dat.estudiante))
   );
-  const currency = await response.json();
-  const bcv = currency.sources.BCV.quote;
+
+  console.log(cedulas, cedulas.length);
+  if (cedulas.length == 0) {
+    return {estudiantes: undefined, ok: false}
+  }
   let estudiantesOptions: Estudiante[] = []
   for (const cedula of cedulas) {
     estudiantesOptions.push(estudiantes.find((estudiante: Estudiante) => estudiante.cedula == cedula))
   }
 
-  if (!ok || !okey) {
-    return {};
-  }
-
   systemLogger.info(user.nombre + " ha entrado al módulo de los pagos")
 
-  return { estudiantes: estudiantesOptions };
+  return { estudiantes: estudiantesOptions, ok: true };
 };

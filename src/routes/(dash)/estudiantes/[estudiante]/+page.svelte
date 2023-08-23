@@ -63,7 +63,7 @@
     }
 
     if (clave !== "12345") {
-      alert("Clave inválida");
+      triggerToast("Clave inválida", 3000);
       return cancel();
     }
     formData.append("telefono", telefonoInput);

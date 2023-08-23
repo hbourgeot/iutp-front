@@ -25,8 +25,9 @@
 
   storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
   let estudiantes: Estudiante[] | undefined = data.estudiantes;
-
-  let estudiantesComplete: AutocompleteOption[] = estudiantes?.map(
+  let estudiantesComplete: AutocompleteOption[] = [];
+  if(data.ok){
+    estudiantesComplete = estudiantes?.map(
     (estudiante) => ({
       label: `${estudiante.cedula} - ${estudiante.nombre}`,
       value: estudiante.cedula,
@@ -35,8 +36,8 @@
         ""
       )}, ${estudiante.nombre.toLowerCase()}`,
       meta: { healthy: false },
-    })
-  ) as unknown as AutocompleteOption[];
+    })) as unknown as AutocompleteOption[]
+  }
   let opcionReporte: string = "dia";
   let filtroReporte: string = "";
   let verEstudiante: string = estudiantes ? estudiantes[0].cedula : "";

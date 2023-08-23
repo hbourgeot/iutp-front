@@ -17,4 +17,5 @@ COPY --from=build /app/build ./build
 RUN npm install --production --force
 
 EXPOSE 5173
+
 ENTRYPOINT [ "npm", "run", "start" ]
