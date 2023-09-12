@@ -27,7 +27,6 @@ const authHandler: Handle = async ({ event, resolve }) => {
       }
     }
   } catch (e) {
-    console.log(e);
     if (!event.url.pathname.includes("/login")) {
       return new Response(null, {
         status: 302,

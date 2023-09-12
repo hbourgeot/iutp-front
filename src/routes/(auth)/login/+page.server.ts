@@ -22,7 +22,6 @@ export const actions: Actions = {
       usuario: username,
       clave: password,
     });
-    console.log(ok, status, data);
     if (!ok) {
       return fail(400, {message: data.message})
     }

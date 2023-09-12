@@ -38,6 +38,7 @@
       meta: { healthy: false },
     })) as unknown as AutocompleteOption[]
   }
+
   let opcionReporte: string = "dia";
   let filtroReporte: string = "";
   let verEstudiante: string = estudiantes ? estudiantes[0].cedula : "";
@@ -46,6 +47,9 @@
     date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
   }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`;
   let reportDay: any;
+
+  let tomorrow = new Date(date);
+  tomorrow.setDate(date.getDate()+1)
 
   let popupSettings: PopupSettings = {
     event: "focus-click",
@@ -183,7 +187,7 @@
             locale="es-ES"
             bind:value="{fechas}"
             on:change="{dateHasChanged}"
-            disabledDates="{[{ start: new Date() }]}"
+            disabledDates="{[{ start: tomorrow }]}"
             closeOnSelection
           >
             <svelte:fragment slot="between-inputs"

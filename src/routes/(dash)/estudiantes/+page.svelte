@@ -19,6 +19,9 @@
 
   const carreras = data.carreras;
 
+  const date = new Date();
+  let tomorrow = new Date(date);
+  tomorrow.setDate(date.getDate() + 1);
   let estado: string = "nuevo ingreso";
   let documento: string = "V";
   let addStudent: boolean = false;
@@ -241,7 +244,7 @@
           right="{true}"
           inputClass="!rounded-lg"
           bind:value={fecha}
-          disabledDates="{[{ start: new Date() }]}"
+          disabledDates="{[{ start: tomorrow }]}"
         />
       </label>
     </div>

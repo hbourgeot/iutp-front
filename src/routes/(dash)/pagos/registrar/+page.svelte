@@ -71,6 +71,9 @@
   let montoBillete = "";
   let fecha_pago: any = null
   let totalBilletes = 0;
+  const date = new Date();
+  let tomorrow = new Date(date);
+  tomorrow.setDate(date.getDate() + 1);
 
   let popupSettings: PopupSettings = {
     event: "focus-click",
@@ -184,7 +187,7 @@
           right="{true}"
           bind:value={fecha_pago}
           inputClass="!rounded-lg"
-          disabledDates="{[{ start: new Date() }]}"
+          disabledDates="{[{ start: tomorrow }]}"
         />
       </div>
       <div>

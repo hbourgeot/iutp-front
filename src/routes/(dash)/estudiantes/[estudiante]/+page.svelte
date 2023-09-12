@@ -18,12 +18,15 @@
     }
   }
 
+  const date = new Date();
+  let tomorrow = new Date(date);
+  tomorrow.setDate(date.getDate() + 1);
   let nombre = data.estudiante.nombre;
   let cedula = data.estudiante.cedula;
   let correo = data.estudiante.correo;
   let estado = data.estudiante.estado;
   let carrera = data.estudiante.carrera;
-  const carreras = data.carreras as {id: string, nombre: string}[];
+  const carreras = data.carreras as { id: string; nombre: string }[];
 
   let telefonoInput = "";
   let prefijo: string = data.estudiante.telefono.slice(0, 4);
@@ -40,25 +43,32 @@
   }
   $: telefonoInput = `${prefijo}-${telefono}`;
 
-  const handleEstudiante: SubmitFunction = async({ formData, cancel }) => {
-    const clave: string | boolean = await new Promise<string | boolean>((resolve) => {
-      const modal: ModalSettings = {
-        type: "prompt",
-        // Data
-        title: "Autorización",
-        body: "Introduzca la clave para poder modificar los datos del estudiante",
-        valueAttr: { type: "password", minlength: 3, maxlength: 10, required: true, class: "px-3 py-2 input (password)" },
-        buttonTextConfirm: "Confirmar",
-        buttonTextCancel: "Cancelar",
-        buttonTextSubmit: "Confirmar",
-        // Returns the updated response value
-        response: (r: string | boolean) => resolve(r),
-      };
-      modalStore.trigger(modal);
-    });
+  const handleEstudiante: SubmitFunction = async ({ formData, cancel }) => {
+    const clave: string | boolean = await new Promise<string | boolean>(
+      (resolve) => {
+        const modal: ModalSettings = {
+          type: "prompt",
+          // Data
+          title: "Autorización",
+          body: "Introduzca la clave para poder modificar los datos del estudiante",
+          valueAttr: {
+            type: "password",
+            minlength: 3,
+            maxlength: 10,
+            required: true,
+            class: "px-3 py-2 input (password)",
+          },
+          buttonTextConfirm: "Confirmar",
+          buttonTextCancel: "Cancelar",
+          buttonTextSubmit: "Confirmar",
+          // Returns the updated response value
+          response: (r: string | boolean) => resolve(r),
+        };
+        modalStore.trigger(modal);
+      }
+    );
 
-
-    if(clave === false){
+    if (clave === false) {
       return cancel();
     }
 
@@ -76,6 +86,7 @@
     };
   };
 </script>
+
 <svelte:head>
   <title>Ver un estudiante - Administración IUTEPAS</title>
 </svelte:head>
@@ -105,7 +116,7 @@
           right="{true}"
           inputClass="!rounded-lg"
           bind:value="{fecha}"
-          disabledDates="{[{ start: new Date() }]}"
+          disabledDates="{[{ start: tomorrow }]}"
         />
       </label>
     </div>
