@@ -11,6 +11,7 @@
     RadioItem,
     Autocomplete,
     popup,
+    SlideToggle,
   } from "@skeletonlabs/skeleton";
   import type {
     AutocompleteOption,
@@ -20,68 +21,33 @@
   import { Icon } from "@steeze-ui/svelte-icon";
   import { X } from "@steeze-ui/tabler-icons";
   import { triggerToast } from "$lib/utils/toast";
-  import {
-    computePosition,
-    autoUpdate,
-    offset,
-    shift,
-    flip,
-    arrow,
-  } from "@floating-ui/dom";
-
-  import { storePopup } from "@skeletonlabs/skeleton";
   import moment from "moment";
-  storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
   export let data: PageData;
   export let form: ActionData;
 
-  $: if(form?.message){
-    triggerToast(form.message, 3000)
+  $: if (form?.message) {
+    triggerToast(form.message, 3000);
   }
-
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-
-  let estudianteSOptions: AutocompleteOption[] = data.estudiantes.map(
-    (estudiante) => ({
-      label: `${estudiante.cedula} - ${estudiante.nombre}`,
-      value: `${estudiante.cedula}`,
-      keywords: `${estudiante.cedula}, ${estudiante.cedula.slice(
-        1
-      )}, ${estudiante.nombre.toLowerCase()}, ${estudiante.nombre.toUpperCase()}`,
-      meta: { healthy: true },
-    })
-  );
 
   let billetes: { serial: string; monto: number }[] = [];
   let serialBillete = "";
   let montoBillete = "";
-  let fecha_pago: any = null
+  let fecha_pago: any = new Date();
   let totalBilletes = 0;
+  const date = new Date();
+  let tomorrow = new Date(date);
+  tomorrow.setDate(date.getDate() + 1);
 
-  let popupSettings: PopupSettings = {
-    event: "focus-click",
-    target: "popupAutocomplete",
-    placement: "bottom",
-  };
+  let venezolano: boolean = true;
 
   let estudiante = "";
-
-  function onStudentSelection(e: any): void {
-    estudiante = e.detail.value;
+  $: if (estudiante || venezolano) {
+    if (estudiante.includes("-"))
+      estudiante = venezolano
+        ? estudiante.replace("E-", "V-")
+        : estudiante.replace("V-", "E-");
+    else estudiante = `${venezolano ? "V-" : "E-"}${estudiante}`;
   }
 
   function eliminarBillete(i: number) {
@@ -114,11 +80,22 @@
   }
 
   const handleSubmit: SubmitFunction = ({ formData, cancel }) => {
-    for(const billete of billetes){
+    if(!data.estudiantes.map(est => est.cedula).includes(estudiante)){
+      triggerToast("No hay algún estudiante con esa cédula en nuestro sistema", 3000);
+      return cancel();
+    }
+    if(!estudiante.includes('-')){
+      triggerToast("Por favor, seleccione si el estudiante es extranjero o no", 3000)
+      return cancel()
+    }
+    for (const billete of billetes) {
       formData.append("billetes", JSON.stringify(billete));
     }
 
-    formData.append("fecha_pago", moment(fecha_pago, "DD-MM-YYYY").format("YYYY-MM-DD"))
+    formData.append(
+      "fecha_pago",
+      moment(fecha_pago, "DD-MM-YYYY").format("YYYY-MM-DD")
+    );
 
     return async ({ update }) => {
       await update();
@@ -127,6 +104,7 @@
 
   let selectedMetodo = "";
 </script>
+
 <svelte:head>
   <title>Registrar Pago - Administración IUTEPAS</title>
 </svelte:head>
@@ -134,7 +112,9 @@
   <div class="mx-auto lg:w-1/3 md:w-2/3 w-full p-4">
     <h1 class="text-2xl font-semibold mb-4">Formulario de Pago</h1>
     <form
-      class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 flex flex-col gap-3" method="post" use:enhance={handleSubmit}
+      class="bg-white shadow-md rounded-lg px-8 pt-6 pb-8 flex flex-col gap-3"
+      method="post"
+      use:enhance="{handleSubmit}"
     >
       <!-- Campo: Cédula del Estudiante (Select) -->
       <div>
@@ -142,30 +122,34 @@
           class="text-gray-700 font-bold mb-2 label"
           for="cedula_estudiante">Estudiante</label
         >
+        <SlideToggle
+          name="slider-label"
+          active="bg-primary-500"
+          background="bg-primary-700"
+          bind:checked="{venezolano}"
+          >{venezolano ? "Es venezolano" : "Es extranjero"}</SlideToggle
+        >
 
         <input
           class="input autocomplete px-3 py-2 rounded-lg"
-          type="search"
+          type="text"
           required
+          minlength="3"
           name="cedula_estudiante"
           bind:value="{estudiante}"
-          placeholder="Search..."
-          use:popup="{popupSettings}"
+          placeholder="V-12345678"
         />
-        <div data-popup="popupAutocomplete" class="card bg-[#ff53b0] text-white w-full max-w-sm max-h-48 p-4 overflow-y-auto z-[555]">
-          <Autocomplete
-            bind:input="{estudiante}"
-            options="{estudianteSOptions}"
-            on:selection="{onStudentSelection}"
-          />
-        </div>
-
       </div>
       <div>
         <label class="text-gray-700 font-bold mb-2 label" for="concepto"
           >Concepto del pago</label
         >
-        <select class="select p-[10px] rounded-lg capitalize" name="descripcion" id="concepto" required>
+        <select
+          class="select p-[10px] rounded-lg capitalize"
+          name="descripcion"
+          id="concepto"
+          required
+        >
           <option value="pre_inscripcion">Pre Inscripción</option>
           <option value="inscripcion">Inscripción</option>
           <option value="cuota1">Cuota 1</option>
@@ -182,14 +166,16 @@
         <DatePicker
           format="%d-%m-%Y"
           right="{true}"
-          bind:value={fecha_pago}
+          bind:value="{fecha_pago}"
           inputClass="!rounded-lg"
-          disabledDates="{[{ start: new Date() }]}"
+          disabledDates="{[{ start: tomorrow }]}"
         />
       </div>
       <div>
         <!-- Campo: Método de Pago (Radio Buttons) -->
-        <label for="" class="label text-gray-700 font-bold">Método de Pago</label>
+        <label for="" class="label text-gray-700 font-bold"
+          >Método de Pago</label
+        >
         <RadioGroup
           name="metodo_pago"
           active="variant-filled-primary"
@@ -198,19 +184,18 @@
           display="flex"
           class="justify-evenly"
           required
-          
         >
           <RadioItem
             bind:group="{selectedMetodo}"
-            name="metodo"
+            name="metodo" required
             value="Transferencia">Transferencia</RadioItem
           >
           <RadioItem
             bind:group="{selectedMetodo}"
-            name="metodo"
+            name="metodo" required
             value="Efectivo">Efectivo</RadioItem
           >
-          <RadioItem bind:group="{selectedMetodo}" name="metodo" value="Punto"
+          <RadioItem bind:group="{selectedMetodo}" required name="metodo" value="Punto"
             >Punto</RadioItem
           >
         </RadioGroup>
@@ -283,7 +268,8 @@
               <option value="100">100$</option>
             </select>
           </div>
-          <button type="button"
+          <button
+            type="button"
             class="btn variant-filled-primary bg-pink-600 w-fit h-fit"
             on:click="{addBillete}">Añadir billete</button
           >

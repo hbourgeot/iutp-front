@@ -41,7 +41,7 @@
     }
   }
 
-  const day = new Date($page.url.searchParams.get("d") as unknown as string);
+  const day: any = new Date($page.url.searchParams.get("d") as unknown as string);
   day.setHours(24);
 
   const print = () => {
@@ -127,7 +127,7 @@
           Reporte de pagos {#if data.filtro == "Punto"}hechos por punto{:else if data.filtro == "Efectivo"}hechos
             con dólares en efectivo{:else if data.filtro == "Transferencia"}por
             transferencia{/if}
-          {#if data.param == "dia"}del {`${day.getDate()}/${
+          {#if data.param == "dia" && day != "Invalid Date"}del {`${day.getDate()}/${
               day.getMonth() + 1
             }/${day.getFullYear()}`}
           {/if}
@@ -157,7 +157,7 @@
         </table>
         {#if data.filtro !== "nada"}
           <span class="text-xl font-semibold"
-            >Monto total: {#if data.filtro != "Efectivo"}
+            >Monto total: {#if data.filtro !== "Efectivo"}
               {moneyBsConverter(total)}
             {:else}{moneyUsdConverter(total)}{/if}
           </span>

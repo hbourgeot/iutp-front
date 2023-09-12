@@ -3,16 +3,7 @@
   import type { Estudiante, Pago } from "../../../app";
   import type { PageData } from "./$types";
   import { DatePicker } from "attractions";
-  import { Autocomplete, popup, SlideToggle } from "@skeletonlabs/skeleton";
-  import {
-    computePosition,
-    autoUpdate,
-    offset,
-    shift,
-    flip,
-    arrow,
-  } from "@floating-ui/dom";
-  import { storePopup } from "@skeletonlabs/skeleton";
+  import { SlideToggle } from "@skeletonlabs/skeleton";
   import type {
     AutocompleteOption,
     PopupSettings,
@@ -23,7 +14,6 @@
 
   export let data: PageData;
 
-  storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
   let estudiantes: Estudiante[] | undefined = data.estudiantes;
   let estudiantesComplete: AutocompleteOption[] = [];
   if(data.ok){
@@ -38,32 +28,28 @@
       meta: { healthy: false },
     })) as unknown as AutocompleteOption[]
   }
+
   let opcionReporte: string = "dia";
   let filtroReporte: string = "";
-  let verEstudiante: string = estudiantes ? estudiantes[0].cedula : "";
+  let verEstudiante: string = "";
   const date = new Date();
   const today: string = `${date.getFullYear()}-${
     date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1
   }-${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}`;
   let reportDay: any;
 
-  let popupSettings: PopupSettings = {
-    event: "focus-click",
-    target: "popupAutocomplete",
-    placement: "bottom",
-  };
+  let tomorrow = new Date(date);
+  tomorrow.setDate(date.getDate()+1)
 
   let inputPopupDemo: string = "";
   let checked: boolean = false;
+  let venezolano: boolean = true;
 
   let fechas: any = null;
   let fechaInicio: string = "";
   let fechaFinal: string = "";
 
-  function onStudentSelection(event: any): void {
-    inputPopupDemo = event.detail.label;
-    verEstudiante = event.detail.value;
-  }
+  $: verEstudiante = `${venezolano ? 'V' : 'E'}-${inputPopupDemo}`
 
   function dateHasChanged() {
     fechaInicio = moment(fechas.start).format("DD-MM-YYYY");
@@ -100,16 +86,7 @@
           name="autocomplete-search"
           bind:value="{inputPopupDemo}"
           placeholder="Buscar pagos..."
-          use:popup="{popupSettings}"
         />
-        <div data-popup="popupAutocomplete">
-          <Autocomplete
-            bind:input="{inputPopupDemo}"
-            class="bg-sky-600 text-white py-2 w-full px-11 rounded-lg"
-            options="{estudiantesComplete}"
-            on:selection="{onStudentSelection}"
-          />
-        </div>
       </label>
       <SlideToggle
         name="slider-label"
@@ -119,6 +96,15 @@
         >{checked
           ? "Historial de pagos registrados"
           : "Pagos del ciclo actual"}</SlideToggle
+      >
+      <SlideToggle
+        name="slider-label"
+        active="bg-primary-500"
+        background="bg-primary-700"
+        bind:checked="{venezolano}"
+        >{venezolano
+          ? "Es venezolano"
+          : "Es extranjero"}</SlideToggle
       >
       <a
         href="/pagos/{verEstudiante}?tipo={checked ? 'todos' : 'ciclo'}"
@@ -183,7 +169,7 @@
             locale="es-ES"
             bind:value="{fechas}"
             on:change="{dateHasChanged}"
-            disabledDates="{[{ start: new Date() }]}"
+            disabledDates="{[{ start: tomorrow }]}"
             closeOnSelection
           >
             <svelte:fragment slot="between-inputs"

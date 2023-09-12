@@ -19,6 +19,9 @@
 
   const carreras = data.carreras;
 
+  const date = new Date();
+  let tomorrow = new Date(date);
+  tomorrow.setDate(date.getDate() + 1);
   let estado: string = "nuevo ingreso";
   let documento: string = "V";
   let addStudent: boolean = false;
@@ -82,31 +85,24 @@
       triggerToast("Ya existe un estudiante con esa cédula, introduzca otra", 3000);
       return cancel();
     }
+
+    if(documento == "V" && cedula.length > 10){
+      triggerToast("Si el estudiante es venezolano, por favor digite una cédula de máximo 8 dígitos")
+      return cancel();
+    }
+
+    if(documento=="E" && cedula.length > 12){
+      triggerToast("La población de la tierra no sobrepasa los 10 dígitos")
+      return cancel()
+    }
     formData.append("cedula", cedula);
     formData.append("telefono", telefono);
     formData.append('fecha_nac', moment(fecha, "DD-MM-YYYY").format("DD-MM-YYYY"))
 
-    return async ({ update }) => {
+    return async ({ update, formElement }) => {
       await update();
       addStudent = false;
-      const logs: any = browser
-        ? JSON.parse(localStorage.getItem("log") as unknown as string) || []
-        : [];
-      logs.push(
-        `${new Date().getDate()} de ${
-          months[new Date().getMonth()]
-        } del año ${new Date().getFullYear()} a las ${new Date().getHours()}:${
-          new Date().getMinutes() > 9
-            ? new Date().getMinutes()
-            : "0" + new Date().getMinutes()
-        }:${
-          new Date().getSeconds() > 9
-            ? new Date().getSeconds()
-            : "0" + new Date().getSeconds()
-        } >>> se ha registrado un estudiante con la cédula ${cedula}`
-      );
-      localStorage.setItem("log", JSON.stringify(logs));
-      window.location.reload();
+      formElement.reset()
     };
   };
 
@@ -241,7 +237,7 @@
           right="{true}"
           inputClass="!rounded-lg"
           bind:value={fecha}
-          disabledDates="{[{ start: new Date() }]}"
+          disabledDates="{[{ start: tomorrow }]}"
         />
       </label>
     </div>

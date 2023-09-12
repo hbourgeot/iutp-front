@@ -112,11 +112,12 @@ function fillPDFData(
         pago: pago.metodo_pago.descripcion,
         monto: pago.monto.monto,
         montoNum:
-          pago.metodo_pago.nombre !== "Efectivo"
+          pago.metodo_pago.nombre !== "Efectivo" || filter === "Efectivo"
             ? parseFloat(pago.monto.monto)
             : parseFloat(pago.monto.monto) * bcv,
         metodo: pago.metodo_pago.nombre,
       });
+      console.log(pdfData);
     }
   });
 
