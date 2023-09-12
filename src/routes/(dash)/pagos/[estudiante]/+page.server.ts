@@ -10,8 +10,26 @@ export const load = (async ({locals:{client, user}, params, url}) => {
     if (!ok || !okey || !okC) {
         return {}
     }
-    let pagosEstudiante = tipo === "todos" ? pagos.filter((pago: any) => pago.estudiante === params.estudiante) : pagos.filter((pago: any) => pago.estudiante === params.estudiante && pago.ciclo == config.ciclo)
-
+    let pagosEstudiante =
+      tipo === "todos"
+        ? pagos
+            .filter((pago: any) => pago.estudiante === params.estudiante)
+            .filter(
+              (pago: any, index: any, self: any) =>
+                index === self.findIndex((t: any) => t.id === pago.id)
+            )
+        : pagos
+            .filter(
+              (pago: any) =>
+                pago.estudiante === params.estudiante &&
+                pago.ciclo == config.ciclo
+            )
+            .filter(
+              (pago: any, index: any, self: any) =>
+                index === self.findIndex((t: any) => t.id === pago.id)
+            );
+    
+    console.log(pagosEstudiante);
     systemLogger.info(user.nombre + " está viendo los pagos realizados por el estudiante " + data.nombre.toUpperCase())
     
     return {
