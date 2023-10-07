@@ -109,13 +109,17 @@
           <p class="text-right text-xl">
             Subtotal: {#if concepto.metodo !== "Efectivo"}
               Bs. {+concepto.monto.toFixed(2)}
-            {:else if concepto.metodo === "Efectivo"}
+            {:else}
               {moneyUsdConverter(+concepto.monto)}
             {/if}
           </p>
           <p class="text-right text-xl">IVA 0%: {moneyBsConverter(0)}</p>
           <p class="text-right text-xl">
-            Total: {moneyBsConverter(+concepto.monto * bcv)}
+            Total: {#if concepto.metodo !== "Efectivo"}
+              Bs. {+concepto.monto.toFixed(2)}
+            {:else}
+              {moneyBsConverter(+concepto.monto * bcv)}
+            {/if} 
           </p>
         </div>
       </div>

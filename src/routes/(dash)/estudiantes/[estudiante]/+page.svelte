@@ -261,7 +261,7 @@
       class="flex flex-col md:flex-row justify-center gap-4 items-center w-full p-3 py-9"
     >
       <button
-        type="button"
+        type="button" on:click="{() => window.history.back( )}"
         class="bg-sky-600 btn variant-filled rounded-lg text-light-50 !text-lg font-bold w-auto px-10 py-1"
         >Cancelar</button
       >
