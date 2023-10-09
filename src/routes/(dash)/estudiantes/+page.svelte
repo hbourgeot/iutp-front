@@ -20,6 +20,7 @@
   const carreras = data.carreras;
 
   const date = new Date();
+  let formEl: HTMLFormElement;
   let tomorrow = new Date(date);
   tomorrow.setDate(date.getDate() + 1);
   let estado: string = "nuevo ingreso";
@@ -101,7 +102,6 @@
 
     return async ({ update, formElement }) => {
       await update();
-      addStudent = false;
       formElement.reset()
     };
   };
@@ -199,7 +199,7 @@
   </section>
 </section>
 <ModalLarge open="{addStudent}" headerText="Añadir estudiante" big>
-  <form method="post" use:enhance="{handleSubmit}" class="flex flex-col gap-1">
+  <form method="post" use:enhance="{handleSubmit}" bind:this={formEl} class="flex flex-col gap-1">
     <div class="flex justify-between mb-3">
       <label for="cedula" class="flex flex-col w-2/5">
         Cédula de Identidad
@@ -221,7 +221,7 @@
             on:invalid="{() => {
               let html = window.document.getElementById('cedula');
               //@ts-ignore
-              html.setCustomValidity('Por favor ingrese solo numeros');
+              html.setCustomValidity('Por favor ingrese solo números');
             }}"
             minlength="5"
             name="cedula"
@@ -383,6 +383,9 @@
         class="btn variant-filled-secondary bg-sky-600 text-white text-light-50 font-bold w-[160px] rounded-lg px-2 py-1"
         on:click="{() => {
           addStudent = false;
+          cedulaInput=""
+          telefonoInput=""
+          formEl.reset();
         }}">Cancelar</button
       >
       <button
