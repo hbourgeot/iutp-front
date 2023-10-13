@@ -72,8 +72,8 @@
 <main class="w-full relative">
   <slot />
 </main>
-<Toast position="t" rounded="rounded-lg" color="text-white" background="bg-pink-500" buttonDismiss="bg-white"/>
-<Modal/>
+<Toast position="t" rounded="rounded-lg" color="text-white" buttonDismiss="btn-icon btn-icon-sm variant-ghost" />
+<Modal buttonPositive="variant-filled-primary" buttonNeutral="variant-soft-secondary"/>
 <style>
   main{
     height: calc(100vh - 76px);

@@ -61,6 +61,7 @@
           buttonTextConfirm: "Confirmar",
           buttonTextCancel: "Cancelar",
           buttonTextSubmit: "Confirmar",
+          
           // Returns the updated response value
           response: (r: string | boolean) => resolve(r),
         };
