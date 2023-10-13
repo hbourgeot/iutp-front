@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Toast } from "@skeletonlabs/skeleton";
-	import X from "$lib/images/x-symbol-svgrepo-com.svg"
 </script>
 
 <svelte:head>
