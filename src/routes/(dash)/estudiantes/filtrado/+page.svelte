@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createSearchStore, searchHandler } from "$lib/resources/store";
-  import { onDestroy } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import type { PageData } from "./$types";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
@@ -55,15 +55,17 @@
   );
 
   $: $estudianteSearch.search = data.query?.trim() as unknown as string;
-  $: if (!$estudianteSearch.filtered.length) {
-    if (browser) {
-      triggerToast(
-        "No hay estudiantes que coincidan con esos términos de búsqueda",
-        3000
-      );
-      goto("/coordinadores/estudiantes", { replaceState: true });
+  onMount(() => {
+    if (!$estudianteSearch.filtered.length) {
+      if (browser) {
+        triggerToast(
+          "No hay estudiantes que coincidan con esos términos de búsqueda",
+          3000
+        );
+        goto("/estudiantes", { replaceState: true });
+      }
     }
-  }
+  });
 
   onDestroy(() => {
     unsubscribe();
