@@ -72,7 +72,7 @@
 <main class="w-full relative">
   <slot />
 </main>
-<Toast position="t" rounded="rounded-lg" color="text-white" background="bg-pink-500"/>
+<Toast position="t" rounded="rounded-lg" color="text-white" background="bg-pink-500" buttonDismiss="bg-white"/>
 <Modal/>
 <style>
   main{

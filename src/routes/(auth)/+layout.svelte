@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { Toast } from "@skeletonlabs/skeleton";
+	import X from "$lib/images/x-symbol-svgrepo-com.svg"
 </script>
 
 <svelte:head>
 	<title>Login al sistema de administracion</title>
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
-
+<Toast position="t" rounded="rounded-lg" color="text-white" buttonDismiss="btn-icon btn-icon-sm variant-ghost" />
 <main class="flex flex-col-reverse xl:flex-row-reverse justify-center w-full">
     <slot/>
 </main>
