@@ -106,11 +106,13 @@
           ? "Es venezolano"
           : "Es extranjero"}</SlideToggle
       >
+      {#if inputPopupDemo.length}
       <a
         href="/pagos/{verEstudiante}?tipo={checked ? 'todos' : 'ciclo'}"
         class="bg-pink-600 text-center px-5 py-2 rounded-md text-white btn variant-filled font-bold w-full"
         >Ver pago</a
       >
+      {/if}
     </section>
     <section class="flex flex-col w-1/4 self-center gap-y-5">
       <h2 class="text-sky-600 text-4xl text-center font-extrabold">Reportes</h2>

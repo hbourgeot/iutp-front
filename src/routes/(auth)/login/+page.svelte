@@ -3,16 +3,13 @@
   import { Icon } from "@steeze-ui/svelte-icon";
   import Pascal from "$lib/images/pascalConFondo.png";
   import type { ActionData } from "./$types";
+  import { enhance } from "$app/forms";
+  import { triggerToast } from "$lib/utils/toast";
 
   export let form: ActionData;
-  $: if (browser) {
-    if (form?.message) {
-      triggerToast(form.message, 3000);
-    }
+  $: if (form?.message) {
+    triggerToast(form.message, 3000);
   }
-  import { enhance } from "$app/forms";
-  import { browser } from "$app/environment";
-  import { triggerToast } from "$lib/utils/toast";
 
   let y: number;
 </script>

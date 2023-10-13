@@ -18,12 +18,14 @@ export const actions: Actions = {
         password: string;
       };
 
-    const { ok, status, data } = await client.POST("/api/usuario/login", {
+    const { ok, data } = await client.POST("/api/usuario/login", {
       usuario: username,
       clave: password,
     });
+
+    console.log(ok,data);
     if (!ok) {
-      return fail(400, {message: data.message})
+      return fail(400, {message: 'Correo y/o clave incorrectos'})
     }
 
     cookies.set("access_token", data.access_token, {
@@ -32,10 +34,6 @@ export const actions: Actions = {
     });
 
     systemLogger.info(data.usuario.nombre + " ha iniciado sesión");
-
-    if (!ok) {
-      return fail(400, { message: data.message });
-    }
 
     throw redirect(300, "/inicio");
   },
