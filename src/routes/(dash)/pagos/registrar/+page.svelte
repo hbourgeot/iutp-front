@@ -331,4 +331,9 @@
   :global(.date-picker, .dropdown-shell, .handle, .text-field) {
     width: 100% !important;
   }
+
+  main{
+    min-height: calc(100vh - 65px);
+    overflow-y: visible;
+  }
 </style>
