@@ -10,6 +10,8 @@
 
   let estudiante: Estudiante = data.estudiante;
 
+  
+
 </script>
 <svelte:head>
   <title>Pagos de un estudiante - Administración IUTEPAS</title>
@@ -28,7 +30,7 @@
     <tbody>
       {#each data.pagos as pago}
       <tr>
-        <td class="!text-xl">{moment(new Date(pago.fecha_pago)).format('DD-MM-YYYY')}</td>
+        <td class="!text-xl">{moment.utc(new Date(pago.fecha_pago)).format('DD-MM-YYYY')}</td>
         <td class="!text-xl">
           {#if pago.metodo_pago.nombre !== "Efectivo"}
             {moneyBsConverter(parseFloat(pago.monto.monto))}

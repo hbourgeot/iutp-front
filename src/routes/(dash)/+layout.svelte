@@ -76,9 +76,10 @@
 <Modal buttonPositive="variant-filled-primary" buttonNeutral="variant-soft-secondary"/>
 <style>
   main{
-    height: calc(100vh - 76px);
+    min-height: calc(100vh - 65px);
     background-image: url("$lib/images/layered-waves-haikei.svg");
     background-position: center;
+    overflow-y: auto;
     background-size: cover;
   }
 </style>
