@@ -113,7 +113,7 @@
 </svelte:head>
 
 <section
-  class="main w-full flex flex-col justify-evenly p-7 h-full overflow-y-auto"
+  class="main w-full flex flex-col justify-evenly items-center p-7"
 >
   <div
     class="flex absolute top-5 right-5 self-end justify-around items-center w-[auto]"
@@ -125,7 +125,7 @@
     >
   </div>
   <section
-    class="flex flex-col justify-evenly w-3/4 h-1/2 font-bold self-center gap-y-5"
+    class="flex flex-col justify-evenly w-3/4 font-bold self-center gap-y-5"
   >
     <h2
       class="text-sky-600 !justify-self-start text-5xl text-center font-extrabold"
@@ -407,5 +407,9 @@
 
   :global(.date-picker,.dropdown-shell,.handle,.text-field){
     width: 100% !important;
+  }
+
+  .main{
+    height: calc(100vh - 150px) !important;
   }
 </style>
